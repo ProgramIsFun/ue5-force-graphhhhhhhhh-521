@@ -18,7 +18,11 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 	for (int32 i = 0; i < jnodes11; i++)
 	{
 		int jid = i;
+
+		
 		AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
+
+
 		if (kn)
 		{
 			UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(
