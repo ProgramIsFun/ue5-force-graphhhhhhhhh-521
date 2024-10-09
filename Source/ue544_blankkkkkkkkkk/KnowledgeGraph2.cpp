@@ -1101,7 +1101,7 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 				UClass* loadedClass = StaticLoadClass(UObject::StaticClass(), nullptr,
 				                                      TEXT(
 					                                      // "Blueprint'/Game/Characters/Enemies/BP_LitchBoss1.BP_LitchBoss1_C'"
-					                                      "Blueprint'/Game/kkkkk/NewBlueprint22222.NewBlueprint22222_C'"
+					                                      "Blueprint'/Game/kkkkk/extending_the_edge77.extending_the_edge77_C'"
 
 				                                      ));
 				if (loadedClass)

@@ -194,7 +194,9 @@ void OctreeNode::CalculateCenterOfMass()
 
 void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 {
-	if (1)
+
+	bool using_recursion = true;
+	if (using_recursion)
 	{
 		FVector aggregatePosition = FVector(0);
 		float aggregateStrength = 0.0;
@@ -277,6 +279,65 @@ void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 	else
 	{
 		// Instead of using recursion, we will traverse the tree using bfs and record the path, And then we will calculate center of mass based on the Reverse order.
+		std::vector<OctreeNode*> traversalOrder;
+		std::stack<OctreeNode*> stack;
+
+		if (this) {
+			stack.push(this);
+		}
+
+		// DFS to record the nodes in traversal order using a stack
+		while (!stack.empty()) {
+			OctreeNode* currentNode = stack.top();
+			stack.pop();
+
+			traversalOrder.push_back(currentNode);
+
+			if (!currentNode->IsLeaf()) {
+				// Push children to the stack in normal order
+				for (int i = 0; i < currentNode->Children.Num(); i++) {
+					if (currentNode->Children[i] != nullptr) {
+						stack.push(currentNode->Children[i]);
+					}
+				}
+			}
+		}
+
+		// Process in reverse traversal order (from last non-leaf to root)
+		for (auto it = traversalOrder.rbegin(); it != traversalOrder.rend(); ++it) {
+			OctreeNode* node = *it;
+			if (node->IsLeaf()) {
+				if (node->Data) {
+					FVector position = node->Data->Node->GetActorLocation();
+					float strength = FMath::Abs(node->Data->Node->strength);
+
+					node->Strength = strength;
+					node->StrengthSet = true;
+					node->CenterOfMass = position;
+				}
+			}
+			else {
+				FVector aggregatePosition = FVector(0);
+				float aggregateStrength = 0.0;
+				float totalWeight = 0;
+
+				for (auto child : node->Children) {
+					if (child && (child->StrengthSet || !child->IsLeaf())) {
+						float strengthAbs = FMath::Abs(child->Strength);
+						aggregateStrength += child->Strength;
+						totalWeight += strengthAbs;
+						aggregatePosition += strengthAbs * child->CenterOfMass;
+					}
+				}
+
+				if (totalWeight > 0) {
+					node->CenterOfMass = aggregatePosition / totalWeight;
+					node->Strength = aggregateStrength;
+				}
+			}
+		}
+
+
 	}
 }
 

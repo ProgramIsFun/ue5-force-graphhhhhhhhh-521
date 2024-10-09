@@ -36,20 +36,18 @@ void ClearLogFile() {
 }
 
 
-
+bool nologgggggggg = true;
 
 
 void lll(const FString& TextToWrite)
 {
-	bool nologgggggggg = false;
 
+	
 	if (nologgggggggg)
 	{
 		return;
 	}
-	else
-	{
-	}
+	
 	if (1)
 	{
 		// Define the path to the log file.
@@ -80,14 +78,12 @@ void lll(const FString& TextToWrite)
 
 void ll(const FString& StringToLog, bool LOG, int SeverityLevel, const FString& Prefix)
 {
-	bool nologgggggggg = false;
+	
 	if (nologgggggggg)
 	{
 		return;
 	}
-	else
-	{
-	}
+	
 
 	if (!LOG)
 	{

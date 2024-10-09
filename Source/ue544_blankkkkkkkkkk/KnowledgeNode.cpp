@@ -53,7 +53,7 @@ AKnowledgeNode::AKnowledgeNode()
 		// Configure the default text settings
 		TextComponent->SetText(FText::FromString(TEXT("Hello, World!")));
 		TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
-		TextComponent->SetWorldSize(50.f);
+		TextComponent->SetWorldSize(1.f);
 	}
 }
 
