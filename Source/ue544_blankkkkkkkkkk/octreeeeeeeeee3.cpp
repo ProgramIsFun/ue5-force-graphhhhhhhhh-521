@@ -102,7 +102,7 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 
 	if (!node->IsLeaf())
 	{
-		// Recursively found the leaf node to add the data point
+		// found the leaf node to add the data point
 
 
 		if (0)
@@ -153,43 +153,12 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 		{
 			// No data is associated with the current node
 			node->Data = new PointData(kn);
-			node->TotalDataPoints = 1; // Now properly accounting for the node having new data
 
 			// All the 8 pointers of children's property Should still be nullptr.
 		}
 	}
 }
 
-void OctreeNode::CalculateCenterOfMass()
-{
-	if (IsLeaf())
-	{
-		if (Data)
-		{
-			CenterOfMass = Data->Node->GetActorLocation();
-			TotalDataPoints = 1;
-		}
-	}
-	else
-	{
-		FVector aggregateMass = FVector(0);
-		int count = 0;
-		for (OctreeNode* child : Children)
-		{
-			if (child != nullptr)
-			{
-				child->CalculateCenterOfMass();
-				aggregateMass += child->CenterOfMass * child->TotalDataPoints;
-				count += child->TotalDataPoints;
-			}
-		}
-		if (count > 0)
-		{
-			CenterOfMass = aggregateMass / count;
-			TotalDataPoints = count;
-		}
-	}
-}
 
 
 void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
@@ -291,16 +260,21 @@ void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 			OctreeNode* currentNode = stack.top();
 			stack.pop();
 
-			traversalOrder.push_back(currentNode);
 
 			if (!currentNode->IsLeaf()) {
 				// Push children to the stack in normal order
 				for (int i = 0; i < currentNode->Children.Num(); i++) {
-					if (currentNode->Children[i] != nullptr) {
+					if (
+						currentNode->Children[i]->check_contain_data_or_not()
+						)
+					{
 						stack.push(currentNode->Children[i]);
 					}
 				}
 			}
+
+			traversalOrder.push_back(currentNode);
+
 		}
 
 		// Process in reverse traversal order (from last non-leaf to root)

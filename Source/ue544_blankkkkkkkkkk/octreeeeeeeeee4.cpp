@@ -80,6 +80,19 @@ void OctreeNode::Cover(float x, float y, float z)
 	}
 }
 
+bool OctreeNode::check_contain_data_or_not()
+{
+
+	if (Data||!IsLeaf())
+	{
+		
+		return true;
+		
+	}
+
+	return false;
+}
+
 
 void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map)
 {

@@ -63,10 +63,9 @@ struct OctreeNode
 	void PrintData() const;
 	
 	void Subdivide();
-	void CalculateCenterOfMass();
 	void AccumulateStrengthAndComputeCenterOfMass();
 	void Cover(float X0, float Y0, float Z0);
-
+	bool check_contain_data_or_not();
 	void AddAll1(TMap<int32, AKnowledgeNode*> Map1);
 };
 
