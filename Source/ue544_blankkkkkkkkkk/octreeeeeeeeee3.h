@@ -63,6 +63,7 @@ struct OctreeNode
 	void PrintData() const;
 	
 	void Subdivide();
+	void accumulate_without_recursion();
 	void AccumulateStrengthAndComputeCenterOfMass();
 	void Cover(float X0, float Y0, float Z0);
 	bool check_contain_data_or_not();
