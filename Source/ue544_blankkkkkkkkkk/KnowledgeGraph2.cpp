@@ -529,6 +529,7 @@ void AKnowledgeGraph::ApplyForces()
 
 
 	ll("11111111111111111Warning printing out all things. ", log, 1);
+
 	// Print out the position and velocity of all the nodes. 
 	for (auto& node : all_nodes)
 	{
@@ -540,7 +541,12 @@ void AKnowledgeGraph::ApplyForces()
 
 	
 	ll("Ready to calculate link.--------------------------------------", log);
+
+	double start = FPlatformTime::Seconds()
 	calculate_link_force_and_update_velocity();
+	double end = FPlatformTime::Seconds();
+
+	
 	ll("Finish calculating link.--------------------------------------", log);
 
 

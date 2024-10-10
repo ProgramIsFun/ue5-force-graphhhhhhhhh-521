@@ -115,6 +115,8 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 
 		ll("apply forces",log);
+
+		
 		ApplyForces();
 
 		ll("update actor location based on velocity",log);
