@@ -314,7 +314,7 @@ void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 	else
 	{
 
-		ll('Warning the following functions have bug do not use it yet. ');
+		ll("Warning the following functions have bug do not use it yet. ", true);
 		accumulate_without_recursion();
 
 
