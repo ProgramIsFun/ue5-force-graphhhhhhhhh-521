@@ -23,19 +23,10 @@ https://vasturiano.github.io/3d-force-graph/example/large-graph/ -> https://gith
 ### 1
 
 #### Problem description
+
 The rendering part is very laggy when the number of nodes reach 100.  Speed up the rendering part and make it less laggy.
-The member variable is declared in https://github.com/everythingallaccount/ue4-force-graph-backupppp-11111/blob/3562cb5f74af1cfd5ff021711dbc703e5a4ead61/Source/ue544_blankkkkkkkkkk/KnowledgeGraph.h#L95-L95
-Because it is Uproperty, you can directly change the value in the editor.
+The member variable Because it is Uproperty, you can directly change the value in the editor.
 
-
-
-
-When solving this problem, we could just use the level https://github.com/everythingallaccount/ue4-force-graph-backupppp-11111/blob/3562cb5f74af1cfd5ff021711dbc703e5a4ead61/Content/Minimal_Default11111.umap
-Which is just an empty world with only the graph in it.
-
-And also in the process of solving this problem, we could have this variable set https://github.com/everythingallaccount/ue4-force-graph-backupppp-11111/blob/3562cb5f74af1cfd5ff021711dbc703e5a4ead61/Source/ue544_blankkkkkkkkkk/KnowledgeGraph2.cpp#L39
-So that the Else part of the if else is executed.
-so that every node will be connected to the previous node, Which eliminates any randomness To provide The same graph every time.
 
 
 #### Possible solution
@@ -50,72 +41,9 @@ so that every node will be connected to the previous node, Which eliminates any 
     Perhaps this is the reason why the javascript implementation is faster than mine.
     The way that I implement the tree is basically every node have 8 pointers, and every pointer Is either a null pointer or a pointer to another tree node. I am unsure whether this structure will prolong the calculation.  
   
+
+
 ### 2
-
-When node equal 5, The traversal seems have some difference with the javascript implementation. 
-
-```
-
-Traverse the tree And calculate velocity on this Actor Kn, nodekey: -0
---------------------Right now, dealing with:  Lower boundX=-8.000 Y=-17.000 Z=0.000 Upper bound X=24.000 Y=15.000 Z=32.000
-Prepare to call the call back functions with this node. 
------------------
--8.0 -17.0 0.0 24.0 15.0 32.0
-22222222222222222 You need to return false here. 
-i2
-Lower boundX=-8.000 Y=-1.000 Z=0.000 Upper boundX=8.000 Y=15.000 Z=16.000
-i0
-Lower boundX=-8.000 Y=-17.000 Z=0.000 Upper boundX=8.000 Y=-1.000 Z=16.000
---------------------Right now, dealing with:  Lower boundX=-8.000 Y=-17.000 Z=0.000 Upper bound X=8.000 Y=-1.000 Z=16.000
-Prepare to call the call back functions with this node. 
------------------
--8.0 -17.0 0.0 8.0 -1.0 16.0
-velocity Updated: X=3.416 Y=10.925 Z=-2.224
-11111111111111 Early termination. 
---------------------Right now, dealing with:  Lower boundX=-8.000 Y=-1.000 Z=0.000 Upper bound X=8.000 Y=15.000 Z=16.000
-Prepare to call the call back functions with this node. 
------------------
--8.0 -1.0 0.0 8.0 15.0 16.0
-22222222222222222 You need to return false here. 
-i6
-Lower boundX=-8.000 Y=7.000 Z=8.000 Upper boundX=0.000 Y=15.000 Z=16.000
-i4
-Lower boundX=-8.000 Y=-1.000 Z=8.000 Upper boundX=0.000 Y=7.000 Z=16.000
-i2
-Lower boundX=-8.000 Y=7.000 Z=0.000 Upper boundX=0.000 Y=15.000 Z=8.000
-
-
-
-Right now, dealing with -8 -17 0 24 15 32
-visit.js:18 Prepare to call the call back functions with this node. 
-manyBody.js:13 -----------------
-manyBody.js:13 lower bound: -8 -17 0   upper bound: 24 15 32
-manyBody.js:13 2222222222222222222 Need to return false here. 
-visit.js:18 2 -8 -1 0 8 15 16
-visit.js:18 0 -8 -17 0 8 -1 16
-visit.js:18 Right now, dealing with -8 -17 0 8 -1 16
-visit.js:18 Prepare to call the call back functions with this node. 
-manyBody.js:13 -----------------
-manyBody.js:13 lower bound: -8 -17 0   upper bound: 8 -1 16
-manyBody.js:13 The following is updated velocity.  node.vx: 3.4155877922903866 node.vy: 10.924374461464797 node.vz: -2.223548889468486
-manyBody.js:13 11111111111111111111 Early termination. Returning true. 
-visit.js:18 Right now, dealing with -8 -1 0 8 15 16
-visit.js:18 Prepare to call the call back functions with this node. 
-manyBody.js:13 -----------------
-manyBody.js:13 lower bound: -8 -1 0   upper bound: 8 15 16
-manyBody.js:13 2222222222222222222 Need to return false here. 
-visit.js:18 6 -8 7 8 0 15 16
-visit.js:18 4 -8 -1 8 0 7 16
-visit.js:18 3 0 7 0 8 15 8
-visit.js:18 Right now, dealing with 0 7 0 8 15 8
-
-
-
-
-
-```
-
-### 3
 Adding functions such as import graph or export graph in a Json format. 
 
 ## A shot introduction to unreal engine 5
