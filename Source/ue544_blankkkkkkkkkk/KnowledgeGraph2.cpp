@@ -529,13 +529,16 @@ void AKnowledgeGraph::ApplyForces()
 
 	ll("11111111111111111Warning printing out all things. ", log, 1);
 
-	// Print out the position and velocity of all the nodes. 
-	for (auto& node : all_nodes)
+	if (0)
 	{
-		auto kn = node.Value;
-		ll("node: " + FString::FromInt(node.Key), log);
-		ll("position: " + kn->GetActorLocation().ToString(), log);
-		ll("velocity: " + kn->velocity.ToString(), log);
+		// Print out the position and velocity of all the nodes. 
+		for (auto& node : all_nodes)
+		{
+			auto kn = node.Value;
+			ll("node: " + FString::FromInt(node.Key), log);
+			ll("position: " + kn->GetActorLocation().ToString(), log);
+			ll("velocity: " + kn->velocity.ToString(), log);
+		}
 	}
 
 
@@ -550,13 +553,16 @@ void AKnowledgeGraph::ApplyForces()
 
 
 	ll("222222222222222222Warning printing out all things. ", log, 1);
-	// Print out the position and velocity of all the nodes. 
-	for (auto& node : all_nodes)
+	if (true)
 	{
-		auto kn = node.Value;
-		ll("node: " + FString::FromInt(node.Key), log);
-		ll("position: " + kn->GetActorLocation().ToString(), log);
-		ll("velocity: " + kn->velocity.ToString(), log);
+		// Print out the position and velocity of all the nodes. 
+		for (auto& node : all_nodes)
+		{
+			auto kn = node.Value;
+			ll("node: " + FString::FromInt(node.Key), log);
+			ll("position: " + kn->GetActorLocation().ToString(), log);
+			ll("velocity: " + kn->velocity.ToString(), log);
+		}
 	}
 
 	if (manybody)
