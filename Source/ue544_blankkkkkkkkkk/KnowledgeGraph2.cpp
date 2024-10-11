@@ -552,9 +552,11 @@ void AKnowledgeGraph::ApplyForces()
 	ll("Finish calculating link.--------------------------------------", log);
 
 
-	ll("222222222222222222Warning printing out all things. ", log, 1);
-	if (true)
+
+	if (0)
 	{
+		ll("222222222222222222Warning printing out all things. ", log, 1);
+
 		// Print out the position and velocity of all the nodes. 
 		for (auto& node : all_nodes)
 		{
