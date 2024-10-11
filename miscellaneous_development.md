@@ -10,6 +10,31 @@ Could be ignored
     - https://www.youtube.com/watch?v=4J0xdB-CSnU&ab_channel=ShallowDive
     - The whole project could be converted to 5.3 unreal engine directly. 
     - In the function GravityStep, Which is supposed to update the velocity of all the Particle use a O(N Square) approach.  
+      - ```void ABodyManager::GravityStep(float DeltaTime)
+        {
+        ParallelFor(Bodies.Num(), [&] (int32 Index) {
+        FVector2D Acceleration(0.0f, 0.0f);
+        for (const FBodyEntity& AffectingBody: Bodies) {
+        if (AffectingBody.Index == Bodies[Index].Index)
+        continue; // exclude self
+        float Distance = FVector2D::Distance(
+        Bodies[Index].Position,
+        AffectingBody.Position
+        );
+        Distance = FMath::Max(
+        Distance, MinimumGravityDistance
+        ); // avoids division by zero
+        Acceleration += AffectingBody.Mass /
+        Distance * G /
+        Distance *
+        (AffectingBody.Position - Bodies[Index].Position) /
+        Distance;
+        }
+        Bodies[Index].Velocity += Acceleration * DeltaTime ;
+        });
+        }
+        ``` 
+
     - However, parallelfor is used. 
 - https://github.com/martinpaule/DissertationProject/tree/main
 
