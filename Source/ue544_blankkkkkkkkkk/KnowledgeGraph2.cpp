@@ -395,9 +395,7 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 
 
 			// to use parallel for loop 
-			bool use_parallel = true;
-
-
+			bool use_parallel = false;
 			if (!use_parallel)
 			{
 				for (auto& node : all_nodes)
