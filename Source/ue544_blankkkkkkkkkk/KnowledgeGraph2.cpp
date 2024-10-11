@@ -887,12 +887,24 @@ void AKnowledgeGraph::tttttttttttt()
 
 void AKnowledgeGraph::initializeNodePosition()
 {
-	// To replicate the node indexing from the original JS function
-	for (auto& node : all_nodes)
+	if (0)
 	{
-		int index = node.Key;
-		// Calculate index-based radius differently based on the number of dimensions
-		UpdateNodePosition(node.Value, index, 3, initialRadius);
+		// To replicate the node indexing from the original JS function
+		for (auto& node : all_nodes)
+		{
+			int index = node.Key;
+			// Calculate index-based radius differently based on the number of dimensions
+			UpdateNodePosition(node.Value, index, 3, initialRadius);
+		}
+	}
+	else
+	{
+		ParallelFor(all_nodes.Num(), [&](int32 index)
+		            {
+			            UpdateNodePosition(all_nodes[index], index, 3, initialRadius);
+		            }
+
+		);
 	}
 }
 
