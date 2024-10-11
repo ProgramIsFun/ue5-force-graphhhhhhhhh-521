@@ -393,16 +393,35 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 			ll("!!!OctreeData2->CenterOfMass: " + OctreeData2->CenterOfMass.ToString(), log);
 			ll("!!!OctreeData2->strength: " + FString::SanitizeFloat(OctreeData2->Strength), log);
 
-			for (auto& node : all_nodes)
+
+			// to use parallel for loop 
+			bool use_parallel = true;
+
+
+			if (!use_parallel)
 			{
-				ll("--------------------------------------", log);
-				ll(
-					"Traverse the tree And calculate velocity on this Actor Kn, nodekey: -"
-					+
-					FString::FromInt(node.Key), log);
-				TraverseBFS(OctreeData2, SampleCallback, alpha, node.Value);
-				ll("Finished traversing the tree based on this Actor Kn. ", log);
+				for (auto& node : all_nodes)
+				{
+					ll("--------------------------------------", log);
+					ll(
+						"Traverse the tree And calculate velocity on this Actor Kn, nodekey: -"
+						+
+						FString::FromInt(node.Key), log);
+					TraverseBFS(OctreeData2, SampleCallback, alpha, node.Value);
+					ll("Finished traversing the tree based on this Actor Kn. ", log);
+				}
 			}
+			else
+			{
+				ParallelFor(all_nodes.Num(), [&](int32 Index)
+				{
+					auto node = all_nodes[Index];
+					
+					TraverseBFS(OctreeData2, SampleCallback, alpha, node);
+				});
+			}
+
+			
 			ll("Finished traversing, now we can delete the tree. ", log);
 			delete OctreeData2;
 		}
