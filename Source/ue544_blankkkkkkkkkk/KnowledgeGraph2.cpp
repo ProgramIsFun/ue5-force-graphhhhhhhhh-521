@@ -413,15 +413,18 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 			}
 			else
 			{
+				ll("If this parallel for loops, "
+					"there will be an error and crashed the game after we end"
+					"ComponentsThatNeedEndOfFrameUpdate_OnGameThread");
 				ParallelFor(all_nodes.Num(), [&](int32 Index)
 				{
 					auto node = all_nodes[Index];
-					
+
 					TraverseBFS(OctreeData2, SampleCallback, alpha, node);
 				});
 			}
 
-			
+
 			ll("Finished traversing, now we can delete the tree. ", log);
 			delete OctreeData2;
 		}
@@ -569,7 +572,6 @@ void AKnowledgeGraph::ApplyForces()
 
 
 	ll("Finish calculating link.--------------------------------------", log);
-
 
 
 	if (0)
