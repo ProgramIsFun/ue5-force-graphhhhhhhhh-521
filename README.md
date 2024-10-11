@@ -24,9 +24,24 @@ https://vasturiano.github.io/3d-force-graph/example/large-graph/ -> https://gith
 
 #### Problem description
 
-The rendering part is very laggy when the number of nodes reach 100.  Speed up the rendering part and make it less laggy.
-The member variable Because it is Uproperty, you can directly change the value in the editor.
+The rendering part is very laggy when the number of nodes reach 100.  
 
+To reproduce the issue,  
+Create an empty level and then 
+drag the cpp class KnowledgeGraph to the level.
+
+
+Then set the number of nodes to 300  (jnode).
+
+connect_to_previous should be unchecked.
+
+![image](https://github.com/user-attachments/assets/ee1ed9fe-dc6d-421e-9d99-f05157af9baf)
+
+
+
+Then run the game. 
+
+You will find that the frame rate is very low, less than 10 fps.
 
 
 #### Possible solution
