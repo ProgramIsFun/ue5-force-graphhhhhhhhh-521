@@ -474,55 +474,42 @@ void AKnowledgeGraph::apply_center_force_and_move_the_node_directly()
 
 void AKnowledgeGraph::update_actor_location_based_on_velocity()
 {
-	for (auto& node : all_nodes)
+	// Using parallel or not.
+	bool use_parallel = false;
+
+
+	if (!use_parallel)
 	{
-		auto kn = node.Value;
-
-
-		if (0)
+		for (auto& node : all_nodes)
 		{
-			ll("POSITION! node: " + FString::FromInt(node.Key));
-			ll("position: " + kn->GetActorLocation().ToString());
-			ll("velocity: " + kn->velocity.ToString());
+			auto kn = node.Value;
+		
+			kn->velocity *= velocityDecay;
+		
+			FVector NewLocation = kn->GetActorLocation() + kn->velocity;
+
+			kn->SetActorLocation(
+				NewLocation
+			);
 		}
-		else
+	}
+	else
+	{
+
+		// Assertion failed: ComponentsThatNeedEndOfFrameUpdate_OnGameThread.IsValidIndex(ArrayIndex) [File:D:\build\++UE5\Sync\Engine\Source\Runtime\Engine\Private\LevelTick.cpp] [Line: 872]
+
+		ParallelFor(all_nodes.Num(), [&](int32 Index)
 		{
-		}
+			auto kn = all_nodes[Index];
+		
+			kn->velocity *= velocityDecay;
+		
+			FVector NewLocation = kn->GetActorLocation() + kn->velocity;
 
-
-		kn->velocity *= velocityDecay;
-
-
-		FVector NewLocation = kn->GetActorLocation() + kn->velocity;
-
-		kn->SetActorLocation(
-			NewLocation
-		);
-		if (0)
-		{
-			ll("FINAL POSITION! node: " + FString::FromInt(node.Key));
-			ll("position: " + kn->GetActorLocation().ToString());
-			ll("velocity: " + kn->velocity.ToString());
-		}
-		else
-		{
-		}
-
-
-		if (0)
-		{
-			kn->velocity *= 0; //reset velocities
-		}
-
-		if (0)
-		{
-			ll("FINAL POSITION! node: " + FString::FromInt(node.Key));
-			ll("position: " + kn->GetActorLocation().ToString());
-			ll("velocity: " + kn->velocity.ToString());
-		}
-		else
-		{
-		}
+			kn->SetActorLocation(
+				NewLocation
+			);
+		});
 	}
 }
 
