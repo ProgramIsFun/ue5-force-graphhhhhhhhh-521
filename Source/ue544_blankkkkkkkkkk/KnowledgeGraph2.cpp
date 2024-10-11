@@ -902,121 +902,72 @@ void AKnowledgeGraph::initializeNodePosition()
 		{
 			int index = node.Key;
 			// Calculate index-based radius differently based on the number of dimensions
-			float radius;
-			int nDim = 3;
-			if (nDim > 2)
-			{
-				radius = initialRadius * cbrt(0.5f + index);
-			}
-			else if (nDim > 1)
-			{
-				radius = initialRadius * sqrt(0.5f + index);
-			}
-			else
-			{
-				radius = initialRadius * index;
-			}
-
-			float initialAngleRoll = PI * (3 - sqrt(5)); // Roll angle
-
-			// Following will be Math.PI * 20 / (9 + Math.sqrt(221));
-			float initialAngleYaw = PI * 20 / (9 + sqrt(221)); // Yaw angle if needed (3D)
-
-
-			float rollAngle = index * initialAngleRoll; // Roll angle
-			float yawAngle = index * initialAngleYaw; // Yaw angle if needed (3D)
-
-			FVector init_pos;
-
-			if (nDim == 1)
-			{
-				// 1D: Positions along X axis
-				init_pos = FVector(radius, 0, 0);
-			}
-			else if (nDim == 2)
-			{
-				// 2D: Circular distribution
-				init_pos = FVector(radius * cos(rollAngle), radius * sin(rollAngle), 0);
-			}
-			else
-			{
-				// 3D: Spherical distribution
-				init_pos = FVector(radius * sin(rollAngle) * cos(yawAngle), radius * cos(rollAngle),
-								   radius * sin(rollAngle) * sin(yawAngle));
-			}
-
-			// Set the initial position of the node Actor
-			if (node.Value)
-			{
-				// Check if pointer is valid
-				node.Value->SetActorLocation(init_pos, false);
-
-				ll("index: " + FString::FromInt(index) + " init_pos: " + init_pos.ToString());
-
-				// Log the initial position - Uncomment to use
-				// UE_LOG(LogTemp, Warning, TEXT("Init position: %s"), *init_pos.ToString());
-
-				// Set initial velocity to zero
-				node.Value->velocity = FVector(0, 0, 0);
-			}
-
-			// Increment index for next node
-			// index++;
+			UpdateNodePosition(node.Value, index, 3, initialRadius);
 		}
 	}
 }
 
-void AKnowledgeGraph::UpdateNodePosition(AActor* NodeActor, int Index, int NumDimensions, float InitialRadius)
+void AKnowledgeGraph::UpdateNodePosition(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius)
 {
 	// Calculate index-based radius
 	float radius;
-	if (NumDimensions > 2)
+	int nDim = 3;
+	if (nDim > 2)
 	{
-		radius = InitialRadius * FMath::Cbrt(0.5f + Index);
+		radius = initialRadius * cbrt(0.5f + index);
 	}
-	else if (NumDimensions > 1)
+	else if (nDim > 1)
 	{
-		radius = InitialRadius * FMath::Sqrt(0.5f + Index);
-	}
-	else
-	{
-		radius = InitialRadius * Index;
-	}
-
-	const float PI = PI;
-	float initialAngleRoll = PI * (3 - FMath::Sqrt(5)); // Roll angle
-	float initialAngleYaw = PI * 20 / (9 + FMath::Sqrt(221)); // Yaw angle if needed (3D)
-
-	float rollAngle = Index * initialAngleRoll; // Roll angle
-	float yawAngle = Index * initialAngleYaw; // Yaw angle for 3D
-
-	FVector initPos;
-
-	// Calculate positions based on number of dimensions
-	if (NumDimensions == 1)
-	{
-		initPos = FVector(radius, 0, 0); // 1D along X axis
-	}
-	else if (NumDimensions == 2)
-	{
-		initPos = FVector(radius * FMath::Cos(rollAngle), radius * FMath::Sin(rollAngle), 0); // 2D circular
+		radius = initialRadius * sqrt(0.5f + index);
 	}
 	else
 	{
-		initPos = FVector(radius * FMath::Sin(rollAngle) * FMath::Cos(yawAngle),
-						  radius * FMath::Cos(rollAngle),
-						  radius * FMath::Sin(rollAngle) * FMath::Sin(yawAngle)); // 3D spherical
+		radius = initialRadius * index;
 	}
 
-	// Set node position and reset velocity
-	if (NodeActor)
+	float initialAngleRoll = PI * (3 - sqrt(5)); // Roll angle
+
+	// Following will be Math.PI * 20 / (9 + Math.sqrt(221));
+	float initialAngleYaw = PI * 20 / (9 + sqrt(221)); // Yaw angle if needed (3D)
+
+
+	float rollAngle = index * initialAngleRoll; // Roll angle
+	float yawAngle = index * initialAngleYaw; // Yaw angle if needed (3D)
+
+	FVector init_pos;
+
+	if (nDim == 1)
 	{
-		NodeActor->SetActorLocation(initPos, false);
-		// Log the initial position for debugging
-		UE_LOG(LogTemp, Warning, TEXT("Index: %d, Init Position: %s"), Index, *initPos.ToString());
-        
-		NodeActor->Velocity = FVector(0, 0, 0);
+		// 1D: Positions along X axis
+		init_pos = FVector(radius, 0, 0);
 	}
+	else if (nDim == 2)
+	{
+		// 2D: Circular distribution
+		init_pos = FVector(radius * cos(rollAngle), radius * sin(rollAngle), 0);
+	}
+	else
+	{
+		// 3D: Spherical distribution
+		init_pos = FVector(radius * sin(rollAngle) * cos(yawAngle), radius * cos(rollAngle),
+						   radius * sin(rollAngle) * sin(yawAngle));
+	}
+
+	// Set the initial position of the node Actor
+	if (node)
+	{
+		// Check if pointer is valid
+		node->SetActorLocation(init_pos, false);
+
+		ll("index: " + FString::FromInt(index) + " init_pos: " + init_pos.ToString());
+
+		// Log the initial position - Uncomment to use
+		// UE_LOG(LogTemp, Warning, TEXT("Init position: %s"), *init_pos.ToString());
+
+		// Set initial velocity to zero
+		node->velocity = FVector(0, 0, 0);
+	}
+
 }
 
 void AKnowledgeGraph::CalculateBiasstrengthOflinks()

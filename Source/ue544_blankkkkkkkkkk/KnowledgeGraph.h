@@ -38,6 +38,8 @@ public:
 	void AddEdge(int32 id, int32 source, int32 target);
 	// void AddOctreeElement(const FOctreeElement& inNewOctreeElement);
 	void initializeNodePosition();
+	
+	void UpdateNodePosition(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius);
 	// void InitOctree(const FBox& inNewBounds);
 	void CalculateBiasstrengthOflinks();
 	// void RemoveElement(int key);
