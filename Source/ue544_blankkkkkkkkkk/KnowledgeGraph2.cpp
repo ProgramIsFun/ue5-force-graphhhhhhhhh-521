@@ -942,7 +942,7 @@ void AKnowledgeGraph::initializeNodePosition()
 			{
 				// 3D: Spherical distribution
 				init_pos = FVector(radius * sin(rollAngle) * cos(yawAngle), radius * cos(rollAngle),
-				                   radius * sin(rollAngle) * sin(yawAngle));
+								   radius * sin(rollAngle) * sin(yawAngle));
 			}
 
 			// Set the initial position of the node Actor
@@ -966,6 +966,58 @@ void AKnowledgeGraph::initializeNodePosition()
 	}
 }
 
+void AKnowledgeGraph::UpdateNodePosition(AActor* NodeActor, int Index, int NumDimensions, float InitialRadius)
+{
+	// Calculate index-based radius
+	float radius;
+	if (NumDimensions > 2)
+	{
+		radius = InitialRadius * FMath::Cbrt(0.5f + Index);
+	}
+	else if (NumDimensions > 1)
+	{
+		radius = InitialRadius * FMath::Sqrt(0.5f + Index);
+	}
+	else
+	{
+		radius = InitialRadius * Index;
+	}
+
+	const float PI = PI;
+	float initialAngleRoll = PI * (3 - FMath::Sqrt(5)); // Roll angle
+	float initialAngleYaw = PI * 20 / (9 + FMath::Sqrt(221)); // Yaw angle if needed (3D)
+
+	float rollAngle = Index * initialAngleRoll; // Roll angle
+	float yawAngle = Index * initialAngleYaw; // Yaw angle for 3D
+
+	FVector initPos;
+
+	// Calculate positions based on number of dimensions
+	if (NumDimensions == 1)
+	{
+		initPos = FVector(radius, 0, 0); // 1D along X axis
+	}
+	else if (NumDimensions == 2)
+	{
+		initPos = FVector(radius * FMath::Cos(rollAngle), radius * FMath::Sin(rollAngle), 0); // 2D circular
+	}
+	else
+	{
+		initPos = FVector(radius * FMath::Sin(rollAngle) * FMath::Cos(yawAngle),
+						  radius * FMath::Cos(rollAngle),
+						  radius * FMath::Sin(rollAngle) * FMath::Sin(yawAngle)); // 3D spherical
+	}
+
+	// Set node position and reset velocity
+	if (NodeActor)
+	{
+		NodeActor->SetActorLocation(initPos, false);
+		// Log the initial position for debugging
+		UE_LOG(LogTemp, Warning, TEXT("Index: %d, Init Position: %s"), Index, *initPos.ToString());
+        
+		NodeActor->Velocity = FVector(0, 0, 0);
+	}
+}
 
 void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 {
