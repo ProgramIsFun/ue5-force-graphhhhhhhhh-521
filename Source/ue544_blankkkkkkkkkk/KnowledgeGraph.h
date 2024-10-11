@@ -54,19 +54,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float LOGGGGGGGGG = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alpha = 1;
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float iterations = 0;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	float maxiterations = 1000000;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	int32 maxiterations = 1000000;
+
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alphaMin = 0.001;
 	// float alphaMin = 0.09;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	// float alphaDecay = pow(alphaMin, 0.05);
 	float alphaDecay = 1 - FMath::Pow(alphaMin, 1.0 / 300);
 
