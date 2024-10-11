@@ -77,7 +77,7 @@ It is worse in the following ways
 
 
 
-## A shot introduction to unreal engine 5
+## A introduction to unreal engine 5
 
 1.Characters. Pawns, and Actors: What's the Difference?
 
