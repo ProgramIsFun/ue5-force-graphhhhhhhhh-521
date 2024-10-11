@@ -314,71 +314,13 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 {
 	bool log = true;
 	bool log2 = false;
-	if (1)
+
+	// Using brute force or not.
+	bool use_brute_force = true;
+	
+	if (!use_brute_force)
 	{
-		if (0)
-		{
-			// //charge forces
-			// octree_node_strengths.Empty();
-			//
-			// // Instead of removing the elements we create a new tree again. 	
-			// if (1)
-			// {
-			// 	ll("We now calculate a bound suitable. To be implemented.  ");
-			//
-			//
-			//
-			//
-			// 	InitOctree(FBox(
-			// 			FVector(-200, -200, -200),
-			// 			FVector(200, 200, 200)
-			// 		)
-			// 	);
-			// }
-			// else
-			// {
-			// 	InitOctree(FBox(
-			// 			FVector(0, 0, 0),
-			// 			FVector(1, 1, 1)
-			// 		)
-			// 	);
-			// }
-			//
-			//
-			// for (auto& node : all_nodes)
-			// {
-			// 	int key = node.Key;
-			// 	auto kn = node.Value;
-			//
-			//
-			// 	// Because the actor location hasn't changed when we compute the link force, so These two lines could actually be put in the start of the function. 
-			//
-			// 	// If they are remove here，then why we do AddOctreeElement(ote) in AddNode?
-			//
-			//
-			// 	if (0)
-			// 	{
-			// 		RemoveElement(node.Key); //need to remove then update with new location when adding
-			// 		AddNode(key, kn, kn->GetActorLocation());
-			// 	}
-			// 	else
-			// 	{
-			// 	
-			// 		AddNode(key, kn, kn->GetActorLocation());
-			// 	
-			// 	}
-			//
-			//
-			// }
-			//
-			// Accumulate();
-			//
-			// for (auto& node : all_nodes)
-			// {
-			// 	ApplyManyBody(node.Value);
-			// }
-		}
-		else
+		
 		{
 			//
 			OctreeData2 = new OctreeNode(
@@ -425,6 +367,30 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 
 			ll("Finished traversing, now we can delete the tree. ", log);
 			delete OctreeData2;
+		}
+	}
+	else
+	{
+		// Brute force
+		for (auto& node : all_nodes)
+		{
+			auto kn = node.Value;
+
+			for (auto& node2 : all_nodes)
+			{
+				auto kn2 = node2.Value;
+				if (kn != kn2)
+				{
+					FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
+					float l = dir.Size() * dir.Size();
+					if (l < distancemin)
+					{
+						l = sqrt(distancemin * l);
+					}
+					kn->velocity += dir * nodeStrength * alpha / l;
+				
+				}
+			}
 		}
 	}
 }
@@ -901,7 +867,7 @@ void AKnowledgeGraph::tttttttttttt()
 
 void AKnowledgeGraph::initializeNodePosition()
 {
-	if (0)
+	if (1)
 	{
 		// To replicate the node indexing from the original JS function
 		for (auto& node : all_nodes)
