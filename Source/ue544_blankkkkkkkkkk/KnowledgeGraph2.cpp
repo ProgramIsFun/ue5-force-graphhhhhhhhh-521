@@ -19,7 +19,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 	{
 		int jid = i;
 
-		
+
 		AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
 
 
@@ -58,10 +58,10 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 		for (int32 i = 1; i < jedges11; i++)
 		{
 			int jid = i - 1;
-			int jsource = i ; // Ensures jsource is always valid within the index range
+			int jsource = i; // Ensures jsource is always valid within the index range
 
 			// Connected to random node 
-			int jtarget = i-1;
+			int jtarget = i - 1;
 			AddEdge(jid, jsource, jtarget);
 		}
 	}
@@ -527,7 +527,6 @@ void AKnowledgeGraph::ApplyForces()
 	// In the following for loop, In the first few loop, the velocity is 0. 
 
 
-
 	ll("11111111111111111Warning printing out all things. ", log, 1);
 
 	// Print out the position and velocity of all the nodes. 
@@ -539,14 +538,14 @@ void AKnowledgeGraph::ApplyForces()
 		ll("velocity: " + kn->velocity.ToString(), log);
 	}
 
-	
+
 	ll("Ready to calculate link.--------------------------------------", log);
 
 	double start = FPlatformTime::Seconds();
 	calculate_link_force_and_update_velocity();
 	double end = FPlatformTime::Seconds();
 
-	
+
 	ll("Finish calculating link.--------------------------------------", log);
 
 
@@ -559,7 +558,7 @@ void AKnowledgeGraph::ApplyForces()
 		ll("position: " + kn->GetActorLocation().ToString(), log);
 		ll("velocity: " + kn->velocity.ToString(), log);
 	}
-	
+
 	if (manybody)
 	{
 		ll("Ready to calculate charge.--------------------------------------", log);
@@ -886,24 +885,14 @@ void AKnowledgeGraph::tttttttttttt()
 // }
 
 
-
-
-
-
-
-
-
 void AKnowledgeGraph::initializeNodePosition()
 {
-	
+	// To replicate the node indexing from the original JS function
+	for (auto& node : all_nodes)
 	{
-		// To replicate the node indexing from the original JS function
-		for (auto& node : all_nodes)
-		{
-			int index = node.Key;
-			// Calculate index-based radius differently based on the number of dimensions
-			UpdateNodePosition(node.Value, index, 3, initialRadius);
-		}
+		int index = node.Key;
+		// Calculate index-based radius differently based on the number of dimensions
+		UpdateNodePosition(node.Value, index, 3, initialRadius);
 	}
 }
 
@@ -950,7 +939,7 @@ void AKnowledgeGraph::UpdateNodePosition(AKnowledgeNode* node, int index, int Nu
 	{
 		// 3D: Spherical distribution
 		init_pos = FVector(radius * sin(rollAngle) * cos(yawAngle), radius * cos(rollAngle),
-						   radius * sin(rollAngle) * sin(yawAngle));
+		                   radius * sin(rollAngle) * sin(yawAngle));
 	}
 
 	// Set the initial position of the node Actor
@@ -967,7 +956,6 @@ void AKnowledgeGraph::UpdateNodePosition(AKnowledgeNode* node, int index, int Nu
 		// Set initial velocity to zero
 		node->velocity = FVector(0, 0, 0);
 	}
-
 }
 
 void AKnowledgeGraph::CalculateBiasstrengthOflinks()
