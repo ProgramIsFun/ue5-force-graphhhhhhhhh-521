@@ -43,16 +43,33 @@ The member variable Because it is Uproperty, you can directly change the value i
   
 
 
-### 2
-Adding functions such as import graph or export graph in a Json format. 
+
+## Reference
+
+### https://github.com/thomaswall/ue4-force-graph
+
+I regard this as an improved version of https://github.com/thomaswall/ue4-force-graph
+
+It is improved in the following ways
+1. It is Using the latest version of the unreal engine 5 instead of the unreal engine 4.24
+2. It is using a different implementation of the charge force
+3. It corrects some of the Mistakes such as calculating the bias of the link.
+
+It is worse in the following ways
+1. The implementation of the charge force, which is the many body force, use a custom implementation of the OCtree, Which seems to be slower than the library version of the unreal engine.
+
+
+
+
+
 
 ## A shot introduction to unreal engine 5
 
 1.Characters. Pawns, and Actors: What's the Difference?
 
-They are all CPP classes, which have a very detailed implementation by the epic games in the source code. 
+They are all CPP classes, which have a very detailed implementation by the epic games in the source code.
 
-When working with Unreal Engine, you'll often encounter the terms Character, Pawn, and Actor. These classes are fundamental building blocks for creating interactive elements within your game world. Here's a brief overview of each class and how they differ: 
+When working with Unreal Engine, you'll often encounter the terms Character, Pawn, and Actor. These classes are fundamental building blocks for creating interactive elements within your game world. Here's a brief overview of each class and how they differ:
 
 In Unreal Engine, choosing between Characters, Pawns, and Actors is an important decision that depends on the needs of your game or project. Each has its own unique use case and capabilities:
 
@@ -64,15 +81,15 @@ Actors: Actors are the most general class and should be used for non-controlled 
 
 Choosing the right class depends on the functionality you need and how you plan to interact with the object in your game.
 
-2.Where to put the source code? 
+2.Where to put the source code?
 
-The source code should be put in the source folder of the project. In a lot of complicated projects, they want to separate the header files and the source files Into two different directories in the source folder. 
+The source code should be put in the source folder of the project. In a lot of complicated projects, they want to separate the header files and the source files Into two different directories in the source folder.
 
-But in this project, there is no such separations. All the header files and CPP are put in the same folder. 
+But in this project, there is no such separations. All the header files and CPP are put in the same folder.
 
 3.How is this project implementing force directed graph work in unreal engine 5?
 
-Basically, it is a cpp class  and it inherits from the Pawns class.  
+Basically, it is a cpp class  and it inherits from the Pawns class.
 
 Source/ue544_blankkkkkkkkkk/KnowledgeGraph.cpp
 
@@ -89,37 +106,19 @@ So how to put this in the map that we want to play? We can drag the KnowledgeGra
 ![image](https://github.com/user-attachments/assets/2042450f-0d52-4c6f-97e2-a8dc2973de14)
 
 
-4.How to open different maps? 
+4.How to open different maps?
 
 You can open different maps by clicking the file in the content browser.
 
-Content/CreatePlanetsSSS/NewMapPPPPPPP.umap   is the map that looks like in the universe. 
+Content/CreatePlanetsSSS/NewMapPPPPPPP.umap   is the map that looks like in the universe.
 
 5.Usual workflow
 
 Every time we modify the source code, we need to recompile the project.
 
-Because sometimes we want to change the default values of some member variables of some class, 
+Because sometimes we want to change the default values of some member variables of some class,
 In order to speed up the workflow, we can add a UPROPERTY() macro in front of the member variable.
 
 https://benui.ca/unreal/uproperty/
-
-
-
-
-
-## Reference
-
-### https://github.com/thomaswall/ue4-force-graph
-
-I regard this as an improved version of https://github.com/thomaswall/ue4-force-graph
-
-It is improved in the following ways
-1. It is Using the latest version of the unreal engine 5 instead of the unreal engine 4.24
-2. It is using a different implementation of the charge force
-3. It corrects some of the Mistakes such as calculating the bias of the link.
-
-It is worse in the following ways
-1. The implementation of the charge force, which is the many body force, use a custom implementation of the OCtree, Which seems to be slower than the library version of the unreal engine.
 
 
