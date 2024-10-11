@@ -8,6 +8,7 @@ Could be ignored
     - 4.23
 - https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/tree/master
     - https://www.youtube.com/watch?v=4J0xdB-CSnU&ab_channel=ShallowDive
+    - The whole project could be converted to 5.3 unreal engine directly. 
     - In the function GravityStep, Which is supposed to update the velocity of all the Particle use a O(N Square) approach.  
     - However, parallelfor is used. 
 - https://github.com/martinpaule/DissertationProject/tree/main
