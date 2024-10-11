@@ -542,7 +542,7 @@ void AKnowledgeGraph::ApplyForces()
 	
 	ll("Ready to calculate link.--------------------------------------", log);
 
-	double start = FPlatformTime::Seconds()
+	double start = FPlatformTime::Seconds();
 	calculate_link_force_and_update_velocity();
 	double end = FPlatformTime::Seconds();
 
@@ -885,24 +885,17 @@ void AKnowledgeGraph::tttttttttttt()
 // 	OctreeData->AddElement(inNewOctreeElement);
 // }
 
+
+
+
+
+
+
+
+
 void AKnowledgeGraph::initializeNodePosition()
 {
-	if (0)
-	{
-		for (auto& node : all_nodes)
-		{
-			float radius = initialRadius * sqrt(node.Key);
-			float angle = node.Key * initialAngle;
-			FVector init_pos = FVector(cos(angle), sin(angle), tan(angle)) * radius;
-
-			// Remember that the note value stored the actual object. 
-			node.Value->SetActorLocation(init_pos, false);
-			//        print("init position");
-			//        print(node.Value->GetActorLocation().ToString());
-			node.Value->velocity = FVector(0, 0, 0);
-		}
-	}
-	else
+	
 	{
 		// To replicate the node indexing from the original JS function
 		for (auto& node : all_nodes)
