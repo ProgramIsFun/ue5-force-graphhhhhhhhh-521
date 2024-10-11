@@ -3,6 +3,25 @@ This file contains things to be organized
 Could be ignored
 
 
+
+I am in no way a professional in Unreal - this project is the only thing I ever done. So my total experience with Unreal is around one week. So I don't think I will be able to help you, you'll have to do your research.
+But I did dig a bit into optimization during that week. Actually without the n-body physics around 20000k particles were rendered smoothly on a cheap laptop with a built-in graphics. The key to this is using "instanced static mesh" - google it, or look up what I did (I honestly don't remember what it was). The other thing - is n-body problem is always computation-intensive. I did parallelize the computation inner loop - you can also look it up in the code. Unreal has that stuff as loop execution policy or something like that. But if you really need to get the most for n-body problem, you have to implement some spatial hashing or octo-tree or some n-body specific stuff that allows you to not calculate each body-to-body interaction every frame. I think that is all I can help you with, good luck!
+
+@aleksandrbazhin
+Owner
+aleksandrbazhin commented 1 hour ago
+This is the parallelization part for outer, not inner loop https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/blob/707fee4488fdfbb8d8b9258b74927d3b8fe1d748/Source/NBodySim/BodyManager.cpp#L52C5-L52C16
+And instanced static mesh means you only load the mesh to the GPU once, and reuse it N times.
+My machine ran ~2500 bodies at around 60 FPS with n-body gravity, and ~20000 without the gravity.
+
+
+
+
+
+
+
+
+
 - https://github.com/profdambledore/UE4-N_Body_Simulation
     - https://profdambledore.artstation.com/projects/J9WXnz
     - 4.23
