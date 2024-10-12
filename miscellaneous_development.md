@@ -2,6 +2,20 @@ This file contains things to be organized
 
 Could be ignored
 
+---------------------------------------------------
+
+It seems there are too much overhead for every individual notes to be an actor. 
+I will change every note to a text render component.
+
+If there is snow on click listener function on each of these components, 
+I can just use the following thing to detect what object is clicked. 
+
+FHitResult Hit;    
+GetWorld()->LineTraceSingleByChannel(Hit, WorldLocation, End, ECC_Visibility, Params);
+----------------------------------------------------
+
+
+
 
 
 I am in no way a professional in Unreal - this project is the only thing I ever done. So my total experience with Unreal is around one week. So I don't think I will be able to help you, you'll have to do your research.
@@ -14,7 +28,7 @@ This is the parallelization part for outer, not inner loop https://github.com/al
 And instanced static mesh means you only load the mesh to the GPU once, and reuse it N times.
 My machine ran ~2500 bodies at around 60 FPS with n-body gravity, and ~20000 without the gravity.
 
-
+-----------------------------------------------------------------------
 
 
 
@@ -25,6 +39,8 @@ My machine ran ~2500 bodies at around 60 FPS with n-body gravity, and ~20000 wit
 - https://github.com/profdambledore/UE4-N_Body_Simulation
     - https://profdambledore.artstation.com/projects/J9WXnz
     - 4.23
+    - Does not implement OCTREE
+    - The plug in could be disabled to start the project。 
 - https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/tree/master
     - https://www.youtube.com/watch?v=4J0xdB-CSnU&ab_channel=ShallowDive
     - The whole project could be converted to 5.3 unreal engine directly. 
@@ -57,7 +73,7 @@ My machine ran ~2500 bodies at around 60 FPS with n-body gravity, and ~20000 wit
     - However, parallelfor is used. 
 - https://github.com/martinpaule/DissertationProject/tree/main
 
-
+---------------------------------------------------------------------------------
 
 In CPP I want to use one array to represent OC tree. array contained eight elements, each element is either 1. a null pointer Or 2. A 3D data point Or 3.array Of the same type Please help me implement this OC tree. Do not use any pointer because I want to have everything in one array.
 
