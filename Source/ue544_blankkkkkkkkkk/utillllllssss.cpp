@@ -36,11 +36,11 @@ void ClearLogFile() {
 }
 
 
-bool nologgggggggg = true;
 
 
 void lll(const FString& TextToWrite)
 {
+	bool nologgggggggg = false;
 
 	
 	if (nologgggggggg)
@@ -51,7 +51,7 @@ void lll(const FString& TextToWrite)
 	if (1)
 	{
 		// Define the path to the log file.
-		std::string FilePath = R"(V:\UNREALLLLPROJECTSSSSSS\ue544_blankkkkkkkkkk\Saved\Logs\MyLogFile.txt)";
+		std::string FilePath = R"(V:\UNREALLLLPROJECTSSSSSS\ue544_blankkkkkkkkkk1\ue544_blankkkkkkkkkk\Saved\Logs\MyLogFile.txt)";
 		// Change path accordingly
 
 		
@@ -78,7 +78,8 @@ void lll(const FString& TextToWrite)
 
 void ll(const FString& StringToLog, bool LOG, int SeverityLevel, const FString& Prefix)
 {
-	
+	bool nologgggggggg = true;
+
 	if (nologgggggggg)
 	{
 		return;
