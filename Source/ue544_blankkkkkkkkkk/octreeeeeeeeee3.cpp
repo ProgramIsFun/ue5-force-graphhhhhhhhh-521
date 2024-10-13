@@ -304,6 +304,7 @@ void OctreeNode::accumulate_without_recursion()
 
 			if (totalWeight > 0)
 			{
+				aggregateStrength *= sqrt(4.0 / 8);
 				node->CenterOfMass = aggregatePosition / totalWeight;
 				node->Strength = aggregateStrength;
 			}
@@ -313,14 +314,13 @@ void OctreeNode::accumulate_without_recursion()
 
 void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 {
-	bool using_recursion = true;
+	bool using_recursion = false;
 	if (using_recursion)
 	{
 		accumulate_with_recursion();
 	}
 	else
 	{
-		ll("Warning the following functions have bug do not use it yet. ", true);
 		accumulate_without_recursion();
 	}
 }
