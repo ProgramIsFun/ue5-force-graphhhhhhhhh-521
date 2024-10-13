@@ -22,10 +22,10 @@
 
 
 
+std::string FilePath = R"(V:\UNREALLLLPROJECTSSSSSS\ue544_blankkkkkkkkkk1\ue544_blankkkkkkkkkk\Saved\Logs\MyLogFile.txt)";
 
 void ClearLogFile() {
 
-	std::string FilePath = R"(V:\UNREALLLLPROJECTSSSSSS\ue544_blankkkkkkkkkk\Saved\Logs\MyLogFile.txt)";
 
 	std::ofstream LogFile(FilePath, std::ios::trunc); // Open in truncate mode to clear contents
 	if (LogFile.is_open()) {
@@ -51,7 +51,6 @@ void lll(const FString& TextToWrite)
 	if (1)
 	{
 		// Define the path to the log file.
-		std::string FilePath = R"(V:\UNREALLLLPROJECTSSSSSS\ue544_blankkkkkkkkkk1\ue544_blankkkkkkkkkk\Saved\Logs\MyLogFile.txt)";
 		// Change path accordingly
 
 		

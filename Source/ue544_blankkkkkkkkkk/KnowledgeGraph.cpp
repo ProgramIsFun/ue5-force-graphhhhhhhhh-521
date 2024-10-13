@@ -93,8 +93,6 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 		double StartTime = FPlatformTime::Seconds();
 
-		// Your Tick function's processing code here
-
 		
 		
 		
@@ -130,19 +128,20 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 		double EndTime = FPlatformTime::Seconds();
 		double ElapsedTime = EndTime - StartTime;
-
+		lll(FString::SanitizeFloat(ElapsedTime));
 		// Accumulate the elapsed time and increment the tick count
 		TotalElapsedTime += ElapsedTime;
 		TickCount++;
 
 		
 
-
+		
 		// Optionally, log the average time every N ticks
-		if (TickCount % 100 == 0)
+		if (TickCount % 10 == 0)
 		{
 			// Calculate the average time per tick
 			double AverageTime = TotalElapsedTime / TickCount;
+			lll("Average Tick time after " + FString::FromInt(TickCount) + " ticks is " + FString::SanitizeFloat(AverageTime) + " seconds.");
 			UE_LOG(LogTemp, Log, TEXT("Average Tick time after %d ticks is %f seconds."), TickCount, AverageTime);
 		}
 
