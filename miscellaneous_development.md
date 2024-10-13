@@ -3,7 +3,9 @@ This file contains things to be organized
 Could be ignored
 
 
+--------------------------------------------------------------
 
+Check weather parallel for will also crash in 5.4 version 
 
 -------------------------------------------------------------
 
