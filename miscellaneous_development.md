@@ -8,7 +8,7 @@ Calculate the TICK time for every frame
 
 Provide a better way to check the average FPS and TICK time. 
 
-
+Maybe for different experiments, we can draw a line or a graph in a python application. 
 
 
 ---------------------------------------------------
