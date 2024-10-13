@@ -161,7 +161,7 @@ public:
 
 	// Member function that times another member function
 	template<typename Func, typename... Args>
-	auto timeThisMemberFunction(Func function, Args&&... args) {
+	auto timeThisMemberFunction(const char* functionName,Func function, Args&&... args) {
 
 		
 		// auto start = std::chrono::high_resolution_clock::now();
@@ -186,8 +186,7 @@ public:
 		
 		double EndTime = FPlatformTime::Seconds();
 		double ElapsedTime = EndTime - StartTime;
-		lll("Elapsed time For creating a graph: " + FString::SanitizeFloat(ElapsedTime));
-
+		lll("Elapsed time For " + FString(functionName) + ": " + FString::SanitizeFloat(ElapsedTime) + " seconds");
 		
 
 

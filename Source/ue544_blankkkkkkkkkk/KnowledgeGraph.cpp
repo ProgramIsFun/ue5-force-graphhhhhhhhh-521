@@ -55,22 +55,23 @@ void AKnowledgeGraph::BeginPlay()
 	{
 	}
 
-	double StartTime = FPlatformTime::Seconds();
 
 	// generateGraph();
-	timeThisMemberFunction(&AKnowledgeGraph::generateGraph);
-	double EndTime = FPlatformTime::Seconds();
-	double ElapsedTime = EndTime - StartTime;
-	lll("Elapsed time For creating a graph: " + FString::SanitizeFloat(ElapsedTime));
+	timeThisMemberFunction(
+"AKnowledgeGraph::generateGraph",
+	&AKnowledgeGraph::generateGraph);
 
 
 	if (!init)
 	{
 		
-		initializeNodePosition();
+		timeThisMemberFunction(
+"AKnowledgeGraph::initializeNodePosition",
+		&AKnowledgeGraph::initializeNodePosition);
 
-
-		CalculateBiasstrengthOflinks();
+		timeThisMemberFunction(
+"AKnowledgeGraph::CalculateBiasstrengthOflinks",
+		&AKnowledgeGraph::CalculateBiasstrengthOflinks);
 	}
 
 }
