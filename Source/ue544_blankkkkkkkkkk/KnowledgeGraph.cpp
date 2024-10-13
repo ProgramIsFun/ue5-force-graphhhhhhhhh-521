@@ -32,11 +32,13 @@ void AKnowledgeGraph::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ClearLogFile();
 
-	UE_LOG(LogTemp, Warning, TEXT("Begin play called, Restricting tick interval"));
 
 	if (use_tick_interval)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
+
 		PrimaryActorTick.TickInterval = tick_interval;
 	}
 
@@ -53,19 +55,24 @@ void AKnowledgeGraph::BeginPlay()
 	{
 	}
 
+	double StartTime = FPlatformTime::Seconds();
 
-	generateGraph();
+	// generateGraph();
+	timeThisMemberFunction(&AKnowledgeGraph::generateGraph);
+	double EndTime = FPlatformTime::Seconds();
+	double ElapsedTime = EndTime - StartTime;
+	lll("Elapsed time For creating a graph: " + FString::SanitizeFloat(ElapsedTime));
 
 
 	if (!init)
 	{
+		
 		initializeNodePosition();
 
 
 		CalculateBiasstrengthOflinks();
 	}
 
-	ClearLogFile();
 }
 
 

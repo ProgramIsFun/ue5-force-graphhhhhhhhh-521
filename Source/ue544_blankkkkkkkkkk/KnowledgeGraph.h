@@ -10,7 +10,26 @@
 #include "CoreMinimal.h"
 #include "octreeeeeeeeee3.h"
 
+
+
+
+#include "utillllllssss.h"
+
+
+#include <chrono> // For timing member functions
+
+
+
+
+
+
+
 #include "KnowledgeGraph.generated.h"
+
+
+
+
+
 
 /**
  *
@@ -138,4 +157,26 @@ private:
 	
 public:
 	virtual void Tick(float DeltaTime) override;
+
+
+	// Member function that times another member function
+	template<typename Func, typename... Args>
+	auto timeThisMemberFunction(Func function, Args&&... args) {
+		auto start = std::chrono::high_resolution_clock::now();
+        
+		// Invoke the member function
+		(this->*function)(std::forward<Args>(args)...);
+
+		auto end = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		lll("Execution time: " + FString::FromInt(duration.count()) + " milliseconds");
+
+		return duration;
+	}
+
+
+
+
+	
+
 };
