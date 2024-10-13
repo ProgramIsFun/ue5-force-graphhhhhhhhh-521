@@ -130,7 +130,12 @@ private:
 	OctreeNode* OctreeData2;
 
 
-	// Called every frame
+
+	double TotalElapsedTime = 0.0;
+	int32 TickCount = 0;
+
+
+	
 public:
 	virtual void Tick(float DeltaTime) override;
 };

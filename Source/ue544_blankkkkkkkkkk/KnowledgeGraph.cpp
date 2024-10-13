@@ -72,18 +72,11 @@ void AKnowledgeGraph::BeginPlay()
 
 void AKnowledgeGraph::Tick(float DeltaTime)
 {
-	bool log = true;
 	Super::Tick(DeltaTime);
 
-	if (GEngine)
-	{
-		// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
-	}
-	else
-	{
-		ll("Engine is not available for some reasonssssssssssssssssssssssss");
-		return;
-	}
+	bool log = true;
+
+	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
 
 
 	iterations += 1;
@@ -97,6 +90,13 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 	if (1)
 	{
+
+		double StartTime = FPlatformTime::Seconds();
+
+		// Your Tick function's processing code here
+
+		
+		
 		
 		ll("TICK----------------------------------------------------------------------------"
 			"----------------------------------------------------------------------------",log);
@@ -111,6 +111,8 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		}
 
 		alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
+
+
 		ll("alpha: " + FString::SanitizeFloat(alpha),log);
 
 
@@ -124,6 +126,26 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		
 		ll("update link position",log);
 		update_link_position();
+
+
+		double EndTime = FPlatformTime::Seconds();
+		double ElapsedTime = EndTime - StartTime;
+
+		// Accumulate the elapsed time and increment the tick count
+		TotalElapsedTime += ElapsedTime;
+		TickCount++;
+
+		
+
+
+		// Optionally, log the average time every N ticks
+		if (TickCount % 100 == 0)
+		{
+			// Calculate the average time per tick
+			double AverageTime = TotalElapsedTime / TickCount;
+			UE_LOG(LogTemp, Log, TEXT("Average Tick time after %d ticks is %f seconds."), TickCount, AverageTime);
+		}
+
 	}
 	else
 	{
