@@ -15,6 +15,9 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 	bool log = true;
 	//Retrieving an array property and printing each field
 	int jnodes11 = jnodes1;
+
+
+	
 	for (int32 i = 0; i < jnodes11; i++)
 	{
 		int jid = i;
@@ -23,14 +26,20 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 		AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
 
 
-		if (kn)
+		if (0)
 		{
-			UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(
-				kn->GetComponentByClass(UPrimitiveComponent::StaticClass()));
-			if (PrimitiveComponent)
+			if (kn)
 			{
-				PrimitiveComponent->SetSimulatePhysics(false);
-				PrimitiveComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(
+					kn->GetComponentByClass(UPrimitiveComponent::StaticClass()));
+				if (1)
+				{
+					if (PrimitiveComponent)
+					{
+						PrimitiveComponent->SetSimulatePhysics(false);
+						PrimitiveComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+					}
+				}
 			}
 		}
 		AddNode1(jid, kn);
@@ -315,10 +324,8 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 	bool log = true;
 	bool log2 = false;
 
-	// Using brute force or not.
-	bool use_brute_force = false;
 	
-	if (!use_brute_force)
+	if (!many_body_use_brute_force)
 	{
 		
 		{
@@ -336,8 +343,6 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 			ll("!!!OctreeData2->strength: " + FString::SanitizeFloat(OctreeData2->Strength), log);
 
 
-			// to use parallel for loop 
-			bool use_parallel = false;
 			if (!use_parallel)
 			{
 				for (auto& node : all_nodes)
@@ -371,26 +376,50 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 	}
 	else
 	{
-		// Brute force
-		for (auto& node : all_nodes)
+		if (!use_parallel)
 		{
-			auto kn = node.Value;
-
-			for (auto& node2 : all_nodes)
+			// Brute force
+			for (auto& node : all_nodes)
 			{
-				auto kn2 = node2.Value;
-				if (kn != kn2)
+				auto kn = node.Value;
+
+				for (auto& node2 : all_nodes)
 				{
-					FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
-					float l = dir.Size() * dir.Size();
-					if (l < distancemin)
+					auto kn2 = node2.Value;
+					if (kn != kn2)
 					{
-						l = sqrt(distancemin * l);
-					}
-					kn->velocity += dir * nodeStrength * alpha / l;
+						FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
+						float l = dir.Size() * dir.Size();
+						if (l < distancemin)
+						{
+							l = sqrt(distancemin * l);
+						}
+						kn->velocity += dir * nodeStrength * alpha / l;
 				
+					}
 				}
 			}
+		}
+		else
+		{
+			ParallelFor(all_nodes.Num(), [&](int32 Index)
+			{
+				auto kn = all_nodes[Index];
+				for (auto& node2 : all_nodes)
+				{
+					auto kn2 = node2.Value;
+					if (kn != kn2)
+					{
+						FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
+						float l = dir.Size() * dir.Size();
+						if (l < distancemin)
+						{
+							l = sqrt(distancemin * l);
+						}
+						kn->velocity += dir * nodeStrength * alpha / l;
+					}
+				}
+			});
 		}
 	}
 }
@@ -440,10 +469,6 @@ void AKnowledgeGraph::apply_center_force_and_move_the_node_directly()
 
 void AKnowledgeGraph::update_actor_location_based_on_velocity()
 {
-	// Using parallel or not.
-	bool use_parallel = false;
-
-
 	if (!use_parallel)
 	{
 		for (auto& node : all_nodes)
@@ -867,7 +892,7 @@ void AKnowledgeGraph::tttttttttttt()
 
 void AKnowledgeGraph::initializeNodePosition()
 {
-	if (1)
+	if (!use_parallel)
 	{
 		// To replicate the node indexing from the original JS function
 		for (auto& node : all_nodes)

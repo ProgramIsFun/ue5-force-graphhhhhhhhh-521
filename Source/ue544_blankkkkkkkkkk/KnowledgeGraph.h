@@ -70,6 +70,10 @@ public:
 	// const FOctreeNodeContext3 CurrentContext, FString node_id);
 	void tttttttttttt();
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_parallel = false;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float LOGGGGGGGGG = false;
 
@@ -129,6 +133,9 @@ public:
 	// Calculate many body force or not. 
 	bool manybody = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool many_body_use_brute_force = true;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
