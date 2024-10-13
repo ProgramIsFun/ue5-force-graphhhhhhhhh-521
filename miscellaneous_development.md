@@ -3,6 +3,14 @@ This file contains things to be organized
 Could be ignored
 
 
+-------------------------------------------------
+
+----------------------------------------------------
+
+Trying to use a single array to contain the whole OC tree 
+
+
+
 --------------------------------------------------------------
 
 Check weather parallel for will also crash in 5.4 version 
