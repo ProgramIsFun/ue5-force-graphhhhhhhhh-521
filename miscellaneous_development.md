@@ -9,7 +9,7 @@ Using parallel For
 will have the following error. 
 Assertion failed: ComponentsThatNeedEndOfFrameUpdate_OnGameThread.IsValidIndex(ArrayIndex) [File:D:\build\++UE5\Sync\Engine\Source\Runtime\Engine\Private\LevelTick.cpp] [Line: 874]
 
-
+Possibly because the things that is in the parallel for loop is not thread safe. 
 
 
 ----------------------------------------------------
