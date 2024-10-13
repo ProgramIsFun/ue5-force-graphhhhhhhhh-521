@@ -6,12 +6,9 @@ Could be ignored
 
 Calculate the TICK time for every frame
 
+Provide a better way to check the average FPS and TICK time. 
 
 
--------------------------------------------------
-
-There is a bug when not using recursion to accumulate a tree. 
-The bug is that the tree is not correctly accumulated.
 
 
 ---------------------------------------------------
