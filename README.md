@@ -44,6 +44,8 @@ Then run the game.
 You will find that the frame rate is very low, less than 10 fps.
 
 
+
+
 #### Possible solution
 - Need to time the exact time each function in order to find the bottleneck
 - Use the profiler to find the bottleneck

@@ -72,7 +72,7 @@ public:
 	float alphaDecay = 1 - FMath::Pow(alphaMin, 1.0 / 300);
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	int32 wayofinitnodeslinks = 2;
 
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
@@ -103,7 +103,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool connect_to_previous = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float initialRadius = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)

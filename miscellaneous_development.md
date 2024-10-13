@@ -2,6 +2,13 @@ This file contains things to be organized
 
 Could be ignored
 
+----------------------------------------------------
+
+Calculate the TICK time for every frame
+
+
+
+
 ---------------------------------------------------
 
 It seems there are too much overhead for every individual notes to be an actor. 
