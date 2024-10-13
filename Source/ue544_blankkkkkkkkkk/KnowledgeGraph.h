@@ -162,16 +162,38 @@ public:
 	// Member function that times another member function
 	template<typename Func, typename... Args>
 	auto timeThisMemberFunction(Func function, Args&&... args) {
-		auto start = std::chrono::high_resolution_clock::now();
-        
+
+		
+		// auto start = std::chrono::high_resolution_clock::now();
+		double StartTime = FPlatformTime::Seconds();
+
+		
+		
+		
+		
+		
 		// Invoke the member function
 		(this->*function)(std::forward<Args>(args)...);
 
-		auto end = std::chrono::high_resolution_clock::now();
-		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-		lll("Execution time: " + FString::FromInt(duration.count()) + " milliseconds");
 
-		return duration;
+
+		
+		// auto end = std::chrono::high_resolution_clock::now();
+		// auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		// lll("Execution time: " + FString::FromInt(duration.count()) + " milliseconds");
+
+
+		
+		double EndTime = FPlatformTime::Seconds();
+		double ElapsedTime = EndTime - StartTime;
+		lll("Elapsed time For creating a graph: " + FString::SanitizeFloat(ElapsedTime));
+
+		
+
+
+
+
+		return ElapsedTime;
 	}
 
 
