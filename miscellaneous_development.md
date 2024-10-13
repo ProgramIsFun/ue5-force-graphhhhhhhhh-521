@@ -8,6 +8,11 @@ Calculate the TICK time for every frame
 
 
 
+-------------------------------------------------
+
+There is a bug when not using recursion to accumulate a tree. 
+The bug is that the tree is not correctly accumulated.
+
 
 ---------------------------------------------------
 

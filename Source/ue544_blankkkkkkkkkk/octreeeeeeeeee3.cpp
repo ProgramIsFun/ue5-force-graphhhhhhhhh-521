@@ -80,12 +80,93 @@ void OctreeNode::Subdivide()
 			(i & 2) ? NewExtent.Y : -NewExtent.Y,
 			(i & 4) ? NewExtent.Z : -NewExtent.Z
 		);
-		
+
 		Children[i] = new OctreeNode(NewCenter, NewExtent);
 	}
 
 	AddDataPoint(this, OldData->Node); // Add the old data point to the children
 	delete OldData; // Deleting the old data after redistributing
+}
+
+void OctreeNode::accumulate_with_recursion()
+{
+	FVector aggregatePosition = FVector(0);
+	float aggregateStrength = 0.0;
+	float totalWeight = 0;
+
+	if (IsLeaf())
+	{
+		if (Data)
+		{
+			FVector position = Data->Node->GetActorLocation();
+			double strength = Data->Node->strength;
+
+			ll("strength555555555: " + FString::SanitizeFloat(strength));
+			Strength = strength;
+			StrengthSet = true;
+
+			// TotalWeight = FMath::Abs(strength);
+
+
+			// In javascript implementations,
+			// we extract the value of that node and assign directly xyz property  
+			CenterOfMass = position; // Assign directly for leaf nodes
+		}
+		else
+		{
+			// If no data is associated with this Leaf node, we will never record the total weight and strength.
+			// StrengthSet=false;
+		}
+	}
+	else
+	{
+		// Recursive accumulation from children nodes
+		for (OctreeNode* child : Children)
+		{
+			if (
+				child != nullptr
+			)
+			{
+				child->accumulate_with_recursion();
+
+
+				if (
+					child->StrengthSet || !child->IsLeaf()
+				)
+				{
+					float c = FMath::Abs(child->Strength);
+
+					aggregateStrength += child->Strength;
+
+
+					totalWeight += c;
+					ll("c: " + FString::SanitizeFloat(c));
+					ll("child->CenterOfMass: " + child->CenterOfMass.ToString());
+					aggregatePosition += c * child->CenterOfMass;
+				}
+			}
+			else
+			{
+				// Should never happens here,
+				// because if this is not a leaf note, all the child should not be an empty pointer. 
+			}
+		}
+
+		// Calculate the center of mass based on total weight
+		if (totalWeight > 0)
+		{
+			ll("aggregateStrength2222: " + FString::SanitizeFloat(aggregateStrength));
+			aggregateStrength *= sqrt(4.0 / 8);
+			ll("aggregateStrength: " + FString::SanitizeFloat(aggregateStrength));
+			ll("aggregatePosition: " + aggregatePosition.ToString());
+			ll("totalWeight: " + FString::SanitizeFloat(totalWeight));
+			ll("aggregatePosition / totalWeight: " + (aggregatePosition / totalWeight).ToString());
+			CenterOfMass = aggregatePosition / totalWeight;
+			ll("CenterOfMass: " + CenterOfMass.ToString());
+			Strength = aggregateStrength; // Optionally, adjust strength scaling here
+			// TotalWeight = totalWeight;
+		}
+	}
 }
 
 void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
@@ -125,10 +206,10 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 
 			// We determine which region by just comparing the center of the node with the new point.
 			// int i = (z >= zm ? 4 : 0) | (y >= ym ? 2 : 0) | (x >= xm ? 1 : 0);
-			int32 i = (newPoint.Z >= node->Center.Z ? 4 : 0) | (newPoint.Y >= node->Center.Y ? 2 : 0) | (newPoint.X >= node->Center.X ? 1 : 0);
+			int32 i = (newPoint.Z >= node->Center.Z ? 4 : 0) | (newPoint.Y >= node->Center.Y ? 2 : 0) | (
+				newPoint.X >= node->Center.X ? 1 : 0);
 
 			AddDataPoint(node->Children[i], kn);
-			
 		}
 	}
 	else
@@ -159,19 +240,23 @@ void OctreeNode::accumulate_without_recursion()
 	std::vector<OctreeNode*> traversalOrder;
 	std::stack<OctreeNode*> stack;
 
-	if (this) {
+	if (this)
+	{
 		stack.push(this);
 	}
 
 	// DFS to record the nodes in traversal order using a stack
-	while (!stack.empty()) {
+	while (!stack.empty())
+	{
 		OctreeNode* currentNode = stack.top();
 		stack.pop();
 
 
-		if (!currentNode->IsLeaf()) {
+		if (!currentNode->IsLeaf())
+		{
 			// Push children to the stack in normal order
-			for (int i = 0; i < currentNode->Children.Num(); i++) {
+			for (int i = 0; i < currentNode->Children.Num(); i++)
+			{
 				if (
 					currentNode->Children[i]->check_contain_data_or_not()
 				)
@@ -182,14 +267,16 @@ void OctreeNode::accumulate_without_recursion()
 		}
 
 		traversalOrder.push_back(currentNode);
-
 	}
 
 	// Process in reverse traversal order (from last non-leaf to root)
-	for (auto it = traversalOrder.rbegin(); it != traversalOrder.rend(); ++it) {
+	for (auto it = traversalOrder.rbegin(); it != traversalOrder.rend(); ++it)
+	{
 		OctreeNode* node = *it;
-		if (node->IsLeaf()) {
-			if (node->Data) {
+		if (node->IsLeaf())
+		{
+			if (node->Data)
+			{
 				FVector position = node->Data->Node->GetActorLocation();
 				float strength = FMath::Abs(node->Data->Node->strength);
 
@@ -198,13 +285,16 @@ void OctreeNode::accumulate_without_recursion()
 				node->CenterOfMass = position;
 			}
 		}
-		else {
+		else
+		{
 			FVector aggregatePosition = FVector(0);
 			float aggregateStrength = 0.0;
 			float totalWeight = 0;
 
-			for (auto child : node->Children) {
-				if (child && (child->StrengthSet || !child->IsLeaf())) {
+			for (auto child : node->Children)
+			{
+				if (child && (child->StrengthSet || !child->IsLeaf()))
+				{
 					float strengthAbs = FMath::Abs(child->Strength);
 					aggregateStrength += child->Strength;
 					totalWeight += strengthAbs;
@@ -212,7 +302,8 @@ void OctreeNode::accumulate_without_recursion()
 				}
 			}
 
-			if (totalWeight > 0) {
+			if (totalWeight > 0)
+			{
 				node->CenterOfMass = aggregatePosition / totalWeight;
 				node->Strength = aggregateStrength;
 			}
@@ -222,95 +313,15 @@ void OctreeNode::accumulate_without_recursion()
 
 void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 {
-
 	bool using_recursion = true;
 	if (using_recursion)
 	{
-		FVector aggregatePosition = FVector(0);
-		float aggregateStrength = 0.0;
-		float totalWeight = 0;
-
-		if (IsLeaf())
-		{
-			if (Data)
-			{
-				FVector position = Data->Node->GetActorLocation();
-				double strength = Data->Node->strength;
-
-				ll("strength555555555: " + FString::SanitizeFloat(strength));
-				Strength = strength;
-				StrengthSet = true;
-
-				// TotalWeight = FMath::Abs(strength);
-
-
-				// In javascript implementations,
-				// we extract the value of that node and assign directly xyz property  
-				CenterOfMass = position; // Assign directly for leaf nodes
-			}
-			else
-			{
-				// If no data is associated with this Leaf node, we will never record the total weight and strength.
-				// StrengthSet=false;
-			}
-		}
-		else
-		{
-			// Recursive accumulation from children nodes
-			for (OctreeNode* child : Children)
-			{
-				if (
-					child != nullptr
-				)
-				{
-					child->AccumulateStrengthAndComputeCenterOfMass();
-
-
-					if (
-						child->StrengthSet || !child->IsLeaf()
-					)
-					{
-						float c = FMath::Abs(child->Strength);
-
-						aggregateStrength += child->Strength;
-
-
-						totalWeight += c;
-						ll("c: " + FString::SanitizeFloat(c));
-						ll("child->CenterOfMass: " + child->CenterOfMass.ToString());
-						aggregatePosition += c * child->CenterOfMass;
-					}
-				}
-				else
-				{
-					// Should never happens here,
-					// because if this is not a leaf note, all the child should not be an empty pointer. 
-				}
-			}
-
-			// Calculate the center of mass based on total weight
-			if (totalWeight > 0)
-			{
-				ll("aggregateStrength2222: " + FString::SanitizeFloat(aggregateStrength));
-				aggregateStrength *= sqrt(4.0 / 8);
-				ll("aggregateStrength: " + FString::SanitizeFloat(aggregateStrength));
-				ll("aggregatePosition: " + aggregatePosition.ToString());
-				ll("totalWeight: " + FString::SanitizeFloat(totalWeight));
-				ll("aggregatePosition / totalWeight: " + (aggregatePosition / totalWeight).ToString());
-				CenterOfMass = aggregatePosition / totalWeight;
-				ll("CenterOfMass: " + CenterOfMass.ToString());
-				Strength = aggregateStrength; // Optionally, adjust strength scaling here
-				// TotalWeight = totalWeight;
-			}
-		}
+		accumulate_with_recursion();
 	}
 	else
 	{
-
 		ll("Warning the following functions have bug do not use it yet. ", true);
 		accumulate_without_recursion();
-
-
 	}
 }
 
@@ -372,7 +383,6 @@ void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, AKnowle
 							ll("printing the data of the child", log);
 							child->PrintData();
 							ll("finished printing the data of the child", log);
-							
 						}
 						Stack1.push(child);
 					}
@@ -640,4 +650,3 @@ bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
 
 // Assuming `root` is the root of your Octree and it's properly initialized
 // TraverseBFS(root, SampleCallback);
-
