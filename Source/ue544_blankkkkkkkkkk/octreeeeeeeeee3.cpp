@@ -321,6 +321,7 @@ void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 	}
 	else
 	{
+		ll("There are some calculation mistake. ");
 		accumulate_without_recursion();
 	}
 }

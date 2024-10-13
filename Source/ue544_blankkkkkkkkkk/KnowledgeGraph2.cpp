@@ -316,7 +316,7 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 	bool log2 = false;
 
 	// Using brute force or not.
-	bool use_brute_force = true;
+	bool use_brute_force = false;
 	
 	if (!use_brute_force)
 	{
