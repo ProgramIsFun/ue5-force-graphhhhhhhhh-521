@@ -236,8 +236,10 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 
 void OctreeNode::accumulate_without_recursion()
 {
+
+	bool log=true;
 	// Instead of using recursion, we will traverse the tree using bfs and record the path, And then we will calculate center of mass based on the Reverse order.
-	std::vector<OctreeNode*> traversalOrder;
+	std::stack<OctreeNode*> traversalOrder;
 	std::stack<OctreeNode*> stack;
 
 	if (this)
@@ -251,6 +253,9 @@ void OctreeNode::accumulate_without_recursion()
 		OctreeNode* currentNode = stack.top();
 		stack.pop();
 
+		ll("currentNode Lower bound" + (currentNode->Center - currentNode->Extent).ToString() +
+		   " Upper bound" + " " + (currentNode->Center + currentNode->Extent).ToString(),log);
+
 
 		if (!currentNode->IsLeaf())
 		{
@@ -261,28 +266,35 @@ void OctreeNode::accumulate_without_recursion()
 					currentNode->Children[i]->check_contain_data_or_not()
 				)
 				{
+					ll("i: " + FString::FromInt(i),log);
 					stack.push(currentNode->Children[i]);
 				}
 			}
 		}
 
-		traversalOrder.push_back(currentNode);
+		traversalOrder.push(currentNode);
 	}
 
 	// Process in reverse traversal order (from last non-leaf to root)
-	for (auto it = traversalOrder.rbegin(); it != traversalOrder.rend(); ++it)
+	while (!traversalOrder.empty())
 	{
-		OctreeNode* node = *it;
+		
+		OctreeNode* node = traversalOrder.top();
+		traversalOrder.pop();
+
+		ll("node->Center: " + node->Center.ToString(),log);
 		if (node->IsLeaf())
 		{
 			if (node->Data)
 			{
 				FVector position = node->Data->Node->GetActorLocation();
-				float strength = FMath::Abs(node->Data->Node->strength);
+				float strength = node->Data->Node->strength;
 
 				node->Strength = strength;
 				node->StrengthSet = true;
 				node->CenterOfMass = position;
+
+				ll("strength555555555: " + FString::SanitizeFloat(strength),log);
 			}
 		}
 		else
@@ -299,6 +311,7 @@ void OctreeNode::accumulate_without_recursion()
 					aggregateStrength += child->Strength;
 					totalWeight += strengthAbs;
 					aggregatePosition += strengthAbs * child->CenterOfMass;
+					
 				}
 			}
 
@@ -307,6 +320,7 @@ void OctreeNode::accumulate_without_recursion()
 				aggregateStrength *= sqrt(4.0 / 8);
 				node->CenterOfMass = aggregatePosition / totalWeight;
 				node->Strength = aggregateStrength;
+				ll("aggregateStrength: " + FString::SanitizeFloat(aggregateStrength),log);
 			}
 		}
 	}
@@ -315,13 +329,12 @@ void OctreeNode::accumulate_without_recursion()
 void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 {
 	bool using_recursion = false;
+	bool log = true;
 	if (using_recursion)
 	{
 		accumulate_with_recursion();
 	}
-	else
-	{
-		ll("There are some calculation mistake. ");
+	else{
 		accumulate_without_recursion();
 	}
 }
