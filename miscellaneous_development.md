@@ -3,6 +3,17 @@ This file contains things to be organized
 Could be ignored
 
 
+
+----------------------------------------------------
+
+Calculate the TICK time for every frame
+
+Provide a better way to check the average FPS and TICK time.
+
+Maybe for different experiments, we can draw a line or a graph in a python application.
+
+
+
 -------------------------------------------------
 
 Using parallel For
@@ -58,14 +69,6 @@ Deal with importing a graph
 
 
 Check the basic format of a very simple graph data. 
-
-----------------------------------------------------
-
-Calculate the TICK time for every frame
-
-Provide a better way to check the average FPS and TICK time. 
-
-Maybe for different experiments, we can draw a line or a graph in a python application. 
 
 
 ---------------------------------------------------
