@@ -5,6 +5,13 @@ Could be ignored
 
 -------------------------------------------------
 
+Using parallel For
+will have the following error. 
+Assertion failed: ComponentsThatNeedEndOfFrameUpdate_OnGameThread.IsValidIndex(ArrayIndex) [File:D:\build\++UE5\Sync\Engine\Source\Runtime\Engine\Private\LevelTick.cpp] [Line: 874]
+
+
+
+
 ----------------------------------------------------
 
 Trying to use a single array to contain the whole OC tree 
