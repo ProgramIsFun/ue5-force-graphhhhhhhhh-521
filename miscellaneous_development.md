@@ -12,6 +12,29 @@ Assertion failed: ComponentsThatNeedEndOfFrameUpdate_OnGameThread.IsValidIndex(A
 Possibly because the things that is in the parallel for loop is not thread safe. 
 
 
+
+
+
+LoginId:cb7510304f4a5445750fcfa49abaf5a3
+EpicAccountId:32550fbdab1c434399c0ce8a86d54173
+
+Assertion failed: !IsValid(Component) || Component->GetMarkedForEndOfFrameUpdateState() == EComponentMarkedForEndOfFrameUpdateState::MarkedForGameThread [File:D:\build\++UE5\Sync\Engine\Source\Runtime\Engine\Private\LevelTick.cpp] [Line: 1138]
+
+UnrealEditor_Engine
+UnrealEditor_Engine
+UnrealEditor_UnrealEd
+UnrealEditor_UnrealEd
+UnrealEditor
+UnrealEditor
+UnrealEditor
+UnrealEditor
+UnrealEditor
+UnrealEditor
+kernel32
+ntdll
+
+
+
 ----------------------------------------------------
 
 Trying to use a single array to contain the whole OC tree 
