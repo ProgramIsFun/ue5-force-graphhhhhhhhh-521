@@ -6,6 +6,7 @@
 #include "utillllllssss.h"
 #include "Chaos/AABB.h"
 
+
 OctreeNode::OctreeNode(FVector center, FVector extent)
 	: Center(center),
 	  Extent(extent),
@@ -79,15 +80,7 @@ void OctreeNode::Subdivide()
 			(i & 2) ? NewExtent.Y : -NewExtent.Y,
 			(i & 4) ? NewExtent.Z : -NewExtent.Z
 		);
-
-		// if (Center - Extent == FVector(-8, -1, 0) && Center + Extent == FVector(8, 15, 16))
-		// {
-		// 	ll("i: " + FString::FromInt(i) +
-		// 	   "newLower bound" + (NewCenter - NewExtent).ToString() +
-		// 	   " newUpper bound" + (NewCenter + NewExtent).ToString(), log);
-		// }
-
-
+		
 		Children[i] = new OctreeNode(NewCenter, NewExtent);
 	}
 
