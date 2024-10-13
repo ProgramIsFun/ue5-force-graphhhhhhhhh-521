@@ -109,14 +109,10 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		}
 
 		alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
-
-
 		ll("alpha: " + FString::SanitizeFloat(alpha),log);
 
 
 		ll("apply forces",log);
-
-		
 		ApplyForces();
 
 		ll("update actor location based on velocity",log);
@@ -126,23 +122,28 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		update_link_position();
 
 
-		double EndTime = FPlatformTime::Seconds();
-		double ElapsedTime = EndTime - StartTime;
-		lll(FString::SanitizeFloat(ElapsedTime));
-		// Accumulate the elapsed time and increment the tick count
-		TotalElapsedTime += ElapsedTime;
-		TickCount++;
-
+		
 		
 
 		
 		// Optionally, log the average time every N ticks
-		if (TickCount % 10 == 0)
+		if (0)
 		{
-			// Calculate the average time per tick
-			double AverageTime = TotalElapsedTime / TickCount;
-			lll("Average Tick time after " + FString::FromInt(TickCount) + " ticks is " + FString::SanitizeFloat(AverageTime) + " seconds.");
-			UE_LOG(LogTemp, Log, TEXT("Average Tick time after %d ticks is %f seconds."), TickCount, AverageTime);
+			double EndTime = FPlatformTime::Seconds();
+			double ElapsedTime = EndTime - StartTime;
+			lll(FString::SanitizeFloat(ElapsedTime));
+			// Accumulate the elapsed time and increment the tick count
+			TotalElapsedTime += ElapsedTime;
+			TickCount++;
+
+			
+			if (TickCount % 10 == 0)
+			{
+				// Calculate the average time per tick
+				double AverageTime = TotalElapsedTime / TickCount;
+				lll("Average Tick time after " + FString::FromInt(TickCount) + " ticks is " + FString::SanitizeFloat(AverageTime) + " seconds.");
+				UE_LOG(LogTemp, Log, TEXT("Average Tick time after %d ticks is %f seconds."), TickCount, AverageTime);
+			}
 		}
 
 	}

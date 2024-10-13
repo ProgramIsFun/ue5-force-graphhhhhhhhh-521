@@ -2,6 +2,22 @@ This file contains things to be organized
 
 Could be ignored
 
+
+
+
+-------------------------------------------------------------
+
+
+
+
+--------------------------------------------------------------
+
+
+Deal with importing a graph
+
+
+Check the basic format of a very simple graph data. 
+
 ----------------------------------------------------
 
 Calculate the TICK time for every frame
