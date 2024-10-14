@@ -70,7 +70,7 @@ public:
 	void ApplyForces();
 	void calculate_link_force_and_update_velocity();
 	void calculate_charge_force_and_update_velocity();
-	void apply_center_force_and_move_the_node_directly();
+	void calculate_centre_force_and_update_position();
 
 	
 	
