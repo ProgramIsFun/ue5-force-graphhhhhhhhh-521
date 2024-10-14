@@ -7,6 +7,7 @@
 
 // #define ENABLE_LOGGING 1
 #include "utillllllssss.h"
+#include "nameOfTheShader9/nameOfTheShader9.h"
 #define print(text) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White,text)
 
 
@@ -64,6 +65,24 @@ void AKnowledgeGraph::BeginPlay()
 "AKnowledgeGraph::CalculateBiasstrengthOflinks",
 		&AKnowledgeGraph::CalculateBiasstrengthOflinks);
 	}
+
+
+	// Params struct used to pass args to our compute shader
+	FnameOfTheShader9DispatchParams Params(1, 1, 1);
+
+	// Fill in your input parameters here
+	Params.X = 123;
+
+	// These are defined/used in:
+	// 1. Private/nameOfTheShader9/nameOfTheShader9.cpp under BEGIN_SHADER_PARAMETER_STRUCT
+	// 2. Public/nameOfTheShader9/nameOfTheShader9.h under FnameOfTheShader9DispatchParams
+	// 3. Private/nameOfTheShader9/nameOfTheShader9.cpp under FnameOfTheShader9Interface::DispatchRenderThread
+
+	// Executes the compute shader and blocks until complete. You can place outputs in the params struct
+	FnameOfTheShader9Interface::Dispatch(Params);
+
+
+	
 
 }
 
