@@ -51,7 +51,7 @@ public:
 	int id;
 
 	UPROPERTY(VisibleAnywhere)
-	class USphereComponent* MySphere;
+	USphereComponent* MySphere;
 
 
 
