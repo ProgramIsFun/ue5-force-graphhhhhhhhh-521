@@ -150,15 +150,16 @@ private:
 	float alphaTarget = 0;
 	float velocityDecay = 0.6;
 	float initialAngle = PI * (3 - sqrt(5));
+
+
 	bool init = false;
 
 	// FSimpleOctree* OctreeData;
 	OctreeNode* OctreeData2;
 
 
-
-	double TotalElapsedTime = 0.0;
-	int32 TickCount = 0;
+	TArray<double> ElapsedTimes;
+	
 
 
 	

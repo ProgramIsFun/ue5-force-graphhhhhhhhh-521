@@ -42,20 +42,6 @@ void AKnowledgeGraph::BeginPlay()
 		PrimaryActorTick.TickInterval = tick_interval;
 	}
 
-
-	if (0)
-	{
-		// InitOctree(FBox(
-		// 		FVector(-200, -200, -200),
-		// 		FVector(200, 200, 200)
-		// 	)
-		// );
-	}
-	else
-	{
-	}
-
-
 	// generateGraph();
 	timeThisMemberFunction(
 "AKnowledgeGraph::generateGraph",
@@ -135,23 +121,14 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 		
 		// Optionally, log the average time every N ticks
-		if (0)
+		if (1)
 		{
 			double EndTime = FPlatformTime::Seconds();
 			double ElapsedTime = EndTime - StartTime;
 			lll(FString::SanitizeFloat(ElapsedTime));
-			// Accumulate the elapsed time and increment the tick count
-			TotalElapsedTime += ElapsedTime;
-			TickCount++;
 
-			
-			if (TickCount % 10 == 0)
-			{
-				// Calculate the average time per tick
-				double AverageTime = TotalElapsedTime / TickCount;
-				lll("Average Tick time after " + FString::FromInt(TickCount) + " ticks is " + FString::SanitizeFloat(AverageTime) + " seconds.");
-				UE_LOG(LogTemp, Log, TEXT("Average Tick time after %d ticks is %f seconds."), TickCount, AverageTime);
-			}
+			ElapsedTimes.Add(ElapsedTime);
+
 		}
 
 	}
