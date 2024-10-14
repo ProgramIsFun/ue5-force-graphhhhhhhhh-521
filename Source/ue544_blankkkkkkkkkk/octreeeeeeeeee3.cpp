@@ -9,22 +9,14 @@
 
 OctreeNode::OctreeNode(FVector center, FVector extent)
 	: Center(center),
-	  Extent(extent),
-	  TotalDataPoints(0),
-	  CenterOfMass(center),
-	  Data(nullptr)
+	  Extent(extent)
+	  // CenterOfMass(center)
 {
 	Children.SetNum(8, false);
 	isCenterSet = true;
 }
 
 OctreeNode::OctreeNode()
-	:
-	// Center(center),
-	// Extent(extent),
-	TotalDataPoints(0),
-	// CenterOfMass(center),
-	Data(nullptr)
 {
 	Children.SetNum(8, false);
 }

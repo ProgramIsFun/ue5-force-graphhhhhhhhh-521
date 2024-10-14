@@ -147,6 +147,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool many_body_use_brute_force = true;
 
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// bool many_body_octree_use_recursion = true;	
 
 	// Use a lot of actor Or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
