@@ -1,12 +1,4 @@
 
-Please use this commit
-c95b42fa764b2ee9cb515f9e245d86c22aace194
-
-I have added a lot of things so that all of the velocity and position updates 
-will be updated to an array first instead of directly on the actor. 
-However, the OC tree calculation seems to have some mistakes. 
-
-
 ## What is this project? 
 
 

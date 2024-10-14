@@ -44,17 +44,14 @@ UnrealEditor
 kernel32
 ntdll
 
+-----------------------------------------------------
 
+Use compute shaders to do the many body force.
+https://github.com/MatthisL/UE5_NBodySimulation
 
 ----------------------------------------------------
 
 Trying to use a single array to contain the whole OC tree 
-
-
-
---------------------------------------------------------------
-
-Check weather parallel for will also crash in 5.4 version 
 
 -------------------------------------------------------------
 
@@ -66,7 +63,6 @@ V:\UNREALLLINSTALLLL\UE_5.2\Engine\Source\Runtime\Core\Public\Math
 
 
 Deal with importing a graph
-
 
 Check the basic format of a very simple graph data. 
 
