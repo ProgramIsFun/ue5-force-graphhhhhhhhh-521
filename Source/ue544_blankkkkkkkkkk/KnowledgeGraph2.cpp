@@ -979,7 +979,7 @@ void AKnowledgeGraph::initializeNodePosition_Individual(AKnowledgeNode* node, in
 	}
 }
 
-void AKnowledgeGraph::update_node_position_according_to_array()
+void AKnowledgeGraph::update_Node_world_position_according_to_position_array()
 {
 	for (auto& node : all_nodes)
 	{

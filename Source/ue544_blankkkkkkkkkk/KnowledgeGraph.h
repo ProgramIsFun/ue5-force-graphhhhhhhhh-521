@@ -46,34 +46,39 @@ public:
 	AKnowledgeGraph();
 	~AKnowledgeGraph();
 	void GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster);
-	void calculate_link_force_and_update_velocity();
-	void calculate_charge_force_and_update_velocity();
-	void apply_center_force_and_move_the_node_directly();
 
 
 	void generateGraph();
-
-	
 	void defaultGenerateGraphMethod();
 
+	
 	void AddNode1(int32 id, AKnowledgeNode* kn);
 	// void AddNode(int32 id, AKnowledgeNode* kn, FVector location);
 	void AddEdge(int32 id, int32 source, int32 target);
 	// void AddOctreeElement(const FOctreeElement& inNewOctreeElement);
+
+	
 	void initializeNodePosition();
 	
 	void initializeNodePosition_Individual(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius);
 
-	void update_node_position_according_to_array();
-	// void InitOctree(const FBox& inNewBounds);
 	void CalculateBiasstrengthOflinks();
-	// void RemoveElement(int key);
+
+	
+	
+	
 	void ApplyForces();
-	// void Accumulate();
-	// NodeStrength AddUpChildren(const FSimpleOctree::FNode& node, FString node_id);
-	// void ApplyManyBody(AKnowledgeNode* kn);
-	// void FindManyBodyForce(AKnowledgeNode* kn, const FSimpleOctree::FNode& node,
-	// const FOctreeNodeContext3 CurrentContext, FString node_id);
+	void calculate_link_force_and_update_velocity();
+	void calculate_charge_force_and_update_velocity();
+	void apply_center_force_and_move_the_node_directly();
+
+	
+	
+	
+	
+	void update_Node_world_position_according_to_position_array();
+
+
 	void tttttttttttt();
 
 

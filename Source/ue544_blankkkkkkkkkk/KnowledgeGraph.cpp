@@ -56,7 +56,7 @@ void AKnowledgeGraph::BeginPlay()
 		&AKnowledgeGraph::initializeNodePosition);
 
 
-		update_node_position_according_to_array();
+		update_Node_world_position_according_to_position_array();
 
 
 		
@@ -118,7 +118,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		update_actor_location_based_on_velocity();
 
 
-		update_node_position_according_to_array();
+		update_Node_world_position_according_to_position_array();
 
 		
 		ll("update link position",log);
