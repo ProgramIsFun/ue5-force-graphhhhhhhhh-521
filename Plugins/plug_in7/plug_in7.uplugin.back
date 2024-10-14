@@ -19,11 +19,6 @@
 			"Name": "plug_in7",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "shadeupppppp",
-			"Type": "Runtime",
-			"LoadingPhase": "PostConfigInit"
 		}
 	]
 }
