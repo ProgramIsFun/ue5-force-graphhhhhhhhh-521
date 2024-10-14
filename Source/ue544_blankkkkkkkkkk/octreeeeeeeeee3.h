@@ -10,19 +10,24 @@ struct PointData
 {
 	// FVector Position;
 	// FVector Velocity;
-	AKnowledgeNode* Node;
 
+	// AKnowledgeNode* Node;
+	int32 nodeid;
+	FVector Position;
 	PointData* Next = nullptr;
 
 	PointData(
 		// FVector position = FVector(),
 		// FVector velocity = FVector()
-		AKnowledgeNode* node = nullptr
+		// AKnowledgeNode* node = nullptr
+	int32 nodeid,
+	FVector position
 		)
 		:
 	// Position(position),
 	// Velocity(velocity)
-	Node(node)
+	nodeid(nodeid),
+	Position(position)
 	{
 	}
 
@@ -68,18 +73,19 @@ struct OctreeNode
 	void AccumulateStrengthAndComputeCenterOfMass();
 	void Cover(float X0, float Y0, float Z0);
 	bool check_contain_data_or_not();
-	void AddAll1(TMap<int32, AKnowledgeNode*> Map1);
+	void AddAll1(TMap<int32, AKnowledgeNode*> Map1, TArray<FVector> nodePositions);
 };
 
-void AddDataPoint(OctreeNode* node, AKnowledgeNode* newNode);
+// void AddDataPoint(OctreeNode* node, AKnowledgeNode* newNode, FVector position);
 
+void AddDataPoint(OctreeNode* node, FVector Location,int32 id);
 
 // Define the Callback Type
-using OctreeCallback = std::function<bool(OctreeNode*,AKnowledgeNode* kn, float alpha)>;
+using OctreeCallback = std::function<bool(OctreeNode*,float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities)>;
 
 // Declare the BFS traversal function
 // void TraverseBFS(OctreeNode* root, OctreeCallback callback);
-void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, AKnowledgeNode* kn);
+void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities);
 
 // bool SampleCallback(OctreeNode* node);
-bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha);
+bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities);

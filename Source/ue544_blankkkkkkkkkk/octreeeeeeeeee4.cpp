@@ -23,9 +23,9 @@ void OctreeNode::PrintData() const
 	bool log = true;
 	if (Data)
 	{
-		if (Data->Node)
+		if (Data->nodeid)
 		{
-			ll("77777777777777Data: " + Data->Node->GetActorLocation().ToString(),log);
+			ll("77777777777777Data: " + FString::FromInt(Data->nodeid));
 		}
 	}
 
@@ -94,8 +94,15 @@ bool OctreeNode::check_contain_data_or_not()
 }
 
 
-void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map)
+void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map, TArray<FVector> nodePositions)
 {
+
+	// ll("This assumed the id of the map must be zero to N - 1. ");
+
+
+
+
+	
 	int32 N = Map.Num();
 
 
@@ -114,7 +121,9 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map)
 	// Compute the points and their extent
 	for (int i = 0; i < N; ++i)
 	{
-		FVector D = Map[i]->GetActorLocation();
+		
+		// FVector D = Map[i]->GetActorLocation();
+		FVector D = nodePositions[i];
 		float X = D.X;
 		float Y = D.Y;
 		float Z = D.Z;
@@ -136,10 +145,10 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map)
 	Cover(X0, Y0, Z0);
 	Cover(X1, Y1, Z1);
 
-	ll("!!!!New center and you extend will be set to: " + Center.ToString() + " " + Extent.ToString());
+	// ll("!!!!New center and you extend will be set to: " + Center.ToString() + " " + Extent.ToString());
 	// Add the new points
 	for (int i = 0; i < N; ++i)
 	{
-		AddDataPoint(this, Map[i]);
+		AddDataPoint(this,  nodePositions[i],i);
 	}
 }

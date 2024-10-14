@@ -116,9 +116,16 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 		ll("update actor location based on velocity",log);
 		update_actor_location_based_on_velocity();
+
+
+		update_node_position_according_to_array();
+
 		
 		ll("update link position",log);
 		update_link_position();
+
+
+		
 
 
 		

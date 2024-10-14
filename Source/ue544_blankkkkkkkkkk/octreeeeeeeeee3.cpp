@@ -84,7 +84,7 @@ void OctreeNode::Subdivide()
 		Children[i] = new OctreeNode(NewCenter, NewExtent);
 	}
 
-	AddDataPoint(this, OldData->Node); // Add the old data point to the children
+	AddDataPoint(this, OldData->Position,OldData->nodeid ); // Add the old data point to the children
 	delete OldData; // Deleting the old data after redistributing
 }
 
@@ -98,8 +98,9 @@ void OctreeNode::accumulate_with_recursion()
 	{
 		if (Data)
 		{
-			FVector position = Data->Node->GetActorLocation();
-			double strength = Data->Node->strength;
+			// FVector position = Data->Node->GetActorLocation();
+			FVector position = Data->Position;
+			double strength = -60;
 
 			ll("strength555555555: " + FString::SanitizeFloat(strength));
 			Strength = strength;
@@ -169,10 +170,10 @@ void OctreeNode::accumulate_with_recursion()
 	}
 }
 
-void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
+void AddDataPoint(OctreeNode* node, FVector Location,int32 id)
 {
-	FVector newPoint = kn->GetActorLocation();
-
+	// FVector newPoint = kn->GetActorLocation();
+	FVector newPoint = Location;
 
 	if (!node->IsLeaf())
 	{
@@ -188,7 +189,7 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 					// This method is slow. 
 					if (child->ContainsPoint(newPoint))
 					{
-						AddDataPoint(child, kn);
+						AddDataPoint(child, Location,id);
 						return;
 					}
 				}
@@ -209,7 +210,7 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 			int32 i = (newPoint.Z >= node->Center.Z ? 4 : 0) | (newPoint.Y >= node->Center.Y ? 2 : 0) | (
 				newPoint.X >= node->Center.X ? 1 : 0);
 
-			AddDataPoint(node->Children[i], kn);
+			AddDataPoint(node->Children[i], Location,id);
 		}
 	}
 	else
@@ -221,12 +222,12 @@ void AddDataPoint(OctreeNode* node, AKnowledgeNode* kn)
 		{
 			// If the node already has data, subdivide and add the new data point
 			node->Subdivide();
-			AddDataPoint(node, kn);
+			AddDataPoint(node, Location,id);
 		}
 		else
 		{
 			// No data is associated with the current node
-			node->Data = new PointData(kn);
+			node->Data = new PointData(id, Location);
 
 			// All the 8 pointers of children's property Should still be nullptr.
 		}
@@ -287,14 +288,14 @@ void OctreeNode::accumulate_without_recursion()
 		{
 			if (node->Data)
 			{
-				FVector position = node->Data->Node->GetActorLocation();
-				float strength = node->Data->Node->strength;
-
-				node->Strength = strength;
+				// FVector position = node->Data->Node->GetActorLocation();
+				
+				FVector position = node->Data->Position;
+				
+				node->Strength = -60;
 				node->StrengthSet = true;
 				node->CenterOfMass = position;
-
-				ll("strength555555555: " + FString::SanitizeFloat(strength),log);
+				
 			}
 		}
 		else
@@ -320,7 +321,6 @@ void OctreeNode::accumulate_without_recursion()
 				aggregateStrength *= sqrt(4.0 / 8);
 				node->CenterOfMass = aggregatePosition / totalWeight;
 				node->Strength = aggregateStrength;
-				ll("aggregateStrength: " + FString::SanitizeFloat(aggregateStrength),log);
 			}
 		}
 	}
@@ -340,7 +340,7 @@ void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 }
 
 
-void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, AKnowledgeNode* kn)
+void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities)
 {
 	bool log = true;
 
@@ -360,7 +360,7 @@ void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, AKnowle
 		   " Upper bound" + " " + (currentNode->Center + currentNode->Extent).ToString(), log);
 		ll("Prepare to call the call back functions with this node. ", log);
 		// Execute the callback on the current node
-		bool skipChildren = callback(currentNode, kn, alpha);
+		bool skipChildren = callback(currentNode, alpha, id, nodePositions, nodeVelocities);
 
 		// If callback returns true, do not enqueue children
 		if (skipChildren)
@@ -406,7 +406,7 @@ void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, AKnowle
 	}
 }
 
-bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
+bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities)
 {
 	bool log = true;
 	bool log2 = false;
@@ -422,8 +422,9 @@ bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
 		FVector width = node->Extent * 2;
 
 
-		FVector dir = node->CenterOfMass - kn->GetActorLocation();
+		// FVector dir = node->CenterOfMass - kn->GetActorLocation();
 
+		FVector dir = node->CenterOfMass - nodePositions[id];
 
 		// Remember that direction is the sum of all the Actor locations of the elements in that note. 
 		float l = dir.Size() * dir.Size();
@@ -506,24 +507,26 @@ bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
 					ll("node->Strength: " + FString::SanitizeFloat(node->Strength), log2);
 					ll("alpha: " + FString::SanitizeFloat(alpha), log2);
 
-					ll("vector: " + Vector.ToString() + " velocity: " + kn->
-					                                                    velocity.ToString(), log2);
+					// ll("vector: " + Vector.ToString() + " velocity: " + kn->
+					//                                                     velocity.ToString(), log2);
+
 				}
 
 				// float mult = pow(ns.strength / nodeStrength, 1.0);
-				kn->velocity += Vector / l;
 
+				// kn->velocity += Vector / l;
+				nodeVelocities[id] += Vector / l;
 
-				ll("velocity Updated: " + kn->velocity.ToString(), log);
-
-				if (1)
-				{
-					if (kn->velocity.Size() > 100000000000000)
-					{
-						ll("velocity is too large. eeeeeeeeeeeee ");
-						eeeee();
-					}
-				}
+				// ll("velocity Updated: " + kn->velocity.ToString(), log);
+				//
+				// if (1)
+				// {
+				// 	if (kn->velocity.Size() > 100000000000000)
+				// 	{
+				// 		ll("velocity is too large. eeeeeeeeeeeee ");
+				// 		eeeee();
+				// 	}
+				// }
 			}
 			ll("11111111111111 Early termination. ", log);
 			return true;
@@ -551,18 +554,11 @@ bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
 		}
 		else
 		{
-			if (node->Data->Node == nullptr)
-			{
-				ll("Pointer is null!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.", log, 2);
-			}
-			else
-			{
-			}
 		}
 
 
-		bool bCond = node->Data->Node != kn;
-
+		// bool bCond = node->Data->Node != kn;
+		bool bCond = node->Data->nodeid != id;
 
 		if (
 			// The data is not same as the current node. 
@@ -626,13 +622,15 @@ bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
 			while (1)
 			{
 				if (
-					currentNode->Node != kn
+					// currentNode->Node != kn
+					currentNode->nodeid != id
 				)
 				{
-					float w = currentNode->Node->strength * alpha / l;
+					float w = -60 * alpha / l;
 
 
-					kn->velocity += dir * w;
+					// kn->velocity += dir * w;
+					nodeVelocities[id] += dir * w;
 				}
 				else
 				{
@@ -649,12 +647,17 @@ bool SampleCallback(OctreeNode* node, AKnowledgeNode* kn, float alpha)
 			PointData* currentNode = node->Data;
 
 			if (
-				currentNode->Node != kn
+				// currentNode->Node != kn
+				currentNode->nodeid != id
 			)
 			{
-				float w = currentNode->Node->strength * alpha / l;
-				kn->velocity += dir * w;
-				ll("velocity Updated: " + kn->velocity.ToString(), log);
+				// float w = currentNode->Node->strength * alpha / l;
+				float w = -60 * alpha / l;
+
+
+				// kn->velocity += dir * w;
+				nodeVelocities[id] += dir * w;
+				// ll("velocity Updated: " + kn->velocity.ToString(), log);
 			}
 		}
 		ll("3333333333333333 Returning false at the very end. ", log);

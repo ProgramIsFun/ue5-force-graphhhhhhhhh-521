@@ -48,7 +48,7 @@ public:
 	int numberOfConnected = 0;
 	float strength = -60; 
 	FVector velocity;
-	int id;
+	
 
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* MySphere;
