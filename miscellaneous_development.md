@@ -84,27 +84,6 @@ GetWorld()->LineTraceSingleByChannel(Hit, WorldLocation, End, ECC_Visibility, Pa
 ----------------------------------------------------
 
 
-
-
-
-I am in no way a professional in Unreal - this project is the only thing I ever done. So my total experience with Unreal is around one week. So I don't think I will be able to help you, you'll have to do your research.
-But I did dig a bit into optimization during that week. Actually without the n-body physics around 20000k particles were rendered smoothly on a cheap laptop with a built-in graphics. The key to this is using "instanced static mesh" - google it, or look up what I did (I honestly don't remember what it was). The other thing - is n-body problem is always computation-intensive. I did parallelize the computation inner loop - you can also look it up in the code. Unreal has that stuff as loop execution policy or something like that. But if you really need to get the most for n-body problem, you have to implement some spatial hashing or octo-tree or some n-body specific stuff that allows you to not calculate each body-to-body interaction every frame. I think that is all I can help you with, good luck!
-
-@aleksandrbazhin
-Owner
-aleksandrbazhin commented 1 hour ago
-This is the parallelization part for outer, not inner loop https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/blob/707fee4488fdfbb8d8b9258b74927d3b8fe1d748/Source/NBodySim/BodyManager.cpp#L52C5-L52C16
-And instanced static mesh means you only load the mesh to the GPU once, and reuse it N times.
-My machine ran ~2500 bodies at around 60 FPS with n-body gravity, and ~20000 without the gravity.
-
------------------------------------------------------------------------
-
-
-
-
-
-
-
 ---------------------------------------------------------------------------------
 
 In CPP I want to use one array to represent OC tree. array contained eight elements, each element is either 1. a null pointer Or 2. A 3D data point Or 3.array Of the same type Please help me implement this OC tree. Do not use any pointer because I want to have everything in one array.

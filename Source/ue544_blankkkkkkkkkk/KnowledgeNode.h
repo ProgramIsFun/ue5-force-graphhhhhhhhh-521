@@ -42,13 +42,11 @@ public:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+
+
 	int numberOfConnected = 0;
-	float maxDist = 200.0;
-	float minDist = 80.0;
-	UClass* MyClass;
-	TArray<ConnectedNode*> connectedNodes;
-	float spawnTime = 0.0;
-	float strength = -60;
+	float strength = -60; 
 	FVector velocity;
 	int id;
 
@@ -59,10 +57,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UTextRenderComponent* TextComponent;
-
-
-
-
 	
 	UStaticMeshComponent* SphereMesh;
 };
