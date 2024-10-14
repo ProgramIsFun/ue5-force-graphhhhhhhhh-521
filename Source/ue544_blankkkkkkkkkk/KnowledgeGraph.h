@@ -156,7 +156,14 @@ protected:
 
 private:
 	TMap<int32, AKnowledgeNode*> all_nodes;
+
+	TArray<FVector> nodePositions;
+	TArray<FVector> nodeVelocities;
+	
+
+	
 	TMap<int32, AKnowledgeEdge*> all_links;
+	
 	// TMap<FString, NodeStrength> octree_node_strengths;
 	//    FVector GetWeightedDistance(FVector prev_loc);
 	float alphaTarget = 0;
@@ -164,7 +171,6 @@ private:
 	float initialAngle = PI * (3 - sqrt(5));
 
 
-	TArray<FVector> nodePositions;
 	
 	bool init = false;
 

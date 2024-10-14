@@ -1049,16 +1049,7 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		link.Value->strength = 1.0 / fmin(all_nodes[link.Value->source]->numberOfConnected,
 		                                  all_nodes[link.Value->target]->numberOfConnected);
 	}
-
-	if (0)
-	{
-		//charge forces
-		for (auto& node : all_nodes)
-		{
-			node.Value->strength = node.Value->strength; // nothing for now
-		}
-	}
-
+	
 	init = true;
 }
 
