@@ -135,6 +135,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool many_body_use_brute_force = true;
+
+
+	// Use a lot of actor Or not
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_a_lot_of_actor = false;
+
 	
 protected:
 	// Called when the game starts or when spawned
