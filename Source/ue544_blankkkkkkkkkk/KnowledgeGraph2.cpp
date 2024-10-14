@@ -477,7 +477,7 @@ void AKnowledgeGraph::apply_center_force_and_move_the_node_directly()
 }
 
 
-void AKnowledgeGraph::update_actor_location_based_on_velocity()
+void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 {
 	if (!use_parallel)
 	{

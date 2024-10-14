@@ -94,16 +94,16 @@ bool OctreeNode::check_contain_data_or_not()
 }
 
 
-void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map, TArray<FVector> nodePositions)
+void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> all_nodes, TArray<FVector> nodePositions)
 {
 
 	// ll("This assumed the id of the map must be zero to N - 1. ");
 
 
 
-
 	
-	int32 N = Map.Num();
+	
+	int32 N = all_nodes.Num();
 
 
 	TArray<float> Xz, Yz, Zz;
@@ -119,8 +119,11 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map, TArray<FVector> nodeP
 	float Z1 = -std::numeric_limits<float>::infinity();
 
 	// Compute the points and their extent
-	for (int i = 0; i < N; ++i)
+	for (auto& node : all_nodes)
 	{
+		auto i = node.Key;
+
+	
 		
 		// FVector D = Map[i]->GetActorLocation();
 		FVector D = nodePositions[i];
@@ -147,8 +150,13 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> Map, TArray<FVector> nodeP
 
 	// ll("!!!!New center and you extend will be set to: " + Center.ToString() + " " + Extent.ToString());
 	// Add the new points
-	for (int i = 0; i < N; ++i)
+	// for (int i = 0; i < N; ++i)
+	// {
+	// 	AddDataPoint(this,  nodePositions[i],i);
+	// }
+
+	for (auto& node : all_nodes)
 	{
-		AddDataPoint(this,  nodePositions[i],i);
+		AddDataPoint(this,  nodePositions[node.Key],node.Key);
 	}
 }

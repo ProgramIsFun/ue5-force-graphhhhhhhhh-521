@@ -156,7 +156,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void update_actor_location_based_on_velocity();
+	void update_position_array_according_to_velocity_array();
 	void update_link_position();
 
 private:
