@@ -146,40 +146,6 @@ void AKnowledgeGraph::generateGraph()
 
 	case 1:
 		{
-			//Retrieving an array property and printing each field
-			int jnodes = jnodes1;
-			for (int32 i = 0; i < jnodes; i++)
-			{
-				int jid = i;
-				AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
-				// AddNode(jid, kn, FVector(0, 0, 0));
-			}
-
-			// Edge creation loop
-			int jedges = jnodes; // Adjust the number of edges as needed to ensure coverage
-			std::random_device rd;
-			std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-			std::uniform_int_distribution<> dis(0, jnodes - 1); // Random number distribution
-
-			for (int32 i = 0; i < jedges; i++)
-			{
-				int jid = i;
-				int jsource = i % jnodes; // Ensures jsource is always valid within the index range
-				int jtarget = (i + 1) % jnodes; // Connect each node to the next node; wraps around
-
-				AddEdge(jid, jsource, jtarget);
-
-				// Random additional edge to increase graph density
-				if (i < jnodes - 1)
-				{
-					int random_target = dis(gen);
-					// Ensure that we do not add self-loops
-					if (random_target != jsource)
-					{
-						AddEdge(jid + jnodes, jsource, random_target); // Use jid+jnodes to keep distinct edge IDs
-					}
-				}
-			};
 		}
 		break;
 
@@ -202,62 +168,6 @@ void AKnowledgeGraph::generateGraph()
 
 void AKnowledgeGraph::GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster)
 {
-	if (!GetWorld()) return;
-
-	TArray<int32> ClusterCenterIDs;
-	ClusterCenterIDs.Reserve(NumClusters);
-
-	// Create Cluster Centers
-	for (int32 i = 0; i < NumClusters; ++i)
-	{
-		FVector Location = FVector(
-			0,
-			0,
-			0
-		);
-		AKnowledgeNode* Node = GetWorld()->SpawnActor<AKnowledgeNode>(AKnowledgeNode::StaticClass(), Location,
-		                                                              FRotator::ZeroRotator);
-		int32 nodeId = i; // Assign node ID, assumed incremented or derived
-		// AddNode(nodeId, Node, Location);
-		ClusterCenterIDs.Add(nodeId);
-	}
-
-	// Connect Cluster Nodes
-	for (int32 i = 0; i < NumClusters; ++i)
-	{
-		for (int32 j = 1; j < NodesPerCluster; ++j)
-		{
-			FVector Location = FVector(i * 100.0f, j * 50.0f, 0); // Organize per cluster
-			AKnowledgeNode* Node = GetWorld()->SpawnActor<AKnowledgeNode>(
-				AKnowledgeNode::StaticClass(), Location, FRotator::ZeroRotator);
-			int32 nodeId = i * NodesPerCluster + j; // Calculate unique node ID
-
-
-			// AddNode(nodeId, Node, Location);
-
-			if (1)
-			{
-				AddEdge(nodeId,
-				        ClusterCenterIDs[i],
-				        nodeId
-				); // Use node IDs for connection
-			}
-			else
-			{
-				AddEdge(nodeId,
-				        nodeId,
-
-				        ClusterCenterIDs[i]
-				); // Use node IDs for connection
-			}
-		}
-	}
-
-	// Inter-cluster Connections
-	for (int32 i = 0; i < NumClusters - 1; ++i)
-	{
-		AddEdge(i, ClusterCenterIDs[i], ClusterCenterIDs[i + 1]); // Use node IDs to connect cluster centers
-	}
 }
 
 
@@ -329,47 +239,44 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 
 	if (!many_body_use_brute_force)
 	{
+		//
+		OctreeData2 = new OctreeNode(
+		);
+
+
+		OctreeData2->AddAll1(all_nodes, nodePositions);
+
+		OctreeData2->AccumulateStrengthAndComputeCenterOfMass();
+
+		// lll("tttttttttttttttttttttttt");
+		ll("!!!OctreeData2->CenterOfMass: " + OctreeData2->CenterOfMass.ToString(), log);
+		ll("!!!OctreeData2->strength: " + FString::SanitizeFloat(OctreeData2->Strength), log);
+
+
+		if (!use_parallel)
 		{
-			//
-			OctreeData2 = new OctreeNode(
-			);
-
-
-			OctreeData2->AddAll1(all_nodes,nodePositions);
-
-			OctreeData2->AccumulateStrengthAndComputeCenterOfMass();
-
-			// lll("tttttttttttttttttttttttt");
-			// ll("!!!OctreeData2->CenterOfMass: " + OctreeData2->CenterOfMass.ToString(), log);
-			// ll("!!!OctreeData2->strength: " + FString::SanitizeFloat(OctreeData2->Strength), log);
-
-
-			if (!use_parallel)
+			for (auto& node : all_nodes)
 			{
-				for (auto& node : all_nodes)
-				{
-					ll("--------------------------------------", log);
-					ll(
-						"Traverse the tree And calculate velocity on this Actor Kn, nodekey: -"
-						+
-						FString::FromInt(node.Key), log);
-					TraverseBFS(OctreeData2, SampleCallback, alpha, node.Key,nodePositions, nodeVelocities); 
-					ll("Finished traversing the tree based on this Actor Kn. ", log);
-				}
+				ll("--------------------------------------", log);
+				ll(
+					"Traverse the tree And calculate velocity on this Actor Kn, nodekey: -"
+					+
+					FString::FromInt(node.Key), log);
+				TraverseBFS(OctreeData2, SampleCallback, alpha, node.Key, nodePositions, nodeVelocities);
+				ll("Finished traversing the tree based on this Actor Kn. ", log);
 			}
-			else
-			{
-				ParallelFor(all_nodes.Num(), [&](int32 Index)
-				{
-					TraverseBFS(OctreeData2, SampleCallback, alpha, Index,nodePositions, nodeVelocities);
-				});
-				
-			}
-
-
-			ll("Finished traversing, now we can delete the tree. ", log);
-			delete OctreeData2;
 		}
+		else
+		{
+			ParallelFor(all_nodes.Num(), [&](int32 Index)
+			{
+				TraverseBFS(OctreeData2, SampleCallback, alpha, Index, nodePositions, nodeVelocities);
+			});
+		}
+
+
+		ll("Finished traversing, now we can delete the tree. ", log);
+		delete OctreeData2;
 	}
 	else
 	{
@@ -1041,7 +948,7 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 		kn->strength = nodeStrength;
 		// kn->velocity = FVector(0, 0, 0);
 		nodeVelocities[id] = FVector(0, 0, 0);
-		
+
 
 		all_nodes.Emplace(id, kn);
 	}
@@ -1050,7 +957,6 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 		ll("Fatal error: Node with ID " + FString::FromInt(id) + " already exists!");
 	}
 }
-
 
 
 void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)

@@ -133,7 +133,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 		
 		// Optionally, log the average time every N ticks
-		if (1)
+		if (0)
 		{
 			double EndTime = FPlatformTime::Seconds();
 			double ElapsedTime = EndTime - StartTime;

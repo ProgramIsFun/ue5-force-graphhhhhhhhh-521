@@ -11,24 +11,13 @@
 #include "octreeeeeeeeee3.h"
 
 
-
-
 #include "utillllllssss.h"
 
 
 #include <chrono> // For timing member functions
 
 
-
-
-
-
-
 #include "KnowledgeGraph.generated.h"
-
-
-
-
 
 
 /**
@@ -51,31 +40,26 @@ public:
 	void generateGraph();
 	void defaultGenerateGraphMethod();
 
-	
+
 	void AddNode1(int32 id, AKnowledgeNode* kn);
 	// void AddNode(int32 id, AKnowledgeNode* kn, FVector location);
 	void AddEdge(int32 id, int32 source, int32 target);
 	// void AddOctreeElement(const FOctreeElement& inNewOctreeElement);
 
-	
+
 	void initializeNodePosition();
-	
+
 	void initializeNodePosition_Individual(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius);
 
 	void CalculateBiasstrengthOflinks();
 
-	
-	
-	
+
 	void ApplyForces();
 	void calculate_link_force_and_update_velocity();
 	void calculate_charge_force_and_update_velocity();
 	void calculate_centre_force_and_update_position();
 
-	
-	
-	
-	
+
 	void update_Node_world_position_according_to_position_array();
 
 
@@ -84,7 +68,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_parallel = false;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float LOGGGGGGGGG = false;
 
@@ -154,7 +138,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_a_lot_of_actor = true;
 
-	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -166,11 +149,10 @@ private:
 
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
-	
 
-	
+
 	TMap<int32, AKnowledgeEdge*> all_links;
-	
+
 	// TMap<FString, NodeStrength> octree_node_strengths;
 	//    FVector GetWeightedDistance(FVector prev_loc);
 	float alphaTarget = 0;
@@ -178,7 +160,6 @@ private:
 	float initialAngle = PI * (3 - sqrt(5));
 
 
-	
 	bool init = false;
 
 	// FSimpleOctree* OctreeData;
@@ -186,53 +167,33 @@ private:
 
 
 	TArray<double> ElapsedTimes;
-	
 
-
-	
 public:
 	virtual void Tick(float DeltaTime) override;
 
 
 	// Member function that times another member function
-	template<typename Func, typename... Args>
-	auto timeThisMemberFunction(const char* functionName,Func function, Args&&... args) {
-
-		
+	template <typename Func, typename... Args>
+	auto timeThisMemberFunction(const char* functionName, Func function, Args&&... args)
+	{
 		// auto start = std::chrono::high_resolution_clock::now();
 		double StartTime = FPlatformTime::Seconds();
 
-		
-		
-		
-		
-		
+
 		// Invoke the member function
 		(this->*function)(std::forward<Args>(args)...);
 
 
-
-		
 		// auto end = std::chrono::high_resolution_clock::now();
 		// auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 		// lll("Execution time: " + FString::FromInt(duration.count()) + " milliseconds");
 
 
-		
 		double EndTime = FPlatformTime::Seconds();
 		double ElapsedTime = EndTime - StartTime;
 		lll("Elapsed time For " + FString(functionName) + ": " + FString::SanitizeFloat(ElapsedTime) + " seconds");
-		
-
-
 
 
 		return ElapsedTime;
 	}
-
-
-
-
-	
-
 };

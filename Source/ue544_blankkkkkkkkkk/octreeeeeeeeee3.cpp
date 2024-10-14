@@ -332,9 +332,9 @@ void OctreeNode::AccumulateStrengthAndComputeCenterOfMass()
 }
 
 
-void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities)
+void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 id, TArray<FVector>& nodePositions, TArray<FVector>& nodeVelocities)
 {
-	bool log = true;
+	bool log = false;
 
 
 	// return;
@@ -347,10 +347,14 @@ void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 i
 	{
 		OctreeNode* currentNode = Stack1.top();
 		Stack1.pop();
+
+
 		ll("--------------------Right now, dealing with:  Lower bound" +
 		   (currentNode->Center - currentNode->Extent).ToString() +
 		   " Upper bound" + " " + (currentNode->Center + currentNode->Extent).ToString(), log);
-		ll("Prepare to call the call back functions with this node. ", log);
+		ll("Prepare to call the call back functions with this node. ", true);
+
+
 		// Execute the callback on the current node
 		bool skipChildren = callback(currentNode, alpha, id, nodePositions, nodeVelocities);
 
@@ -384,6 +388,7 @@ void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 i
 						ll("i" + FString::FromInt(i), log);
 						ll("Lower bound" + (child->Center - child->Extent).ToString() +
 						   " Upper bound" + (child->Center + child->Extent).ToString(), log);
+
 						if (0)
 						{
 							ll("printing the data of the child", log);
@@ -398,10 +403,15 @@ void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 i
 	}
 }
 
-bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities)
+bool SampleCallback(OctreeNode* node,
+	float alpha,
+	int32 id,
+	TArray<FVector>& nodePositions,
+	TArray<FVector>& nodeVelocities)
 {
-	bool log = true;
+	bool log = false;
 	bool log2 = false;
+	bool log3 = true;
 	ll("-----------------", log);
 	// ll("SampleCallback", log);
 
@@ -498,7 +508,7 @@ bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nod
 					ll("dir: " + dir.ToString(), log2);
 					ll("node->Strength: " + FString::SanitizeFloat(node->Strength), log2);
 					ll("alpha: " + FString::SanitizeFloat(alpha), log2);
-
+					ll("original Velocity: " + nodeVelocities[id].ToString(), log3);
 					// ll("vector: " + Vector.ToString() + " velocity: " + kn->
 					//                                                     velocity.ToString(), log2);
 
@@ -508,7 +518,7 @@ bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nod
 
 				// kn->velocity += Vector / l;
 				nodeVelocities[id] += Vector / l;
-
+				ll("velocity Updated: " + nodeVelocities[id].ToString(), log3);
 				// ll("velocity Updated: " + kn->velocity.ToString(), log);
 				//
 				// if (1)
@@ -520,7 +530,7 @@ bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nod
 				// 	}
 				// }
 			}
-			ll("11111111111111 Early termination. ", log);
+			ll("11111111111111 Early termination. ", log3);
 			return true;
 		}
 
@@ -530,7 +540,7 @@ bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nod
 			||
 			l >= distancemax)
 		{
-			ll("22222222222222222 You need to return false here. ", log);
+			ll("22222222222222222 You need to return false here. ", log3);
 			// ll("l: " + FString::SanitizeFloat(l), log);
 			return false;
 		}
@@ -544,10 +554,7 @@ bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nod
 			ll("Data is null", log, 2);
 			return true;
 		}
-		else
-		{
-		}
-
+		
 
 		// bool bCond = node->Data->Node != kn;
 		bool bCond = node->Data->nodeid != id;
@@ -649,10 +656,11 @@ bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nod
 
 				// kn->velocity += dir * w;
 				nodeVelocities[id] += dir * w;
+				ll("velocity Updated: " + nodeVelocities[id].ToString(), log3);
 				// ll("velocity Updated: " + kn->velocity.ToString(), log);
 			}
 		}
-		ll("3333333333333333 Returning false at the very end. ", log);
+		ll("3333333333333333 Returning false at the very end. ", log3);
 		return false;
 	}
 }

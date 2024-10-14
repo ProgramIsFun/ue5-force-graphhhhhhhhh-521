@@ -81,11 +81,11 @@ struct OctreeNode
 void AddDataPoint(OctreeNode* node, FVector Location,int32 id);
 
 // Define the Callback Type
-using OctreeCallback = std::function<bool(OctreeNode*,float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities)>;
+using OctreeCallback = std::function<bool(OctreeNode*,float alpha, int32 id, TArray<FVector>&  nodePositions, TArray<FVector>&  nodeVelocities)>;
 
 // Declare the BFS traversal function
 // void TraverseBFS(OctreeNode* root, OctreeCallback callback);
-void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities);
+void TraverseBFS(OctreeNode* root, OctreeCallback callback, float alpha, int32 id, TArray<FVector>&  nodePositions, TArray<FVector>&  nodeVelocities);
 
 // bool SampleCallback(OctreeNode* node);
-bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector> nodePositions, TArray<FVector> nodeVelocities);
+bool SampleCallback(OctreeNode* node, float alpha, int32 id, TArray<FVector>&  nodePositions, TArray<FVector>&  nodeVelocities);
