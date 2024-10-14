@@ -13,42 +13,63 @@
 void AKnowledgeGraph::defaultGenerateGraphMethod()
 {
 	bool log = true;
-	//Retrieving an array property and printing each field
-	int jnodes11 = jnodes1;
+
+
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+
+
+
+	nodePositions.SetNumUninitialized(jnodes1);
+
+
 
 
 	
+	//Retrieving an array property and printing each field
+	int jnodes11 = jnodes1;
 	for (int32 i = 0; i < jnodes11; i++)
 	{
 		int jid = i;
 
 
-		AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
-
-
-		if (0)
+		if (use_a_lot_of_actor)
 		{
-			if (kn)
+			AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
+			AddNode1(jid, kn);
+
+		}
+		else
+		{
+			UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this);
+
+			if (TextComponent)
 			{
-				UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(
-					kn->GetComponentByClass(UPrimitiveComponent::StaticClass()));
-				if (1)
-				{
-					if (PrimitiveComponent)
-					{
-						PrimitiveComponent->SetSimulatePhysics(false);
-						PrimitiveComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-					}
-				}
+				// Optional: Set the text of the TextRenderComponent
+				TextComponent->SetText(FText::FromString(FString::Printf(TEXT("Text %d"), i)));
+
+				// Optional: Set other properties of the TextRenderComponent
+				TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+				TextComponent->SetWorldSize(50.0f); // Size of the text
+            
+				// Attach the TextRenderComponent to the Actor
+				TextComponent->SetupAttachment(RootComponent);
+
+				// Register the component with the Actor
+				TextComponent->RegisterComponent();
 			}
 		}
-		AddNode1(jid, kn);
+
+
+		
 	}
 
+
+	
 	// Edge creation loop
 	int jedges11 = jnodes11; // Adjust the number of edges as needed to ensure coverage
-
-
 	if (!connect_to_previous)
 	{
 		for (int32 i = 1; i < jedges11; i++)
@@ -899,21 +920,21 @@ void AKnowledgeGraph::initializeNodePosition()
 		{
 			int index = node.Key;
 			// Calculate index-based radius differently based on the number of dimensions
-			UpdateNodePosition(node.Value, index, 3, initialRadius);
+			initializeNodePosition_Individual(node.Value, index, 3, initialRadius);
 		}
 	}
 	else
 	{
 		ParallelFor(all_nodes.Num(), [&](int32 index)
 		            {
-			            UpdateNodePosition(all_nodes[index], index, 3, initialRadius);
+			            initializeNodePosition_Individual(all_nodes[index], index, 3, initialRadius);
 		            }
 
 		);
 	}
 }
 
-void AKnowledgeGraph::UpdateNodePosition(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius)
+void AKnowledgeGraph::initializeNodePosition_Individual(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius)
 {
 	// Calculate index-based radius
 	float radius;
@@ -963,15 +984,26 @@ void AKnowledgeGraph::UpdateNodePosition(AKnowledgeNode* node, int index, int Nu
 	if (node)
 	{
 		// Check if pointer is valid
-		node->SetActorLocation(init_pos, false);
+		// node->SetActorLocation(init_pos, false);
+
+
+		nodePositions[index] = init_pos;
+
+
+
 
 		ll("index: " + FString::FromInt(index) + " init_pos: " + init_pos.ToString());
 
-		// Log the initial position - Uncomment to use
-		// UE_LOG(LogTemp, Warning, TEXT("Init position: %s"), *init_pos.ToString());
+	}
+}
 
-		// Set initial velocity to zero
-		node->velocity = FVector(0, 0, 0);
+void AKnowledgeGraph::update_node_position_according_to_array()
+{
+
+	for (auto& node : all_nodes)
+	{
+		int index = node.Key;
+		node.Value->SetActorLocation(nodePositions[index]);
 	}
 }
 
@@ -1036,6 +1068,7 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 	{
 		kn->id = id;
 		kn->strength = nodeStrength;
+		kn->velocity = FVector(0, 0, 0);
 		all_nodes.Emplace(id, kn);
 	}
 	else
@@ -1167,7 +1200,7 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 
 	e->source = source;
 	e->target = target;
-	e->strength = 1; //temp
+	e->strength = 1;
 	e->distance = edgeDistance;
 	all_links.Emplace(id, e);
 }

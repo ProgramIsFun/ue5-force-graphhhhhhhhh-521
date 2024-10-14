@@ -55,6 +55,11 @@ void AKnowledgeGraph::BeginPlay()
 "AKnowledgeGraph::initializeNodePosition",
 		&AKnowledgeGraph::initializeNodePosition);
 
+
+		update_node_position_according_to_array();
+
+
+		
 		timeThisMemberFunction(
 "AKnowledgeGraph::CalculateBiasstrengthOflinks",
 		&AKnowledgeGraph::CalculateBiasstrengthOflinks);

@@ -49,7 +49,11 @@ public:
 	void calculate_link_force_and_update_velocity();
 	void calculate_charge_force_and_update_velocity();
 	void apply_center_force_and_move_the_node_directly();
+
+
 	void generateGraph();
+
+	
 	void defaultGenerateGraphMethod();
 
 	void AddNode1(int32 id, AKnowledgeNode* kn);
@@ -58,7 +62,9 @@ public:
 	// void AddOctreeElement(const FOctreeElement& inNewOctreeElement);
 	void initializeNodePosition();
 	
-	void UpdateNodePosition(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius);
+	void initializeNodePosition_Individual(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius);
+
+	void update_node_position_according_to_array();
 	// void InitOctree(const FBox& inNewBounds);
 	void CalculateBiasstrengthOflinks();
 	// void RemoveElement(int key);
@@ -139,7 +145,7 @@ public:
 
 	// Use a lot of actor Or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_a_lot_of_actor = false;
+	bool use_a_lot_of_actor = true;
 
 	
 protected:
@@ -158,6 +164,8 @@ private:
 	float initialAngle = PI * (3 - sqrt(5));
 
 
+	TArray<FVector> nodePositions;
+	
 	bool init = false;
 
 	// FSimpleOctree* OctreeData;
