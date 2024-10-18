@@ -79,7 +79,7 @@ void AKnowledgeGraph::BeginPlay()
 	// 3. Private/nameOfTheShader9/nameOfTheShader9.cpp under FnameOfTheShader9Interface::DispatchRenderThread
 
 	// Executes the compute shader and blocks until complete. You can place outputs in the params struct
-	FnameOfTheShader9Interface::Dispatch(Params);
+	// FnameOfTheShader9Interface::Dispatch(Params);
 
 
 	
