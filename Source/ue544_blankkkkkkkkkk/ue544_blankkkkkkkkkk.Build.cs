@@ -10,7 +10,11 @@ public class ue544_blankkkkkkkkkk : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "nameOfTheModule8" });
+		PrivateDependencyModuleNames.AddRange(new string[]
+		{
+			"nameOfTheModule8", 
+			"NBodySim"
+		});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

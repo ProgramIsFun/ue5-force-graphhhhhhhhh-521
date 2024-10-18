@@ -36,7 +36,6 @@ void AKnowledgeGraph::BeginPlay()
 
 	bool testing_shaders_from_other_repo = true;
 	if (testing_shaders_from_other_repo)
-	
 	{
 		if (!SimulationConfig)
 		{
@@ -52,8 +51,8 @@ void AKnowledgeGraph::BeginPlay()
 		}
 
 		// Compute static variables.
-		// SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
-		// SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
+		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
+		SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
 		//
 		// InitBodies();
 		//

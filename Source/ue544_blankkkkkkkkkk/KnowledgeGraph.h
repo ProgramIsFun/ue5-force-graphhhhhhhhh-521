@@ -9,12 +9,14 @@
 #include "Engine/World.h"
 #include "CoreMinimal.h"
 #include "octreeeeeeeeee3.h"
-
-
 #include "utillllllssss.h"
 
 
-#include <chrono> // For timing member functions
+
+// Testing new shader. /////////////////////////////////////////////////////////////
+#include "NBodySimModule.h"
+
+///////////////////////////////////////////////////////////////////////////////////////
 
 
 #include "KnowledgeGraph.generated.h"
@@ -24,6 +26,8 @@
  *
  */
 // class FORCEGRAPH_API AKnowledgeGraph : public AActor
+
+
 
 
 UCLASS()
@@ -199,11 +203,11 @@ public:
 
 
 
-
-
-
+	// Testing new shader. /////////////////////////////////////////////////////////////
+	FNBodySimParameters SimParameters;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation")
 	TObjectPtr<USimulationConfig> SimulationConfig;
+	///////////////////////////////////////////////////////////////////////////////////////
 
 };
 
@@ -217,6 +221,7 @@ public:
 
 
 
+// Testing new shader. /////////////////////////////////////////////////////////////
 
 USTRUCT(BlueprintType)
 struct FBodyConfigEntry
@@ -291,3 +296,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Rendering")
 	float CameraAspectRatio = 1.777778f;
 };
+
+///////////////////////////////////////////////////////////////////////////////////////
