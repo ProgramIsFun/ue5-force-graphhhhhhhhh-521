@@ -15,6 +15,7 @@
 
 // Testing new shader. /////////////////////////////////////////////////////////////
 #include "NBodySimModule.h"
+#include "Components/InstancedStaticMeshComponent.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -207,8 +208,17 @@ public:
 	FNBodySimParameters SimParameters;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation")
 	TObjectPtr<USimulationConfig> SimulationConfig;
-	///////////////////////////////////////////////////////////////////////////////////////
 
+	/** Store the transform of all body of the simulation. */
+	UPROPERTY()
+	TArray<FTransform> BodyTransforms;
+
+	UPROPERTY(VisibleAnywhere, Instanced)
+	TObjectPtr<UInstancedStaticMeshComponent> InstancedStaticMeshComponent;
+
+	void InitBodies();
+
+	///////////////////////////////////////////////////////////////////////////////////////
 };
 
 
