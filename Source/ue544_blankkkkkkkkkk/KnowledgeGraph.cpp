@@ -33,54 +33,99 @@ void AKnowledgeGraph::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ClearLogFile();
 
-
-	if (use_tick_interval)
+	bool testing_shaders_from_other_repo = true;
+	if (testing_shaders_from_other_repo)
+	
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
+		if (!SimulationConfig)
+		{
+			// UE_LOG(LogNBodySimulation, Error,
+			//        TEXT(
+			// 	       "Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine."
+			//        ));
 
-		PrimaryActorTick.TickInterval = tick_interval;
+			// UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit,
+			// 							   false);
+
+			return;
+		}
+
+		// Compute static variables.
+		// SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
+		// SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
+		//
+		// InitBodies();
+		//
+		// FNBodySimModule::Get().BeginRendering();
+		// FNBodySimModule::Get().InitWithParameters(SimParameters);
+
+
+		if (0)
+		{
+			// Params struct used to pass args to our compute shader
+			FnameOfTheShader9DispatchParams Params(1, 1, 1);
+
+			// Fill in your input parameters here
+			Params.X = 123;
+
+			// These are defined/used in:
+			// 1. Private/nameOfTheShader9/nameOfTheShader9.cpp under BEGIN_SHADER_PARAMETER_STRUCT
+			// 2. Public/nameOfTheShader9/nameOfTheShader9.h under FnameOfTheShader9DispatchParams
+			// 3. Private/nameOfTheShader9/nameOfTheShader9.cpp under FnameOfTheShader9Interface::DispatchRenderThread
+
+			// Executes the compute shader and blocks until complete. You can place outputs in the params struct
+			// FnameOfTheShader9Interface::Dispatch(Params);
+		}
 	}
 
-	// generateGraph();
-	timeThisMemberFunction(
-"AKnowledgeGraph::generateGraph",
-	&AKnowledgeGraph::generateGraph);
 
 
-	if (!init)
+
+
+	
+	if (1)
 	{
-		
+		ClearLogFile();
+
+
+		if (use_tick_interval)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
+
+			PrimaryActorTick.TickInterval = tick_interval;
+		}
+	
+		// generateGraph();
 		timeThisMemberFunction(
-"AKnowledgeGraph::initializeNodePosition",
-		&AKnowledgeGraph::initializeNodePosition);
+			"AKnowledgeGraph::generateGraph",
+			&AKnowledgeGraph::generateGraph);
 
 
-		update_Node_world_position_according_to_position_array();
+		if (!init)
+		{
+		
+			timeThisMemberFunction(
+				"AKnowledgeGraph::initializeNodePosition",
+				&AKnowledgeGraph::initializeNodePosition);
+
+
+			update_Node_world_position_according_to_position_array();
 
 
 		
-		timeThisMemberFunction(
-"AKnowledgeGraph::CalculateBiasstrengthOflinks",
-		&AKnowledgeGraph::CalculateBiasstrengthOflinks);
+			timeThisMemberFunction(
+				"AKnowledgeGraph::CalculateBiasstrengthOflinks",
+				&AKnowledgeGraph::CalculateBiasstrengthOflinks);
+		}
+
+		
 	}
 
 
-	// Params struct used to pass args to our compute shader
-	FnameOfTheShader9DispatchParams Params(1, 1, 1);
 
-	// Fill in your input parameters here
-	Params.X = 123;
 
-	// These are defined/used in:
-	// 1. Private/nameOfTheShader9/nameOfTheShader9.cpp under BEGIN_SHADER_PARAMETER_STRUCT
-	// 2. Public/nameOfTheShader9/nameOfTheShader9.h under FnameOfTheShader9DispatchParams
-	// 3. Private/nameOfTheShader9/nameOfTheShader9.cpp under FnameOfTheShader9Interface::DispatchRenderThread
-
-	// Executes the compute shader and blocks until complete. You can place outputs in the params struct
-	// FnameOfTheShader9Interface::Dispatch(Params);
-
+	
 
 	
 
