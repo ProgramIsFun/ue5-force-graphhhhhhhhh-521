@@ -207,7 +207,7 @@ public:
 	// Testing new shader. /////////////////////////////////////////////////////////////
 	FNBodySimParameters SimParameters;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation")
-	TObjectPtr<USimulationConfig> SimulationConfig;
+	TObjectPtr<USimulationConfigg> SimulationConfig;
 
 	/** Store the transform of all body of the simulation. */
 	UPROPERTY()
@@ -259,9 +259,7 @@ struct FBodyConfigEntry
  *	Asset file containing the configuration data for the simulation.
  */
 UCLASS(BlueprintType)
-// UCLASS()
-
-class UE544_BLANKKKKKKKKKK_API USimulationConfig : public UObject
+class UE544_BLANKKKKKKKKKK_API USimulationConfigg : public UDataAsset
 {
 	GENERATED_BODY()
 
