@@ -14,13 +14,17 @@
 AKnowledgeGraph::AKnowledgeGraph()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	if (0)
+
+
+	if (1)
 	{
-		alphaMin = 0.6f;
+		PrimaryActorTick.bStartWithTickEnabled = true;
+		PrimaryActorTick.TickGroup = TG_DuringPhysics;
+
+		InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
+			TEXT("InstancedStaticMeshComponent"));
 	}
-	else
-	{
-	}
+
 }
 
 AKnowledgeGraph::~AKnowledgeGraph()
@@ -110,9 +114,35 @@ void AKnowledgeGraph::InitBodies()
 
 
 
+void AKnowledgeGraph::BeginDestroy()
+{
+	FNBodySimModule::Get().EndRendering();
+	Super::BeginDestroy();
+}
 
+void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
+{
+	// Retrieve GPU computed bodies position.
+	TArray<FVector2f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
 
+	if (GPUOutputPositions.Num() != SimParameters.Bodies.Num())
+	{
+		UE_LOG(LogTemp, Warning,
+			   TEXT(
+				   "Size differ for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (%d) Output(%d)"
+			   ), SimParameters.Bodies.Num(), GPUOutputPositions.Num());
+		return;
+	}
 
+	QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
+
+	// Update bodies visual with new positions.
+	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
+	{
+		BodyTransforms[i].SetTranslation(FVector(FVector2D(GPUOutputPositions[i]), 0.0f));
+	}
+	InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+}
 
 void AKnowledgeGraph::BeginPlay()
 {
@@ -141,8 +171,8 @@ void AKnowledgeGraph::BeginPlay()
 		//
 		InitBodies();
 		//
-		// FNBodySimModule::Get().BeginRendering();
-		// FNBodySimModule::Get().InitWithParameters(SimParameters);
+		FNBodySimModule::Get().BeginRendering();
+		FNBodySimModule::Get().InitWithParameters(SimParameters);
 
 
 		if (0)
@@ -168,7 +198,7 @@ void AKnowledgeGraph::BeginPlay()
 
 
 	
-	if (1)
+	if (0)
 	{
 		ClearLogFile();
 
@@ -206,13 +236,6 @@ void AKnowledgeGraph::BeginPlay()
 		
 	}
 
-
-
-
-	
-
-	
-
 }
 
 
@@ -224,19 +247,26 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	bool log = true;
 
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
-
-
-	iterations += 1;
-
-
-	if (iterations > maxiterations)
-	{
-		return;
-	}
-
-
 	if (1)
 	{
+		SimParameters.DeltaTime = DeltaTime;
+		FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
+
+		UpdateBodiesPosition(DeltaTime);
+		
+	}
+
+	if (0)
+	{
+
+		iterations += 1;
+
+
+		if (iterations > maxiterations)
+		{
+			return;
+		}
+
 
 		double StartTime = FPlatformTime::Seconds();
 
@@ -271,14 +301,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		
 		ll("update link position",log);
 		update_link_position();
-
-
 		
-
-
-		
-		
-
 		
 		// Optionally, log the average time every N ticks
 		if (0)
@@ -290,9 +313,6 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 			ElapsedTimes.Add(ElapsedTime);
 
 		}
-
 	}
-	else
-	{
-	}
+	
 }

@@ -146,6 +146,7 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void BeginDestroy() override;
 	void update_position_array_according_to_velocity_array();
 	void update_link_position();
 
@@ -204,7 +205,10 @@ public:
 
 
 
-	// Testing new shader. /////////////////////////////////////////////////////////////
+	//////////// Testing new shader. /////////////////////////////////////////////////////////////
+
+
+	
 	FNBodySimParameters SimParameters;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation")
 	TObjectPtr<USimulationConfigg> SimulationConfig;
@@ -217,6 +221,9 @@ public:
 	TObjectPtr<UInstancedStaticMeshComponent> InstancedStaticMeshComponent;
 
 	void InitBodies();
+
+	void UpdateBodiesPosition(float DeltaTime);
+
 
 	///////////////////////////////////////////////////////////////////////////////////////
 };
