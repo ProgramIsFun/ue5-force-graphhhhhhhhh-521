@@ -122,9 +122,10 @@ void AKnowledgeGraph::BeginDestroy()
 
 void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 {
+	bool log = true;
 	// Retrieve GPU computed bodies position.
 	TArray<FVector2f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
-
+	ll("GPUOutputPositions.Num(): " + FString::FromInt(GPUOutputPositions.Num()),log);
 	if (GPUOutputPositions.Num() != SimParameters.Bodies.Num())
 	{
 		UE_LOG(LogTemp, Warning,
