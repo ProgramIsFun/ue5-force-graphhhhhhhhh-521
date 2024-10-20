@@ -68,9 +68,10 @@ Number 5 is chosen.
 
 Applying an example in Github. Which is a shader to calculate Many body force in two dimensional. 
 
-We want to change it to three dimensional. 
+1. We want to change it to three dimensional. 
 
-https://github.com/MatthisL/UE5_NBodySimulation/issues/1
+2. from the example we observe that the GPU calculation seems to be not manually triggered, Trying to find a way to manually trigger the gpu calculation so that it is more flexible. 
+   https://github.com/MatthisL/UE5_NBodySimulation/issues/1
 
 
 
