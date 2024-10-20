@@ -72,6 +72,14 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool testing_shaders_from_other_repo = true;
+
+
+
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_parallel = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
