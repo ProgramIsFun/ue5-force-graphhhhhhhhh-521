@@ -218,7 +218,8 @@ public:
 
 	
 	FNBodySimParameters SimParameters;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation")
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation1111111111111")
 	TObjectPtr<USimulationConfigg> SimulationConfig;
 
 	/** Store the transform of all body of the simulation. */

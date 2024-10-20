@@ -102,7 +102,7 @@ void AKnowledgeGraph::BeginPlay()
 
 
 	
-	if (0)
+	if (!testing_shaders_from_other_repo)
 	{
 		ClearLogFile();
 
@@ -159,7 +159,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		UpdateBodiesPosition(DeltaTime);
 	}
 
-	if (0)
+	if (!testing_shaders_from_other_repo)
 	{
 
 		iterations += 1;
