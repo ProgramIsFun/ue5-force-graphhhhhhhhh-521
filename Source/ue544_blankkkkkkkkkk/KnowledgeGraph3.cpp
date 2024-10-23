@@ -52,8 +52,6 @@ void AKnowledgeGraph::InitBodies()
 		);
 
 
-
-		
 		/**
 		 *	For the velocity, we need to have a starting velocity for each body so that they are rotating into the circle clockwise.
 		 *	This allow to have a nice starting movement.
@@ -91,12 +89,12 @@ void AKnowledgeGraph::InitBodies()
 			FVector(
 				FVector2D(RandomPosition),
 				0.0f
-				),
+			),
 			FVector(
 				MeshScale,
 				MeshScale,
 				1.0f
-				)
+			)
 		);
 
 		BodyTransforms[Index] = MeshTransform;
@@ -164,7 +162,19 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 	// Update bodies visual with new positions.
 	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 	{
-		BodyTransforms[i].SetTranslation(FVector(FVector2D(GPUOutputPositions[i]), 0.0f));
+		BodyTransforms[i].SetTranslation(
+			FVector(
+				FVector2D(
+					GPUOutputPositions[i]
+				),
+				0.0f
+			)
+		);
 	}
-	InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+	InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(
+		0,
+		BodyTransforms,
+		false,
+		true
+	);
 }
