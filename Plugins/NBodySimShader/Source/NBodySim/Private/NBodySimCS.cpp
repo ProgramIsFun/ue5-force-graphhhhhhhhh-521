@@ -186,7 +186,10 @@ FIntVector FNBodySimCSInterface::ComputeGroupSize(uint32 NumBodies)
 {
 	const int ThreadCount = 256;
 
-	int FinalCount = ((NumBodies - 1) / ThreadCount) + 1;
+	int FinalCount = (
+		(NumBodies - 1) /
+		ThreadCount
+		) + 1;
 
 	return FIntVector(FinalCount, 1, 1);
 }
