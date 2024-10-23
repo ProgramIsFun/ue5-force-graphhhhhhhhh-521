@@ -1,3 +1,8 @@
+## Notice
+
+This project is Mainly in git@gitee.com:nameeeee/aaaaaaaaa.git
+
+The project in Other git platform is just a mirror of the project in gitee.
 
 ## What is this project? 
 
