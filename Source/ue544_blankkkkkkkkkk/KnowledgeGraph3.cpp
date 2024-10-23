@@ -29,7 +29,8 @@ void AKnowledgeGraph::InitBodies()
 		SimulationConfig->CustomBodies.Num()
 	);
 	BodyTransforms.SetNumUninitialized(
-		SimulationConfig->NumberOfBody + SimulationConfig->CustomBodies.Num()
+		SimulationConfig->NumberOfBody +
+		SimulationConfig->CustomBodies.Num()
 	);
 
 	// Initialize the random Bodies with a default random position, velocity and mass depending on config.
@@ -50,6 +51,9 @@ void AKnowledgeGraph::InitBodies()
 			)
 		);
 
+
+
+		
 		/**
 		 *	For the velocity, we need to have a starting velocity for each body so that they are rotating into the circle clockwise.
 		 *	This allow to have a nice starting movement.
@@ -84,8 +88,15 @@ void AKnowledgeGraph::InitBodies()
 
 		FTransform MeshTransform(
 			FRotator(),
-			FVector(FVector2D(RandomPosition), 0.0f),
-			FVector(MeshScale, MeshScale, 1.0f)
+			FVector(
+				FVector2D(RandomPosition),
+				0.0f
+				),
+			FVector(
+				MeshScale,
+				MeshScale,
+				1.0f
+				)
 		);
 
 		BodyTransforms[Index] = MeshTransform;
