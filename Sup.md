@@ -1,0 +1,64 @@
+﻿- shaders
+  - https://www.youtube.com/watch?v=3CpwZER5dYs&ab_channel=UnrealXinda
+      - https://github.com/UnrealXinda/Kaleido
+      - Very cool effects with a lot of cubes. Seems to moving together in and out In a very large cube.
+  - https://www.youtube.com/watch?v=_XHFzv3XH2o&ab_channel=kaiyan&sttick=0
+      - https://github.com/aceyan/UE4_GPGPU_flocking/tree/ComputeShader
+          - Use instantastic mesh and also compute shaders.
+  - https://sites.google.com/view/arnauaguilar/projects/computeshader-ue5
+  - https://www.youtube.com/watch?v=x0S1ZDgtYkc&list=PLoHLpVCC9RmMMmW5eP1aAyJrTjxd46rx_&index=22&ab_channel=renderBucket
+      - Not exactly compute shaders, but perhaps useful to Learn how to write good hlsl code.
+  - https://www.youtube.com/watch?v=19q6eXw2pI0&ab_channel=TechArtCube
+      - To be inspected.
+  - https://www.youtube.com/watch?v=toYXfFrmXbk&ab_channel=RyanSweeney
+      - To be inspected.
+      - https://github.com/RyanSweeney987/UE5_Tut_3_Compute_Shaders
+          - Is a plug-in
+  - https://www.youtube.com/watch?v=Kp3qiuEt4xI&ab_channel=ArnauAguilar
+      - The repulsory is shared indirectly through a youtube comment, which linked to a Private website, which has a Github link. However, the USF file is missing.
+          - https://sites.google.com/view/arnauaguilar/projects/computeshader-ue5
+              - https://github.com/arnauaguilar/ComputeShader/issues/2
+
+  - https://github.com/Temaran/UnrealEngineShaderPluginDemo/tree/5.0
+      - Almost everything is put in the plug in, including the Game mode and default pond blueprint.
+          - It also add a call back to the render thread.
+              -     OnPostResolvedSceneColorHandle = RendererModule->GetResolvedSceneColorCallbacks().AddRaw(this, &FShaderDeclarationDemoModule::PostResolveSceneColor_RenderThread);
+                  - But for this time we call Compute shader first and then a pixel shader In this manually made callback function
+
+  - https://unreal.shadeup.dev/docs/cli
+      - https://shadeup.dev/docs/learn/what-are-shaders
+      - https://github.com/AskingQuestions/Shadeup
+  - https://github.com/profdambledore/UE4-N_Body_Simulation
+      - https://profdambledore.artstation.com/projects/J9WXnz
+      - 4.23
+      - Does not implement OCTREE
+      - The plug in could be disabled to start the project
+      - Not a good example to reference.
+  - https://github.com/UEEnthusiast/N-body-Simulation
+      - Very very similar to the core of https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/tree/master
+  - https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/tree/master
+      - N-body simulation with Unreal Engine, 2500 bodies in realtime
+          - https://www.youtube.com/watch?v=xp0B3Z3Zstw&ab_channel=ShallowDive
+      - N-body problem simulation with C++ and Unreal Engine 4
+          - https://www.youtube.com/watch?v=4J0xdB-CSnU&ab_channel=ShallowDive
+      - The whole project could be converted to 5.3 unreal engine directly
+      - In the function GravityStep, Which is supposed to update the velocity of all the Particle use a Parallel for loop.
+          - https://github.com/aleksandrbazhin/Unreal_2D_NBodySim/blob/707fee4488fdfbb8d8b9258b74927d3b8fe1d748/Source/NBodySim/BodyManager.cpp#L52C5-L52C16
+  - https://github.com/martinpaule/DissertationProject/tree/main
+      - A very cute looking game is made.
+      - Unknown engine version is used.
+      - Provide Executable  to run directly.
+  - https://github.com/MatthisL/UE5_NBodySimulation
+      - This use compute shaders That are enclosed in a plug in
+      - Use instance static mesh.
+      - https://www.linkedin.com/posts/matthis-le-texier_n-body-simulation-unreal-engine-5-activity-7142792978355429376-J9Av
+      - N-Body Simulation Unreal Engine 5 https://youtu.be/6luGwWLXKEw
+      - https://github.com/AskingQuestions/Shadeup/issues/19
+  - https://www.youtube.com/watch?v=eP0BeTTB15Q&ab_channel=UlrichHansa
+      - Seems no source code is given.
+  - https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda
+  - https://gitlab.com/clov/barnes-hut
+  - https://www.youtube.com/watch?v=7ojILF1Dmro&ab_channel=UnrealXinda
+  - https://github.com/Patistar/Nbody-Barnes-Hut-CUDA/tree/master
+  - https://github.com/InfinitySoftware-House/NBodyUnity/tree/main
+  - https://github.com/beltoforion/Barnes-Hut-Simulator/tree/master
