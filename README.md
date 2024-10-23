@@ -106,7 +106,16 @@ But how could we compute the 3 forces in a single shader?
 In this function in this commit https://github.com/ProgramIsFun/ue5-force-graphhhhhhhhh-521/blob/50ce2f2684cabef0576102ec612634937be007d5/Plugins/NBodySimShader/Shaders/Private/NBodySim.usf#L69
 Only the many body force is computed. 
 Perhaps we could add the link force and the center force in this function.
-For the link force, any specific thread will Be responsible for updating the velocity of two node. 
+However, because the way that we are dispatching the shader, 
+SV_DispatchThreadID Of any specific thread is likely to be not larger than the number of bodies. 
+The number of links in the graph could be much larger than number of bodies. 
+So a thread With a given SV_DispatchThreadID, 
+Could be responsible for computing all the connected nodes of a specific node With that ID. 
+So let's say the node ID 3 Has a lot of connecting nodes, 
+Then the thread With SV_DispatchThreadID 3 will be responsible for computing all the connected nodes of node 3.
+This might be a bad idea, because some thread might be computing with more times than 
+other threads on the ID that have very less connected nodes. 
+
 For the center force, This could be ignored for now. 
 
 
