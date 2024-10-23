@@ -72,12 +72,28 @@ Number 5 is chosen.
 
 ### 2
 
-Applying an example in Github. Which is a shader to calculate Many body force in two dimensional. 
+Applying an example in Github. 
+Which is a shader to calculate Many body force in two dimensional. 
+We want to change it to three dimensional. 
 
-1. We want to change it to three dimensional. 
+from Many examples In Google searches, we observe that the GPU calculation Could be Trigger in two ways. 
+1. OnPostResolvedSceneColorHandle =
+   RendererModule->
+   GetResolvedSceneColorCallbacks()
+   .AddRaw(this,
+   &XXXXXXXXXXXX::YYYYYYYYYY_RenderThread
+   ); 
+2. manually triggered By using dispatch, 
+   Passing in a callback function so that when gpu calculation is done, the callback function will be called.
 
-2. from the example we observe that the GPU calculation seems to be not manually triggered, Trying to find a way to manually trigger the gpu calculation so that it is more flexible. 
-   https://github.com/MatthisL/UE5_NBodySimulation/issues/1
+I wonder if there are a way can do it in a synchronous block way,
+https://github.com/MatthisL/UE5_NBodySimulation/issues/1,
+But I will assume now it is very difficult and not efficient to do it in this way. 
+
+So it seems we only have two main ways. But since I do not know how to use The callback function properly.
+I will try to use the first way.  
+   
+
 
 
 
