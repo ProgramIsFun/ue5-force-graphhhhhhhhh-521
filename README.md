@@ -91,8 +91,14 @@ https://github.com/MatthisL/UE5_NBodySimulation/issues/1,
 But I will assume now it is very difficult and not efficient to do it in this way. 
 
 So it seems we only have two main ways. But since I do not know how to use The callback function properly.
-I will try to use the first way.  
-   
+I will try to use the first way. 
+Because if we want to use the first way, I suggest we only have one shader, because if we have multiple shaders, 
+I'm not sure how they could execute in the correct order. 
+Because I want to ensure that we always apply the link force first, 
+and then the many body force, 
+and then the center force.
+
+But how could we compute the 3 forces in a single shader? 
 
 
 
