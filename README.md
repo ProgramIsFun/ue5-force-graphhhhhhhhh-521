@@ -102,9 +102,12 @@ Because I want to ensure that we always apply the link force first,
 and then the many body force, 
 and then the center force.
 
-But how could we compute the 3 forces in a single shader? 
-
-
+But how could we compute the 3 forces in a single shader?
+In this function in this commit https://github.com/ProgramIsFun/ue5-force-graphhhhhhhhh-521/blob/50ce2f2684cabef0576102ec612634937be007d5/Plugins/NBodySimShader/Shaders/Private/NBodySim.usf#L69
+Only the many body force is computed. 
+Perhaps we could add the link force and the center force in this function.
+For the link force, any specific thread will Be responsible for updating the velocity of two node. 
+For the center force, This could be ignored for now. 
 
 
 
