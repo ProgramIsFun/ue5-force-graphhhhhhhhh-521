@@ -27,21 +27,21 @@ void AKnowledgeGraph::InitBodies()
 	SimParameters.Bodies.SetNumUninitialized(
 		SimulationConfig->NumberOfBody +
 		SimulationConfig->CustomBodies.Num()
-		);
+	);
 	BodyTransforms.SetNumUninitialized(
 		SimulationConfig->NumberOfBody + SimulationConfig->CustomBodies.Num()
-		);
+	);
 
 	// Initialize the random Bodies with a default random position, velocity and mass depending on config.
 	for (int32 Index = 0;
-		Index < SimulationConfig->NumberOfBody;
-		++Index
-		)
+	     Index < SimulationConfig->NumberOfBody;
+	     ++Index
+	)
 	{
 		float RandomMass = FMath::FRandRange(
 			SimulationConfig->InitialBodyMassRange.X,
 			SimulationConfig->InitialBodyMassRange.Y
-			);
+		);
 
 		FVector2f RandomPosition(
 			// RandPointInCircle3ddd
@@ -50,27 +50,37 @@ void AKnowledgeGraph::InitBodies()
 			)
 		);
 
-
-		
-
 		/**
 		 *	For the velocity, we need to have a starting velocity for each body so that they are rotating into the circle clockwise.
 		 *	This allow to have a nice starting movement.
 		 *	With 0 starting velocity, we kind of have a Supernova.
 		 *	RadialSpeedRate, once applied, allow to give bodies less velocity when spawning near center (0,0) and more and more near the edge of the spawning circle.
 		 */
-		float RadialSpeedRate = SimulationConfig->BodySpawnCircleRadius / RandomPosition.Size();
+		float RadialSpeedRate =
+			SimulationConfig->BodySpawnCircleRadius /
+			RandomPosition.Size();
 		FVector2f RandomVelocity
 		{
-			FMath::FRandRange(SimulationConfig->BodySpawnVelocityRange.X, SimulationConfig->BodySpawnVelocityRange.Y) /
+			FMath::FRandRange(
+				SimulationConfig->BodySpawnVelocityRange.X,
+				SimulationConfig->BodySpawnVelocityRange.Y
+			) /
 			RadialSpeedRate,
 			0
 		};
 		/** Trigonometry to rotate velocity in a clockwise movement in the circle. */
 		RandomVelocity = RandomVelocity.GetRotated(
-			90.0f + FMath::RadiansToDegrees(FMath::Atan2(RandomPosition.Y, RandomPosition.X)));
+			90.0f +
+			FMath::RadiansToDegrees(
+				FMath::Atan2(
+					RandomPosition.Y,
+					RandomPosition.X
+				)
+			)
+		);
 
-		float MeshScale = FMath::Sqrt(RandomMass) * SimulationConfig->MeshScaling;
+		float MeshScale = FMath::Sqrt(RandomMass) *
+			SimulationConfig->MeshScaling;
 
 		FTransform MeshTransform(
 			FRotator(),
@@ -79,7 +89,12 @@ void AKnowledgeGraph::InitBodies()
 		);
 
 		BodyTransforms[Index] = MeshTransform;
-		SimParameters.Bodies[Index] = FBodyData(RandomMass, RandomPosition, RandomVelocity);
+		SimParameters.Bodies[Index] =
+			FBodyData(
+				RandomMass,
+				RandomPosition,
+				RandomVelocity
+			);
 	}
 
 	// Initialize the additional bodies set in the config file.
@@ -95,14 +110,22 @@ void AKnowledgeGraph::InitBodies()
 			FVector(MeshScale, MeshScale, 1.0f)
 		);
 
-		int32 BodyIndex = SimulationConfig->NumberOfBody + Index;
+		int32 BodyIndex =
+			SimulationConfig->NumberOfBody +
+			Index;
 		BodyTransforms[BodyIndex] = MeshTransform;
-		SimParameters.Bodies[BodyIndex] = FBodyData(CustomBodyEntry.Mass, CustomBodyEntry.SpawnPosition,
-		                                            CustomBodyEntry.SpawnVelocity);
+		SimParameters.Bodies[BodyIndex] = FBodyData(
+			CustomBodyEntry.Mass,
+			CustomBodyEntry.SpawnPosition,
+			CustomBodyEntry.SpawnVelocity
+		);
 	}
 
 	/** Finally add instances to component to spawn them. */
-	InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
+	InstancedStaticMeshComponent->AddInstances(
+		BodyTransforms,
+		false
+	);
 
 
 	SimParameters.NumBodies = SimParameters.Bodies.Num();
