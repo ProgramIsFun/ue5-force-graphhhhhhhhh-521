@@ -74,7 +74,7 @@ void AKnowledgeGraph::BeginPlay()
 		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
 		SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
 		//
-		InitBodies();
+		InitBodies();   // In this function, we also set a lot of things in SimParameters
 		//
 		FNBodySimModule::Get().BeginRendering();
 		FNBodySimModule::Get().InitWithParameters(SimParameters);

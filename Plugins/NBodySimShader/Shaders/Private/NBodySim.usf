@@ -1,5 +1,3 @@
-
-
 #include "/Engine/Private/Common.ush"
 
 
@@ -31,9 +29,9 @@ float2 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 	 *	We also avoid diving by zero.
 	 */
 	Distance = max(Distance, 100.0f);
-		
+
 	float ForceMagnitude = (GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID]) / (Distance * Distance);
-	
+
 	return Direction * ForceMagnitude;
 }
 
@@ -64,15 +62,19 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 {
 	if (ID.x >= NumBodies) return;
 
-	float2 Acceleration;// { 0, 0 };
-	
+
+	float2 Acceleration; // { 0, 0 };
+
 	for (uint i = 0; i < NumBodies; i++)
 	{
 		// Skip if self.
 		if (i == ID.x) continue;
 
-		float2 GravityForce = CalculateGravitationalForce(ID.x, i);
-		Acceleration += GravityForce / Masses[ID.x];	
+		float2 GravityForce = CalculateGravitationalForce(
+			ID.x,
+			i
+		);
+		Acceleration += GravityForce / Masses[ID.x];
 	}
 
 	Velocities[ID.x] += Acceleration * DeltaTime;
@@ -83,13 +85,13 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	float2 HalfScreen;
 	HalfScreen.x = ViewportWidth / 2.0f;
 	HalfScreen.y = ScreenHeight / 2.0f;
-	
+
 	Positions[ID.x].x = Wrap(Positions[ID.x].x, -HalfScreen.x, HalfScreen.x);
 	Positions[ID.x].y = Wrap(Positions[ID.x].y, -HalfScreen.y, HalfScreen.y);
-	
+
 	// float2 Velocity = Bodies[ID.x].Velocity + Acceleration * DeltaTime;
 	// float2 Position = Bodies[ID.x].Position + Velocity * DeltaTime;
-	
+
 	// Save new position instead of velocity for test.
 	// OutputVelocities[ID.x] = Position;
 	// OutputVelocities[ID.x] = Bodies[ID.x].Velocity + Acceleration * DeltaTime;

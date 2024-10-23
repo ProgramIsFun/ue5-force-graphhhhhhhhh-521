@@ -84,7 +84,7 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 
 			BUF_ShaderResource,
 			CreateInfo
-			);
+		);
 		MassesBufferSRV = RHICreateShaderResourceView(MassesBuffer);
 	}
 
@@ -174,7 +174,12 @@ void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListI
 
 	// FIntVector GroupCount = FComputeShaderUtils::GetGroupCount(ComputeGroupSize(SimParameters.NumBodies), FComputeShaderUtils::kGolden2DGroupSize);
 
-	FComputeShaderUtils::Dispatch(RHICmdList, ComputeShader, PassParameters, ComputeGroupSize(SimParameters.NumBodies));
+	FComputeShaderUtils::Dispatch(
+		RHICmdList,
+		ComputeShader,
+		PassParameters,
+		ComputeGroupSize(SimParameters.NumBodies)
+	);
 }
 
 FIntVector FNBodySimCSInterface::ComputeGroupSize(uint32 NumBodies)

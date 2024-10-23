@@ -87,7 +87,10 @@ void FNBodySimModule::UpdateDeltaTime(float DeltaTime)
 	RenderEveryFrameLock.Unlock();
 }
 
-void FNBodySimModule::PostResolveSceneColor_RenderThread(FRDGBuilder& Builder, const FSceneTextures& SceneTexture)
+void FNBodySimModule::PostResolveSceneColor_RenderThread(
+	FRDGBuilder& Builder,
+	const FSceneTextures& SceneTexture
+)
 {
 	if (!bCachedParametersValid)
 	{
@@ -118,17 +121,32 @@ void FNBodySimModule::ComputeSimulation_RenderThread(FNBodySimParameters& SimPar
 	FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(RHICmdList, SimParameters, CSBuffers);
 
 	RenderEveryFrameLock.Lock();
+
+
 	{
 		// Get readback data into CPU readable struct.
-		void* RawBufferData = RHILockBuffer(CSBuffers.PositionsBuffer, 0, SimParameters.NumBodies * sizeof(FVector2f),
-		                                    RLM_ReadOnly);
+		void* RawBufferData = RHILockBuffer(
+			CSBuffers.PositionsBuffer,
+			0,
+			SimParameters.NumBodies *
+			sizeof(FVector2f),
+			RLM_ReadOnly
+		);
 
 		if (OutputPositions.Num() != SimParameters.NumBodies)
+		{
 			OutputPositions.SetNumUninitialized(SimParameters.NumBodies);
-
-		FMemory::Memcpy(OutputPositions.GetData(), RawBufferData, SimParameters.NumBodies * sizeof(FVector2f));
+		}
+		FMemory::Memcpy(
+			OutputPositions.GetData(),
+			RawBufferData,
+			SimParameters.NumBodies *
+			sizeof(FVector2f)
+		);
 
 		RHIUnlockBuffer(CSBuffers.PositionsBuffer);
 	}
+
+
 	RenderEveryFrameLock.Unlock();
 }
