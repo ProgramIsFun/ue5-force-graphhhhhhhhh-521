@@ -1,23 +1,57 @@
 #include "KnowledgeGraph.h"
 
+FVector RandPointInCircle3ddd(float CircleRadius)
+{
+	FVector Point;
+	FVector::FReal L;
+
+	do
+	{
+		// Check random vectors in the unit circle so result is statistically uniform.
+		Point.X = FMath::FRand() * 2.f - 1.f;
+		Point.Y = FMath::FRand() * 2.f - 1.f;
+		Point.Z = FMath::FRand() * 2.f - 1.f;
+		L = Point.SizeSquared();
+	}
+	while (L > 1.0f);
+
+	return Point * CircleRadius;
+}
 
 void AKnowledgeGraph::InitBodies()
 {
-
 	check(InstancedStaticMeshComponent);
 	check(SimulationConfig);
 
 
-	SimParameters.Bodies.SetNumUninitialized(SimulationConfig->NumberOfBody + SimulationConfig->CustomBodies.Num());
-	BodyTransforms.SetNumUninitialized(SimulationConfig->NumberOfBody + SimulationConfig->CustomBodies.Num());
+	SimParameters.Bodies.SetNumUninitialized(
+		SimulationConfig->NumberOfBody +
+		SimulationConfig->CustomBodies.Num()
+		);
+	BodyTransforms.SetNumUninitialized(
+		SimulationConfig->NumberOfBody + SimulationConfig->CustomBodies.Num()
+		);
 
 	// Initialize the random Bodies with a default random position, velocity and mass depending on config.
-	for (int32 Index = 0; Index < SimulationConfig->NumberOfBody; ++Index)
+	for (int32 Index = 0;
+		Index < SimulationConfig->NumberOfBody;
+		++Index
+		)
 	{
-		float RandomMass = FMath::FRandRange(SimulationConfig->InitialBodyMassRange.X,
-		                                     SimulationConfig->InitialBodyMassRange.Y);
+		float RandomMass = FMath::FRandRange(
+			SimulationConfig->InitialBodyMassRange.X,
+			SimulationConfig->InitialBodyMassRange.Y
+			);
 
-		FVector2f RandomPosition(FMath::RandPointInCircle(SimulationConfig->BodySpawnCircleRadius));
+		FVector2f RandomPosition(
+			// RandPointInCircle3ddd
+			FMath::RandPointInCircle(
+				SimulationConfig->BodySpawnCircleRadius
+			)
+		);
+
+
+		
 
 		/**
 		 *	For the velocity, we need to have a starting velocity for each body so that they are rotating into the circle clockwise.
@@ -73,7 +107,6 @@ void AKnowledgeGraph::InitBodies()
 
 	SimParameters.NumBodies = SimParameters.Bodies.Num();
 	SimParameters.GravityConstant = SimulationConfig->GravitationalConstant;
-
 }
 
 
@@ -82,13 +115,13 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 	bool log = true;
 	// Retrieve GPU computed bodies position.
 	TArray<FVector2f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
-	ll("GPUOutputPositions.Num(): " + FString::FromInt(GPUOutputPositions.Num()),log);
+	ll("GPUOutputPositions.Num(): " + FString::FromInt(GPUOutputPositions.Num()), log);
 	if (GPUOutputPositions.Num() != SimParameters.Bodies.Num())
 	{
 		UE_LOG(LogTemp, Warning,
-			   TEXT(
-				   "Size differ for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (%d) Output(%d)"
-			   ), SimParameters.Bodies.Num(), GPUOutputPositions.Num());
+		       TEXT(
+			       "Size differ for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (%d) Output(%d)"
+		       ), SimParameters.Bodies.Num(), GPUOutputPositions.Num());
 		return;
 	}
 
