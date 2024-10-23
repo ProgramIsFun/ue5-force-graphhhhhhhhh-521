@@ -4,6 +4,14 @@ This project is Mainly in git@gitee.com:nameeeee/aaaaaaaaa.git
 
 The project in Other git platform is just a mirror of the project in gitee.
 
+git push -u origin main521:main521github
+
+git push -u origin3gitee main521:main521
+
+
+
+
+
 ## What is this project? 
 
 
