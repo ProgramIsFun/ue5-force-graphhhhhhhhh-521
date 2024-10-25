@@ -27,8 +27,8 @@ public:
 
 	BEGIN_SHADER_PARAMETER_STRUCT(FParameters,)
 		SHADER_PARAMETER_SRV(StructuredBuffer<float>, Masses)
-		SHADER_PARAMETER_UAV(RWStructuredBuffer<FVector2f>, Positions)
-		SHADER_PARAMETER_UAV(RWStructuredBuffer<FVector2f>, Velocities)
+		SHADER_PARAMETER_UAV(RWStructuredBuffer<FVector3f>, Positions)
+		SHADER_PARAMETER_UAV(RWStructuredBuffer<FVector3f>, Velocities)
 		SHADER_PARAMETER(uint32, NumBodies)
 		SHADER_PARAMETER(float, GravityConstant)
 		SHADER_PARAMETER(float, CameraAspectRatio)
@@ -90,8 +90,8 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 
 	if (!PositionsBuffer || !PositionsBufferUAV)
 	{
-		TResourceArray<FVector2f> ResourceArray;
-		ResourceArray.Init(FVector2f::ZeroVector, SimParameters.Bodies.Num());
+		TResourceArray<FVector3f> ResourceArray;
+		ResourceArray.Init(FVector3f::ZeroVector, SimParameters.Bodies.Num());
 
 		for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 		{
@@ -101,15 +101,15 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 		FRHIResourceCreateInfo CreateInfo(TEXT("RHICreateInfo_PositionsBuffer"));
 		CreateInfo.ResourceArray = &ResourceArray;
 
-		PositionsBuffer = RHICreateStructuredBuffer(sizeof(FVector2f), SimParameters.Bodies.Num() * sizeof(FVector2f),
+		PositionsBuffer = RHICreateStructuredBuffer(sizeof(FVector3f), SimParameters.Bodies.Num() * sizeof(FVector3f),
 		                                            BUF_UnorderedAccess | BUF_ShaderResource, CreateInfo);
 		PositionsBufferUAV = RHICreateUnorderedAccessView(PositionsBuffer, false, true);
 	}
 
 	if (!VelocitiesBuffer || !VelocitiesBufferUAV)
 	{
-		TResourceArray<FVector2f> ResourceArray;
-		ResourceArray.Init(FVector2f::ZeroVector, SimParameters.Bodies.Num());
+		TResourceArray<FVector3f> ResourceArray;
+		ResourceArray.Init(FVector3f::ZeroVector, SimParameters.Bodies.Num());
 
 		for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 		{
@@ -119,7 +119,7 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 		FRHIResourceCreateInfo CreateInfo(TEXT("RHICreateInfo_VelocitiesBuffer"));
 		CreateInfo.ResourceArray = &ResourceArray;
 
-		VelocitiesBuffer = RHICreateStructuredBuffer(sizeof(FVector2f), SimParameters.Bodies.Num() * sizeof(FVector2f),
+		VelocitiesBuffer = RHICreateStructuredBuffer(sizeof(FVector3f), SimParameters.Bodies.Num() * sizeof(FVector3f),
 		                                             BUF_UnorderedAccess | BUF_ShaderResource, CreateInfo);
 		VelocitiesBufferUAV = RHICreateUnorderedAccessView(VelocitiesBuffer, false, true);
 	}

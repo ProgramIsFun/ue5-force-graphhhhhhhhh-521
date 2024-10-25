@@ -129,7 +129,7 @@ void FNBodySimModule::ComputeSimulation_RenderThread(FNBodySimParameters& SimPar
 			CSBuffers.PositionsBuffer,
 			0,
 			SimParameters.NumBodies *
-			sizeof(FVector2f),
+			sizeof(FVector3f),
 			RLM_ReadOnly
 		);
 
@@ -141,7 +141,7 @@ void FNBodySimModule::ComputeSimulation_RenderThread(FNBodySimParameters& SimPar
 			OutputPositions.GetData(),
 			RawBufferData,
 			SimParameters.NumBodies *
-			sizeof(FVector2f)
+			sizeof(FVector3f)
 		);
 
 		RHIUnlockBuffer(CSBuffers.PositionsBuffer);

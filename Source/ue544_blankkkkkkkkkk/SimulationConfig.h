@@ -17,11 +17,11 @@ struct FBodyConfigEntry
 
 	/** The spawn 2D position of this body in the simulation's screen. */
 	UPROPERTY(EditAnywhere)
-	FVector2f SpawnPosition;
+	FVector3f SpawnPosition;
 
 	/** The spawn 2D velocity of this body in the simulation's screen. */
 	UPROPERTY(EditAnywhere)
-	FVector2f SpawnVelocity;
+	FVector3f SpawnVelocity;
 };
 
 
@@ -36,7 +36,7 @@ class UE544_BLANKKKKKKKKKK_API USimulationConfig : public UDataAsset
 public:
 	/** The number of bodies to handle in the simulation. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Body")
-	int32 NumberOfBody = 100.0f;
+	int32 NumberOfBody = 100;
 
 	/** Bodies will be spawned with a random mass included within this range. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Body")

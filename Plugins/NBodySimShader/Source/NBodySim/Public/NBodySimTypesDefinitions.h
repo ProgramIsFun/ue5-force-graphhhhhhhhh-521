@@ -16,17 +16,17 @@
 struct FBodyData
 {
 	float Mass;
-	FVector2f Position;
-	FVector2f Velocity;
+	FVector3f Position;
+	FVector3f Velocity;
 
 	FBodyData()
 		: Mass(0.0f)
-		, Position(FVector2f::Zero())
-		, Velocity(FVector2f::Zero())
+		, Position(FVector3f::Zero())
+		, Velocity(FVector3f::Zero())
 	{
 	}
 	
-	FBodyData(float InMass, FVector2f InPosition, FVector2f InVelocity)
+	FBodyData(float InMass, FVector3f InPosition, FVector3f InVelocity)
 		: Mass(InMass)
 		, Position(InPosition)
 		, Velocity(InVelocity)

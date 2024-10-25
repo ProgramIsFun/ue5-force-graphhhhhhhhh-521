@@ -3,8 +3,8 @@
 
 // Buffers
 StructuredBuffer<float> Masses;
-RWStructuredBuffer<float2> Positions;
-RWStructuredBuffer<float2> Velocities;
+RWStructuredBuffer<float3> Positions;
+RWStructuredBuffer<float3> Velocities;
 
 // Settings
 const uint NumBodies;
@@ -13,15 +13,17 @@ const float CameraAspectRatio;
 const float ViewportWidth;
 const float DeltaTime;
 
+
+
 /**
  *	Compute and return the resultant 2D gravitational force between Target and AffectingBody.
  */
-float2 CalculateGravitationalForce(
+float3 CalculateGravitationalForce(
 	uint TargetBodyID,
 	uint AffectingBodyID
 )
 {
-	float2 Direction = Positions[AffectingBodyID] - Positions[TargetBodyID];
+	float3 Direction = Positions[AffectingBodyID] - Positions[TargetBodyID];
 	Direction = normalize(Direction);
 
 	float Distance = distance(Positions[TargetBodyID], Positions[AffectingBodyID]);
@@ -74,7 +76,7 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	}
 
 
-	float2 Acceleration; // { 0, 0 };
+	float3 Acceleration; // { 0, 0 };
 
 	for (uint i = 0; i < NumBodies; i++)
 	{
@@ -84,7 +86,7 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 			continue;
 		}
 
-		float2 GravityForce = CalculateGravitationalForce(
+		float3 GravityForce = CalculateGravitationalForce(
 			ID.x,
 			i
 		);
@@ -95,10 +97,11 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	Positions[ID.x] += Velocities[ID.x] * DeltaTime;
 
 
+
 	
 	// Makes particles wrap along screen bounds.
 	// float ScreenHeight = ViewportWidth / CameraAspectRatio;
-	// float2 HalfScreen;
+	// float3 HalfScreen;
 	// HalfScreen.x = ViewportWidth / 2.0f;
 	// HalfScreen.y = ScreenHeight / 2.0f;
 	//

@@ -64,7 +64,7 @@ public:
 	// different intervals to save on locking and GPU transfer time.
 	void UpdateDeltaTime(float DeltaTime);
 
-	TArray<FVector2f> GetComputedPositions() { return OutputPositions; }
+	TArray<FVector3f> GetComputedPositions() { return OutputPositions; }
 
 private:
 	void PostResolveSceneColor_RenderThread(FRDGBuilder& Builder, const FSceneTextures& SceneTexture);
@@ -81,5 +81,5 @@ private:
 
 	FNBodySimCSBuffers CSBuffers;
 	
-	TArray<FVector2f> OutputPositions;
+	TArray<FVector3f> OutputPositions;
 };

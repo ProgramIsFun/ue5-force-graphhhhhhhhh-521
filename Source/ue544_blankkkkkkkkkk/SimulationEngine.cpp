@@ -58,6 +58,24 @@ void ASimulationEngine::Tick(float DeltaTime)
 	UpdateBodiesPosition(DeltaTime);
 }
 
+FVector RandPointInCircle(float CircleRadius)
+{
+	FVector Point;
+	FVector::FReal L;
+
+	do
+	{
+		// Check random vectors in the unit circle so result is statistically uniform.
+		Point.X = FMath::FRand() * 2.f - 1.f;
+		Point.Y = FMath::FRand() * 2.f - 1.f;
+		Point.Z = FMath::FRand() * 2.f - 1.f;
+		L = Point.SizeSquared();
+	}
+	while (L > 1.0f);
+
+	return Point * CircleRadius;
+}
+
 
 void ASimulationEngine::InitBodies()
 {
@@ -73,7 +91,11 @@ void ASimulationEngine::InitBodies()
 	{
 		float RandomMass = FMath::FRandRange(SimulationConfig->InitialBodyMassRange.X, SimulationConfig->InitialBodyMassRange.Y);
 
-		FVector2f RandomPosition(FMath::RandPointInCircle(SimulationConfig->BodySpawnCircleRadius));
+		FVector3f RandomPosition(
+			FVector3f(RandPointInCircle(SimulationConfig->BodySpawnCircleRadius)
+			)
+			
+			);
 
 		/**
 		 *	For the velocity, we need to have a starting velocity for each body so that they are rotating into the circle clockwise.
@@ -82,20 +104,19 @@ void ASimulationEngine::InitBodies()
 		 *	RadialSpeedRate, once applied, allow to give bodies less velocity when spawning near center (0,0) and more and more near the edge of the spawning circle.
 		 */
 		float RadialSpeedRate = SimulationConfig->BodySpawnCircleRadius / RandomPosition.Size();
-		FVector2f RandomVelocity
+		FVector3f RandomVelocity
 		{
-			FMath::FRandRange(SimulationConfig->BodySpawnVelocityRange.X, SimulationConfig->BodySpawnVelocityRange.Y) / RadialSpeedRate,
-			0
+			0,0,0
 		};
 		/** Trigonometry to rotate velocity in a clockwise movement in the circle. */
-		RandomVelocity = RandomVelocity.GetRotated(90.0f + FMath::RadiansToDegrees(FMath::Atan2(RandomPosition.Y, RandomPosition.X)));
+		// RandomVelocity = RandomVelocity.GetRotated(90.0f + FMath::RadiansToDegrees(FMath::Atan2(RandomPosition.Y, RandomPosition.X)));
 		
 		float MeshScale = FMath::Sqrt(RandomMass) * SimulationConfig->MeshScaling;
 		
 		FTransform MeshTransform(
 			FRotator(),
-			FVector(FVector2D(RandomPosition), 0.0f),
-			FVector(MeshScale, MeshScale, 1.0f)
+			FVector(RandomPosition),
+			FVector(MeshScale, MeshScale, MeshScale)
 		);
 		
 		BodyTransforms[Index] = MeshTransform;
@@ -103,22 +124,22 @@ void ASimulationEngine::InitBodies()
 	}
 
 	// Initialize the additional bodies set in the config file.
-	for (int32 Index = 0; Index < SimulationConfig->CustomBodies.Num(); ++Index)
-	{
-		FBodyConfigEntry CustomBodyEntry = SimulationConfig->CustomBodies[Index];
-		
-		float MeshScale = FMath::Sqrt(CustomBodyEntry.Mass) * SimulationConfig->MeshScaling;
-		
-		FTransform MeshTransform (
-		FRotator(),
-		FVector(FVector2D(CustomBodyEntry.SpawnPosition), 0.0f),
-		FVector(MeshScale, MeshScale, 1.0f)
-		);
-
-		int32 BodyIndex = SimulationConfig->NumberOfBody + Index;
-		BodyTransforms[BodyIndex] = MeshTransform;
-		SimParameters.Bodies[BodyIndex] = FBodyData(CustomBodyEntry.Mass, CustomBodyEntry.SpawnPosition, CustomBodyEntry.SpawnVelocity);
-	}
+	// for (int32 Index = 0; Index < SimulationConfig->CustomBodies.Num(); ++Index)
+	// {
+	// 	FBodyConfigEntry CustomBodyEntry = SimulationConfig->CustomBodies[Index];
+	// 	
+	// 	float MeshScale = FMath::Sqrt(CustomBodyEntry.Mass) * SimulationConfig->MeshScaling;
+	// 	
+	// 	FTransform MeshTransform (
+	// 	FRotator(),
+	// 	FVector(FVector2D(CustomBodyEntry.SpawnPosition), 0.0f),
+	// 	FVector(MeshScale, MeshScale, 1.0f)
+	// 	);
+	//
+	// 	int32 BodyIndex = SimulationConfig->NumberOfBody + Index;
+	// 	BodyTransforms[BodyIndex] = MeshTransform;
+	// 	SimParameters.Bodies[BodyIndex] = FBodyData(CustomBodyEntry.Mass, CustomBodyEntry.SpawnPosition, CustomBodyEntry.SpawnVelocity);
+	// }
 
 	/** Finally add instances to component to spawn them. */
 	InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
@@ -131,7 +152,7 @@ void ASimulationEngine::InitBodies()
 void ASimulationEngine::UpdateBodiesPosition(float DeltaTime)
 {
 	// Retrieve GPU computed bodies position.
-	TArray<FVector2f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
+	TArray<FVector3f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
 
 	if (GPUOutputPositions.Num() != SimParameters.Bodies.Num())
 	{
@@ -141,20 +162,20 @@ void ASimulationEngine::UpdateBodiesPosition(float DeltaTime)
 		{
 
 			UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
-			// return;
+			return;
 		}
 
-		return;
+		// return;
 	}
 
-	ll("First element of GPUOutputPositions: " + FString::SanitizeFloat(GPUOutputPositions[0].X) + " " + FString::SanitizeFloat(GPUOutputPositions[0].Y),true,2);
+	// ll("First element of GPUOutputPositions: " + FString::SanitizeFloat(GPUOutputPositions[0].X) + " " + FString::SanitizeFloat(GPUOutputPositions[0].Y),true,2);
 	
-	QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
+	// QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
 
 	// Update bodies visual with new positions.
 	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 	{
-		BodyTransforms[i].SetTranslation(FVector(FVector2D(GPUOutputPositions[i]), 0.0f));
+		BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
 	}
 	InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
 }
