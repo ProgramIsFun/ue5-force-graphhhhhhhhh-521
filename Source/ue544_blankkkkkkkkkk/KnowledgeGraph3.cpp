@@ -1,22 +1,5 @@
 #include "KnowledgeGraph.h"
 
-FVector RandPointInCircle3ddd(float CircleRadius)
-{
-	FVector Point;
-	FVector::FReal L;
-
-	do
-	{
-		// Check random vectors in the unit circle so result is statistically uniform.
-		Point.X = FMath::FRand() * 2.f - 1.f;
-		Point.Y = FMath::FRand() * 2.f - 1.f;
-		Point.Z = FMath::FRand() * 2.f - 1.f;
-		L = Point.SizeSquared();
-	}
-	while (L > 1.0f);
-
-	return Point * CircleRadius;
-}
 
 
 void AKnowledgeGraph::InitBodies()
@@ -107,7 +90,7 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 		return;
 	}
 
-	QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
+	// QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
 
 	// Update bodies visual with new positions.
 	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
