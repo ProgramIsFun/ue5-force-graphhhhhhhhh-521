@@ -79,14 +79,14 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	Positions[ID.x] += Velocities[ID.x] * DeltaTime;
 
 	// Makes particles wrap along screen bounds.
-	float ScreenHeight = ViewportWidth / CameraAspectRatio;
-	float2 HalfScreen;
-	HalfScreen.x = ViewportWidth / 2.0f;
-	HalfScreen.y = ScreenHeight / 2.0f;
-	
-	Positions[ID.x].x = Wrap(Positions[ID.x].x, -HalfScreen.x, HalfScreen.x);
-	Positions[ID.x].y = Wrap(Positions[ID.x].y, -HalfScreen.y, HalfScreen.y);
-	
+	// float ScreenHeight = ViewportWidth / CameraAspectRatio;
+	// float2 HalfScreen;
+	// HalfScreen.x = ViewportWidth / 2.0f;
+	// HalfScreen.y = ScreenHeight / 2.0f;
+	//
+	// Positions[ID.x].x = Wrap(Positions[ID.x].x, -HalfScreen.x, HalfScreen.x);
+	// Positions[ID.x].y = Wrap(Positions[ID.x].y, -HalfScreen.y, HalfScreen.y);
+	//
 	// float2 Velocity = Bodies[ID.x].Velocity + Acceleration * DeltaTime;
 	// float2 Position = Bodies[ID.x].Position + Velocity * DeltaTime;
 	
