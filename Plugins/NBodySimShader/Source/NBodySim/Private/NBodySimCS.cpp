@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "NBodySimCS.h"
@@ -13,7 +14,6 @@
 #include "NBodySimModule.h"
 
 DECLARE_STATS_GROUP(TEXT("NBodySimCS"), STATGROUP_NBodySimCS, STATCAT_Advanced);
-
 DECLARE_CYCLE_STAT(TEXT("NBodySimCS Execute"), STAT_NBodySimCS_Execute, STATGROUP_NBodySimCS);
 
 /**********************************************************************************************/
@@ -25,7 +25,7 @@ public:
 	DECLARE_GLOBAL_SHADER(FNBodySimCS);
 	SHADER_USE_PARAMETER_STRUCT(FNBodySimCS, FGlobalShader);
 
-	BEGIN_SHADER_PARAMETER_STRUCT(FParameters,)
+	BEGIN_SHADER_PARAMETER_STRUCT(FParameters, )
 		SHADER_PARAMETER_SRV(StructuredBuffer<float>, Masses)
 		SHADER_PARAMETER_UAV(RWStructuredBuffer<FVector3f>, Positions)
 		SHADER_PARAMETER_UAV(RWStructuredBuffer<FVector3f>, Velocities)
@@ -47,8 +47,7 @@ public:
 		return true;
 	}
 
-	static inline void ModifyCompilationEnvironment(const FGlobalShaderPermutationParameters& Parameters,
-	                                                FShaderCompilerEnvironment& OutEnvironment)
+	static inline void ModifyCompilationEnvironment(const FGlobalShaderPermutationParameters& Parameters, FShaderCompilerEnvironment& OutEnvironment)
 	{
 		FGlobalShader::ModifyCompilationEnvironment(Parameters, OutEnvironment);
 
@@ -61,6 +60,7 @@ public:
 // This will tell the engine to create the shader and where the shader entry point is.
 //                      ShaderType              ShaderPath                     Shader function name    Type
 IMPLEMENT_GLOBAL_SHADER(FNBodySimCS, "/NBodySimShaders/Private/NBodySim.usf", "CalculateVelocitiesCS", SF_Compute);
+
 
 
 void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
@@ -78,13 +78,7 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 		FRHIResourceCreateInfo CreateInfo(TEXT("RHICreateInfo_MassesBuffer"));
 		CreateInfo.ResourceArray = &ResourceArray;
 
-		MassesBuffer = RHICreateStructuredBuffer(
-			sizeof(float),
-			SimParameters.Bodies.Num() * sizeof(float),
-
-			BUF_ShaderResource,
-			CreateInfo
-		);
+		MassesBuffer = RHICreateStructuredBuffer(sizeof(float), SimParameters.Bodies.Num() * sizeof(float), BUF_ShaderResource, CreateInfo);
 		MassesBufferSRV = RHICreateShaderResourceView(MassesBuffer);
 	}
 
@@ -101,8 +95,7 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 		FRHIResourceCreateInfo CreateInfo(TEXT("RHICreateInfo_PositionsBuffer"));
 		CreateInfo.ResourceArray = &ResourceArray;
 
-		PositionsBuffer = RHICreateStructuredBuffer(sizeof(FVector3f), SimParameters.Bodies.Num() * sizeof(FVector3f),
-		                                            BUF_UnorderedAccess | BUF_ShaderResource, CreateInfo);
+		PositionsBuffer = RHICreateStructuredBuffer(sizeof(FVector3f), SimParameters.Bodies.Num() * sizeof(FVector3f), BUF_UnorderedAccess | BUF_ShaderResource, CreateInfo);
 		PositionsBufferUAV = RHICreateUnorderedAccessView(PositionsBuffer, false, true);
 	}
 
@@ -119,40 +112,34 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 		FRHIResourceCreateInfo CreateInfo(TEXT("RHICreateInfo_VelocitiesBuffer"));
 		CreateInfo.ResourceArray = &ResourceArray;
 
-		VelocitiesBuffer = RHICreateStructuredBuffer(sizeof(FVector3f), SimParameters.Bodies.Num() * sizeof(FVector3f),
-		                                             BUF_UnorderedAccess | BUF_ShaderResource, CreateInfo);
+		VelocitiesBuffer = RHICreateStructuredBuffer(sizeof(FVector3f), SimParameters.Bodies.Num() * sizeof(FVector3f), BUF_UnorderedAccess | BUF_ShaderResource, CreateInfo);
 		VelocitiesBufferUAV = RHICreateUnorderedAccessView(VelocitiesBuffer, false, true);
 	}
 }
 
 void FNBodySimCSBuffers::Release()
 {
-	if (MassesBuffer) MassesBuffer.SafeRelease();
-	if (MassesBufferSRV) MassesBufferSRV.SafeRelease();
+	if (MassesBuffer)			MassesBuffer.SafeRelease();
+	if (MassesBufferSRV)		MassesBufferSRV.SafeRelease();
 
-	if (PositionsBuffer) PositionsBuffer.SafeRelease();
-	if (PositionsBufferUAV) PositionsBufferUAV.SafeRelease();
+	if (PositionsBuffer)		PositionsBuffer.SafeRelease();
+	if (PositionsBufferUAV)	PositionsBufferUAV.SafeRelease();
 
-	if (VelocitiesBuffer) VelocitiesBuffer.SafeRelease();
-	if (VelocitiesBufferUAV) VelocitiesBufferUAV.SafeRelease();
+	if (VelocitiesBuffer)		VelocitiesBuffer.SafeRelease();
+	if (VelocitiesBufferUAV)	VelocitiesBufferUAV.SafeRelease();
 }
 
-void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListImmediate& RHICmdList,
-                                                                FNBodySimParameters& SimParameters,
-                                                                FNBodySimCSBuffers Buffers)
+void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListImmediate& RHICmdList, FNBodySimParameters& SimParameters, FNBodySimCSBuffers Buffers)
 {
-	QUICK_SCOPE_CYCLE_COUNTER(STAT_ShaderPlugin_ComputeBodyPositions);
-	// Used to gather CPU profiling data for the UE4 session frontend
-	SCOPED_DRAW_EVENT(RHICmdList, ShaderPlugin_ComputeBodyPositions);
-	// Used to profile GPU activity and add metadata to be consumed by for example RenderDoc
+	QUICK_SCOPE_CYCLE_COUNTER(STAT_ShaderPlugin_ComputeBodyPositions); // Used to gather CPU profiling data for the UE4 session frontend
+	SCOPED_DRAW_EVENT(RHICmdList, ShaderPlugin_ComputeBodyPositions); // Used to profile GPU activity and add metadata to be consumed by for example RenderDoc
 
 	// Transition setup
-	ERHIAccess BarrierAccess = ERHIAccess::CopySrc | ERHIAccess::CopyDest | ERHIAccess::SRVCompute |
-		ERHIAccess::SRVGraphics | ERHIAccess::UAVCompute | ERHIAccess::UAVGraphics;
-
+	ERHIAccess BarrierAccess = ERHIAccess::CopySrc | ERHIAccess::CopyDest | ERHIAccess::SRVCompute | ERHIAccess::SRVGraphics | ERHIAccess::UAVCompute | ERHIAccess::UAVGraphics;
+	
 	FRHITransitionInfo TransitionInfoPositions(Buffers.PositionsBuffer, BarrierAccess);
 	RHICmdList.Transition(TransitionInfoPositions);
-
+		
 	FRHITransitionInfo TransitionInfoVelocities(Buffers.VelocitiesBuffer, BarrierAccess);
 	RHICmdList.Transition(TransitionInfoVelocities);
 
@@ -174,22 +161,14 @@ void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListI
 
 	// FIntVector GroupCount = FComputeShaderUtils::GetGroupCount(ComputeGroupSize(SimParameters.NumBodies), FComputeShaderUtils::kGolden2DGroupSize);
 
-	FComputeShaderUtils::Dispatch(
-		RHICmdList,
-		ComputeShader,
-		PassParameters,
-		ComputeGroupSize(SimParameters.NumBodies)
-	);
+	FComputeShaderUtils::Dispatch(RHICmdList, ComputeShader, PassParameters, ComputeGroupSize(SimParameters.NumBodies));
 }
 
 FIntVector FNBodySimCSInterface::ComputeGroupSize(uint32 NumBodies)
 {
 	const int ThreadCount = 256;
 
-	int FinalCount = (
-		(NumBodies - 1) /
-		ThreadCount
-		) + 1;
+	int FinalCount = ((NumBodies - 1) / ThreadCount) + 1;
 
 	return FIntVector(FinalCount, 1, 1);
 }

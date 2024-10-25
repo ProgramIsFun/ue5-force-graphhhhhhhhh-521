@@ -1,3 +1,5 @@
+
+
 #include "NBodySimModule.h"
 
 #include "Misc/Paths.h"
@@ -23,8 +25,7 @@ void FNBodySimModule::StartupModule()
 	bCachedParametersValid = false;
 
 	// Maps virtual shader source directory to the plugin's actual shaders directory.
-	FString PluginShaderDir = FPaths::Combine(IPluginManager::Get().FindPlugin(TEXT("NBodySimShader"))->GetBaseDir(),
-	                                          TEXT("Shaders"));
+	FString PluginShaderDir = FPaths::Combine(IPluginManager::Get().FindPlugin(TEXT("NBodySimShader"))->GetBaseDir(), TEXT("Shaders"));
 	AddShaderSourceDirectoryMapping(TEXT("/NBodySimShaders"), PluginShaderDir);
 }
 
@@ -46,12 +47,7 @@ void FNBodySimModule::BeginRendering()
 	IRendererModule* RendererModule = FModuleManager::GetModulePtr<IRendererModule>(RendererModuleName);
 	if (RendererModule)
 	{
-		OnPostResolvedSceneColorHandle =
-			RendererModule->
-			GetResolvedSceneColorCallbacks()
-			.AddRaw(this,
-			        &FNBodySimModule::PostResolveSceneColor_RenderThread
-			);
+		OnPostResolvedSceneColorHandle = RendererModule->GetResolvedSceneColorCallbacks().AddRaw(this, &FNBodySimModule::PostResolveSceneColor_RenderThread);
 	}
 }
 
@@ -87,16 +83,13 @@ void FNBodySimModule::UpdateDeltaTime(float DeltaTime)
 	RenderEveryFrameLock.Unlock();
 }
 
-void FNBodySimModule::PostResolveSceneColor_RenderThread(
-	FRDGBuilder& Builder,
-	const FSceneTextures& SceneTexture
-)
+void FNBodySimModule::PostResolveSceneColor_RenderThread(FRDGBuilder& Builder, const FSceneTextures& SceneTexture)
 {
 	if (!bCachedParametersValid)
 	{
 		return;
 	}
-
+	
 	// Depending on your data, you might not have to lock here, just added this code to show how you can do it if you have to.
 	RenderEveryFrameLock.Lock();
 	FNBodySimParameters Copy = CachedNBodySimParameters;
@@ -108,45 +101,27 @@ void FNBodySimModule::PostResolveSceneColor_RenderThread(
 void FNBodySimModule::ComputeSimulation_RenderThread(FNBodySimParameters& SimParameters)
 {
 	check(IsInRenderingThread());
-
+	
 	FRHICommandListImmediate& RHICmdList = GRHICommandList.GetImmediateCommandList();
 
-	QUICK_SCOPE_CYCLE_COUNTER(STAT_ShaderPlugin_ComputeSimulation);
-	// Used to gather CPU profiling data for the UE session frontend
-	SCOPED_DRAW_EVENT(RHICmdList, ShaderPlugin_ComputeSimulation);
-	// Used to profile GPU activity and add metadata to be consumed by for example RenderDoc
+	QUICK_SCOPE_CYCLE_COUNTER(STAT_ShaderPlugin_ComputeSimulation); // Used to gather CPU profiling data for the UE session frontend
+	SCOPED_DRAW_EVENT(RHICmdList, ShaderPlugin_ComputeSimulation); // Used to profile GPU activity and add metadata to be consumed by for example RenderDoc
 
 	CSBuffers.Initialize(SimParameters);
-
+	
 	FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(RHICmdList, SimParameters, CSBuffers);
 
 	RenderEveryFrameLock.Lock();
-
-
 	{
 		// Get readback data into CPU readable struct.
-		void* RawBufferData = RHILockBuffer(
-			CSBuffers.PositionsBuffer,
-			0,
-			SimParameters.NumBodies *
-			sizeof(FVector3f),
-			RLM_ReadOnly
-		);
+		void* RawBufferData = RHILockBuffer(CSBuffers.PositionsBuffer, 0, SimParameters.NumBodies * sizeof(FVector3f), RLM_ReadOnly);
 
 		if (OutputPositions.Num() != SimParameters.NumBodies)
-		{
 			OutputPositions.SetNumUninitialized(SimParameters.NumBodies);
-		}
-		FMemory::Memcpy(
-			OutputPositions.GetData(),
-			RawBufferData,
-			SimParameters.NumBodies *
-			sizeof(FVector3f)
-		);
-
+		
+		FMemory::Memcpy(OutputPositions.GetData(), RawBufferData, SimParameters.NumBodies * sizeof(FVector3f));
+	
 		RHIUnlockBuffer(CSBuffers.PositionsBuffer);
 	}
-
-
 	RenderEveryFrameLock.Unlock();
 }

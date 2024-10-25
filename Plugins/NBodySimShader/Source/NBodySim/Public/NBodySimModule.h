@@ -20,12 +20,7 @@ public:
 	float ViewportWidth;
 	float DeltaTime;
 	
-	FNBodySimParameters():
-	NumBodies(0),
-	GravityConstant(0),
-	CameraAspectRatio(0),
-	ViewportWidth(0),
-	DeltaTime(0)
+	FNBodySimParameters(): NumBodies(0), GravityConstant(0), CameraAspectRatio(0), ViewportWidth(0), DeltaTime(0)
 	{
 	}
 };

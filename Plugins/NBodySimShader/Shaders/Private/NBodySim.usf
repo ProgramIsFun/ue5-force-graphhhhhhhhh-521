@@ -1,10 +1,12 @@
+
+
 #include "/Engine/Private/Common.ush"
 
 
 // Buffers
 StructuredBuffer<float> Masses;
-RWStructuredBuffer<float3> Positions;
-RWStructuredBuffer<float3> Velocities;
+RWStructuredBuffer<float2> Positions;
+RWStructuredBuffer<float2> Velocities;
 
 // Settings
 const uint NumBodies;
@@ -13,17 +15,12 @@ const float CameraAspectRatio;
 const float ViewportWidth;
 const float DeltaTime;
 
-
-
 /**
  *	Compute and return the resultant 2D gravitational force between Target and AffectingBody.
  */
-float3 CalculateGravitationalForce(
-	uint TargetBodyID,
-	uint AffectingBodyID
-)
+float2 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 {
-	float3 Direction = Positions[AffectingBodyID] - Positions[TargetBodyID];
+	float2 Direction = Positions[AffectingBodyID] - Positions[TargetBodyID];
 	Direction = normalize(Direction);
 
 	float Distance = distance(Positions[TargetBodyID], Positions[AffectingBodyID]);
@@ -34,14 +31,9 @@ float3 CalculateGravitationalForce(
 	 *	We also avoid diving by zero.
 	 */
 	Distance = max(Distance, 100.0f);
-
-	float ForceMagnitude = (
-			GravityConstant *
-			Masses[TargetBodyID] *
-			Masses[AffectingBodyID]
-		) /
-		(Distance * Distance);
-
+		
+	float ForceMagnitude = (GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID]) / (Distance * Distance);
+	
 	return Direction * ForceMagnitude;
 }
 
@@ -70,49 +62,35 @@ float Wrap(const float Val, const float Min, const float Max)
 [numthreads(256, 1, 1)]
 void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 {
-	if (ID.x >= NumBodies)
-	{
-		return;
-	}
+	if (ID.x >= NumBodies) return;
 
-
-	float3 Acceleration; // { 0, 0 };
-
+	float2 Acceleration;// { 0, 0 };
+	
 	for (uint i = 0; i < NumBodies; i++)
 	{
 		// Skip if self.
-		if (i == ID.x)
-		{
-			continue;
-		}
+		if (i == ID.x) continue;
 
-		float3 GravityForce = CalculateGravitationalForce(
-			ID.x,
-			i
-		);
-		Acceleration += GravityForce / Masses[ID.x];
+		float2 GravityForce = CalculateGravitationalForce(ID.x, i);
+		Acceleration += GravityForce / Masses[ID.x];	
 	}
 
 	Velocities[ID.x] += Acceleration * DeltaTime;
 	Positions[ID.x] += Velocities[ID.x] * DeltaTime;
 
-
-
-	
 	// Makes particles wrap along screen bounds.
-	// float ScreenHeight = ViewportWidth / CameraAspectRatio;
-	// float3 HalfScreen;
-	// HalfScreen.x = ViewportWidth / 2.0f;
-	// HalfScreen.y = ScreenHeight / 2.0f;
-	//
-	// Positions[ID.x].x = Wrap(
-	// 	Positions[ID.x].x,
-	// 	-HalfScreen.x,
-	// 	HalfScreen.x
-	// 	);
-	// Positions[ID.x].y = Wrap(
-	// 	Positions[ID.x].y,
-	// 	-HalfScreen.y,
-	// 	HalfScreen.y
-	// 	);
+	float ScreenHeight = ViewportWidth / CameraAspectRatio;
+	float2 HalfScreen;
+	HalfScreen.x = ViewportWidth / 2.0f;
+	HalfScreen.y = ScreenHeight / 2.0f;
+	
+	Positions[ID.x].x = Wrap(Positions[ID.x].x, -HalfScreen.x, HalfScreen.x);
+	Positions[ID.x].y = Wrap(Positions[ID.x].y, -HalfScreen.y, HalfScreen.y);
+	
+	// float2 Velocity = Bodies[ID.x].Velocity + Acceleration * DeltaTime;
+	// float2 Position = Bodies[ID.x].Position + Velocity * DeltaTime;
+	
+	// Save new position instead of velocity for test.
+	// OutputVelocities[ID.x] = Position;
+	// OutputVelocities[ID.x] = Bodies[ID.x].Velocity + Acceleration * DeltaTime;
 }
