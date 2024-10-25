@@ -21,8 +21,13 @@ AKnowledgeGraph::AKnowledgeGraph()
 		PrimaryActorTick.bStartWithTickEnabled = true;
 		PrimaryActorTick.TickGroup = TG_DuringPhysics;
 
-		InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
-			TEXT("InstancedStaticMeshComponent"));
+
+		if(use_instance_static_mesh)
+		{
+			InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
+				TEXT("InstancedStaticMeshComponent"));
+		}
+
 	}
 
 }

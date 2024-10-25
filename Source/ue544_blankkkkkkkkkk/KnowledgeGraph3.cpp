@@ -66,8 +66,11 @@ void AKnowledgeGraph::InitBodies()
 	// }
 
 	/** Finally add instances to component to spawn them. */
-	InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
 
+	if(use_instance_static_mesh)
+	{
+		InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
+	}
 
 	SimParameters.NumBodies = SimParameters.Bodies.Num();
 
@@ -95,9 +98,17 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 	// Update bodies visual with new positions.
 	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 	{
-		// BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
+		if (use_instance_static_mesh)
+		{
+			BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
+		}
+		
 
 		TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
 	}
-	// InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+
+	if (use_instance_static_mesh)
+	{
+		InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+	}
 }
