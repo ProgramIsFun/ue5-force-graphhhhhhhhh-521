@@ -5,6 +5,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #define print(text) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::White,text)
 
+
+
 // Sets default values
 AKnowledgeEdge::AKnowledgeEdge()
 {
@@ -14,7 +16,9 @@ AKnowledgeEdge::AKnowledgeEdge()
     MySphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
     MySphere->SetHiddenInGame(false, true);
     RootComponent = MySphere;
-    if (0)
+
+
+	if (0)
     {
 	    SphereMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereMesh"));
 	    // SphereMesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);

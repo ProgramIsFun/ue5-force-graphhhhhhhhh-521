@@ -6,6 +6,8 @@
 // #include "SimulationLogChannels.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NBodySimModule.h"
+#include "Components/TextRenderComponent.h"
+#include "ue544_blankkkkkkkkkk/utillllllssss.h"
 
 // Sets default values
 ASimulationEngine::ASimulationEngine(const FObjectInitializer& ObjectInitializer)
@@ -14,14 +16,37 @@ ASimulationEngine::ASimulationEngine(const FObjectInitializer& ObjectInitializer
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.TickGroup = TG_DuringPhysics;
+
 	
 	InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("InstancedStaticMeshComponent"));
+
+
+	// for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
+	// {
+	// 	UTextRenderComponent* TextComponent = CreateDefaultSubobject<UTextRenderComponent>(FName("TextComponent" + FString::FromInt(i)));
+	// 	TextComponent->SetText(FText::FromString("Sample Text"));
+	// 	TextComponents11111111111111111111.Add(TextComponent);
+	// 	TextComponent->SetupAttachment(RootComponent);
+	// }
+
 }
 
 // Called when the game starts or when spawned
 void ASimulationEngine::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
+	{
+		UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
+		if (TextComponent)
+		{
+			TextComponent->SetText(FText::FromString("Sample Text"));
+			TextComponent->SetupAttachment(RootComponent);
+			TextComponent->RegisterComponent();  // This is important to initialize the component
+			TextComponents11111111111111111111.Add(TextComponent);  // Assuming TextComponents is a valid TArray<UTextRenderComponent*>
+		}
+	}
 	
 	if (!SimulationConfig)
 	{
@@ -59,23 +84,6 @@ void ASimulationEngine::Tick(float DeltaTime)
 }
 
 
-FVector RandPointInCircle(float CircleRadius)
-{
-	FVector Point;
-	FVector::FReal L;
-
-	do
-	{
-		// Check random vectors in the unit circle so result is statistically uniform.
-		Point.X = FMath::FRand() * 2.f - 1.f;
-		Point.Y = FMath::FRand() * 2.f - 1.f;
-		Point.Z = FMath::FRand() * 2.f - 1.f;
-		L = Point.SizeSquared();
-	}
-	while (L > 1.0f);
-
-	return Point * CircleRadius;
-}
 
 
 void ASimulationEngine::InitBodies()
@@ -162,9 +170,21 @@ void ASimulationEngine::UpdateBodiesPosition(float DeltaTime)
 	// Update bodies visual with new positions.
 	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 	{
-		BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
+
+
+		
+		// BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
+
+		TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
+		
 	}
-	InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+	// InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+
+	
+	
+
+
+
 }
 
 

@@ -72,10 +72,19 @@ public:
 	void tttttttttttt();
 
 
+	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool testing_shaders_from_other_repo = true;
 
 
+	// Use instance static mesh or not
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_instance_static_mesh = true;
+
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
 
 
 
@@ -220,7 +229,7 @@ public:
 	
 	FNBodySimParameters SimParameters;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Simulation1111111111111")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="aaaaaaaaaaaaaaSimulation1111111111111")
 	TObjectPtr<USimulationConfig> SimulationConfig;
 
 	/** Store the transform of all body of the simulation. */

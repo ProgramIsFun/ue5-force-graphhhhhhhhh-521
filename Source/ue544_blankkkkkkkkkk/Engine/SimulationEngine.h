@@ -8,6 +8,7 @@
 #include "NBodySimTypesDefinitions.h"
 #include "../Config/SimulationConfig.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "SimulationEngine.generated.h"
 
 UCLASS()
@@ -47,4 +48,12 @@ private:
 	/** Store the transform of all body of the simulation. */
 	UPROPERTY()
 	TArray<FTransform> BodyTransforms;
+
+
+
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
+
+
 };
