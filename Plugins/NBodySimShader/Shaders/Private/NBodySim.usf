@@ -30,9 +30,12 @@ float2 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 	 *	This would make some body to get super high acceleration.
 	 *	We also avoid diving by zero.
 	 */
-	Distance = max(Distance, 100.0f);
-		
-	float ForceMagnitude = (GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID]) / (Distance * Distance);
+	// Distance = max(Distance, 100.0f);
+
+	
+	float ForceMagnitude = (
+		GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID]) /
+			(Distance * Distance);
 	
 	return Direction * ForceMagnitude;
 }
