@@ -173,12 +173,12 @@ void ASimulationEngine::UpdateBodiesPosition(float DeltaTime)
 
 
 		
-		// BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
+		BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
 
-		TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
+		// TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
 		
 	}
-	// InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+	InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
 
 	
 	
