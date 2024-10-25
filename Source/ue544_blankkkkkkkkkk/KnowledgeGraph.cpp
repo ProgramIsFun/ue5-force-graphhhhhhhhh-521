@@ -58,6 +58,13 @@ void AKnowledgeGraph::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (use_tick_interval)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
+
+		PrimaryActorTick.TickInterval = tick_interval;
+	}
+	
 	for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
 	{
 		UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
@@ -124,12 +131,7 @@ void AKnowledgeGraph::BeginPlay()
 		ClearLogFile();
 
 
-		if (use_tick_interval)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
-
-			PrimaryActorTick.TickInterval = tick_interval;
-		}
+		
 	
 		// generateGraph();
 		timeThisMemberFunction(
@@ -170,10 +172,19 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
 	if (testing_shaders_from_other_repo)
 	{
-		SimParameters.DeltaTime = DeltaTime;
-		FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
-
-		UpdateBodiesPosition(DeltaTime);
+		if (use_constant_delta_time<0)
+		{
+			SimParameters.DeltaTime = DeltaTime;
+			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
+			UpdateBodiesPosition(DeltaTime);
+		}
+		else
+		{
+			float DeltaTime = use_constant_delta_time;
+			SimParameters.DeltaTime = DeltaTime;
+			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
+			UpdateBodiesPosition(DeltaTime);
+		}
 	}
 
 	if (!testing_shaders_from_other_repo)

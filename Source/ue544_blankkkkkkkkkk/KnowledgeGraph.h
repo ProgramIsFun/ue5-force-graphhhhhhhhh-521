@@ -86,9 +86,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
 
+	// If want to use constant delta time
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	float use_constant_delta_time = -1;
 
 
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_parallel = false;
 
