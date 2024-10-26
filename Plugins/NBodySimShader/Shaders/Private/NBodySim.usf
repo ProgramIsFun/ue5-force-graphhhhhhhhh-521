@@ -37,15 +37,15 @@ float3 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 	
 	float ForceMagnitude;
 
-
 	if (0)
 	{
 		ForceMagnitude = GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID] / (Distance * Distance);
 	}
 	else
 	{
-		ForceMagnitude = -0.001;
+		ForceMagnitude = -0.1;
 	}
+
 	
 	return Direction * ForceMagnitude;
 }
