@@ -40,7 +40,7 @@ class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 
 public:
 	AKnowledgeGraph(const FObjectInitializer& ObjectInitializer);
-	~AKnowledgeGraph();
+	
 	void GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster);
 
 

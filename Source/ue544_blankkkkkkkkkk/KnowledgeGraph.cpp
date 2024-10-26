@@ -33,10 +33,7 @@ AKnowledgeGraph::AKnowledgeGraph(const FObjectInitializer& ObjectInitializer)
 
 }
 
-AKnowledgeGraph::~AKnowledgeGraph()
-{
-	UE_LOG(LogTemp, Warning, TEXT("DESTRUCTOR CALLED!@!!!!!!!!!!!!!!!!!!!!!!!!!!"));
-}
+
 
 
 
