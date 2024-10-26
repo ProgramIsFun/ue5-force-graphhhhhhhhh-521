@@ -88,14 +88,9 @@ void AKnowledgeGraph::BeginPlay()
 		
 		if (!SimulationConfig)
 		{
-			// UE_LOG(LogNBodySimulation, Error,
-			//        TEXT(
-			// 	       "Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine."
-			//        ));
 			ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",true,2);
-			// UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit,
-			// 							   false);
-			
+
+			qq();
 			return;
 		}
 

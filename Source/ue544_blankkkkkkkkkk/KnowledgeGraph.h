@@ -17,6 +17,7 @@
 #include "NBodySimModule.h"
 #include "Config/SimulationConfig.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -228,7 +229,10 @@ public:
 		return ElapsedTime;
 	}
 
-
+	void qq()
+	{
+		UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
+	}
 
 	//////////// Testing new shader. /////////////////////////////////////////////////////////////
 
