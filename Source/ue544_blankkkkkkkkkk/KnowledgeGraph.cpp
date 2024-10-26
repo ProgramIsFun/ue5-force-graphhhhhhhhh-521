@@ -11,7 +11,8 @@
 #define print(text) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White,text)
 
 
-AKnowledgeGraph::AKnowledgeGraph()
+AKnowledgeGraph::AKnowledgeGraph(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -22,7 +23,7 @@ AKnowledgeGraph::AKnowledgeGraph()
 		PrimaryActorTick.TickGroup = TG_DuringPhysics;
 
 
-		if(use_instance_static_mesh)
+		if(1)
 		{
 			InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
 				TEXT("InstancedStaticMeshComponent"));
