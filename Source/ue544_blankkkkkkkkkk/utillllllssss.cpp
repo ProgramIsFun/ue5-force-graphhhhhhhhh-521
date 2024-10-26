@@ -135,7 +135,7 @@ void ll(const FString& StringToLog, bool LOG, int SeverityLevel, const FString& 
 	}
 
 
-	if (1)
+	if (0)
 	{
 		lll(StringToLog);
 	}
