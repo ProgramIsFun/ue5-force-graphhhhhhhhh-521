@@ -20,10 +20,12 @@ const float DeltaTime;
  */
 float3 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 {
+	float Distance = distance(Positions[TargetBodyID], Positions[AffectingBodyID]);
+
+
 	float3 Direction = Positions[AffectingBodyID] - Positions[TargetBodyID];
 	Direction = normalize(Direction);
 
-	float Distance = distance(Positions[TargetBodyID], Positions[AffectingBodyID]);
 
 	/**
 	 *	Since we do not handle collision, we cant really compute small distance force.
@@ -33,9 +35,17 @@ float3 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 	// Distance = max(Distance, 100.0f);
 
 	
-	float ForceMagnitude = (
-		GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID]) /
-			(Distance * Distance);
+	float ForceMagnitude;
+
+
+	if (0)
+	{
+		ForceMagnitude =GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID] / (Distance * Distance);
+	}
+	else
+	{
+		ForceMagnitude=1;
+	}
 	
 	return Direction * ForceMagnitude;
 }
@@ -68,7 +78,7 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	if (ID.x >= NumBodies) return;
 
 
-	if (0)
+	if (1)
 	{
 		
 		float3 Acceleration;// { 0, 0 };
@@ -79,7 +89,16 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 			if (i == ID.x) continue;
 
 			float3 GravityForce = CalculateGravitationalForce(ID.x, i);
-			Acceleration += GravityForce / Masses[ID.x];	
+
+
+			if (0)
+			{
+				Acceleration += GravityForce / Masses[ID.x];
+			}
+			else
+			{
+				Acceleration += GravityForce;
+			}
 		}
 
 		Velocities[ID.x] += Acceleration * DeltaTime;

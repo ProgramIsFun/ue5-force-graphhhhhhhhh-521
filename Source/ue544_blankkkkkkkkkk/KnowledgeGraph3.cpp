@@ -91,8 +91,12 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 			       "Size differ for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (%d) Output(%d)"
 		       ), SimParameters.Bodies.Num(), GPUOutputPositions.Num());
 		return;
+	}else
+	{
+		ll("Size is same for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (" + FString::FromInt(SimParameters.Bodies.Num()) + ") Output(" + FString::FromInt(GPUOutputPositions.Num()) + ")",true,2);
+		ll("First element position is: " + GPUOutputPositions[0].ToString(),true,2);
 	}
-
+	
 	// QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
 
 	// Update bodies visual with new positions.
