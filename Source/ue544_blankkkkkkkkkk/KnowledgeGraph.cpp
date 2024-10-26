@@ -65,7 +65,14 @@ void AKnowledgeGraph::BeginPlay()
 		PrimaryActorTick.TickInterval = tick_interval;
 	}
 
-	
+	check(SimulationConfig);
+
+	if (use_instance_static_mesh)
+	{
+		check(InstancedStaticMeshComponent);
+	}
+
+
 	
 	
 	if (use_shaders)
