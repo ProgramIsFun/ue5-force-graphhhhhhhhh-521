@@ -126,6 +126,7 @@ For the center force, This could be ignored for now.
 
 Try to run the shaders when there are only two elements to see whether they compute the value correctly. 
 
+Perhaps need to add additional debugger of the shader, because sometimes it returns NAN. 
 
 
 ## Reference
