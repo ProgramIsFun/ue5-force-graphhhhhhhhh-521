@@ -68,18 +68,28 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	if (ID.x >= NumBodies) return;
 
 	float2 Acceleration;// { 0, 0 };
-	
-	for (uint i = 0; i < NumBodies; i++)
+
+
+	if (0)
 	{
-		// Skip if self.
-		if (i == ID.x) continue;
+		for (uint i = 0; i < NumBodies; i++)
+		{
+			// Skip if self.
+			if (i == ID.x) continue;
 
-		float2 GravityForce = CalculateGravitationalForce(ID.x, i);
-		Acceleration += GravityForce / Masses[ID.x];	
+			float2 GravityForce = CalculateGravitationalForce(ID.x, i);
+			Acceleration += GravityForce / Masses[ID.x];	
+		}
+
+		Velocities[ID.x] += Acceleration * DeltaTime;
+		Positions[ID.x] += Velocities[ID.x] * DeltaTime;
 	}
-
-	Velocities[ID.x] += Acceleration * DeltaTime;
-	Positions[ID.x] += Velocities[ID.x] * DeltaTime;
+	else
+	{
+		float2 pos = Positions[ID.x];  // Read the current position
+		pos += float2(1.0, 1.0);  // Increment each component by 1
+		Positions[ID.x] = pos;  // Write it back to the buffer
+	}
 
 	// Makes particles wrap along screen bounds.
 	// float ScreenHeight = ViewportWidth / CameraAspectRatio;
