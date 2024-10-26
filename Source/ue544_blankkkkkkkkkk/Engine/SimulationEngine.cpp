@@ -78,7 +78,7 @@ void ASimulationEngine::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SimParameters.DeltaTime = DeltaTime;
-	FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
+	FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
 	
 	UpdateBodiesPosition(DeltaTime);
 }

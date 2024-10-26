@@ -192,14 +192,14 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		if (use_constant_delta_time<0)
 		{
 			SimParameters.DeltaTime = DeltaTime;
-			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
+			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
 			UpdateBodiesPosition(DeltaTime);
 		}
 		else
 		{
 			float DeltaTime = use_constant_delta_time;
 			SimParameters.DeltaTime = DeltaTime;
-			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime);
+			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
 			UpdateBodiesPosition(DeltaTime);
 		}
 	}

@@ -76,7 +76,7 @@ void FNBodySimModule::InitWithParameters(FNBodySimParameters& SimParameters)
 	bCachedParametersValid = true;
 }
 
-void FNBodySimModule::UpdateDeltaTime(float DeltaTime)
+void FNBodySimModule::UpdateDeltaTime(float DeltaTime,float alpha)
 {
 	RenderEveryFrameLock.Lock();
 	CachedNBodySimParameters.DeltaTime = DeltaTime;

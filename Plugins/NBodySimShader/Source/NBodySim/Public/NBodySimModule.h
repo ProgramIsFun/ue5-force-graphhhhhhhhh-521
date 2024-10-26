@@ -19,8 +19,9 @@ public:
 	float CameraAspectRatio;
 	float ViewportWidth;
 	float DeltaTime;
+	float alpha;
 	
-	FNBodySimParameters(): NumBodies(0), GravityConstant(0), CameraAspectRatio(0), ViewportWidth(0), DeltaTime(0)
+	FNBodySimParameters(): NumBodies(0), GravityConstant(0), CameraAspectRatio(0), ViewportWidth(0), DeltaTime(0),alpha(1)
 	{
 	}
 };
@@ -57,7 +58,7 @@ public:
 
 	// Call this whenever you have new parameters to share. You could set this up to update different sets of properties at
 	// different intervals to save on locking and GPU transfer time.
-	void UpdateDeltaTime(float DeltaTime);
+	void UpdateDeltaTime(float DeltaTime,float alpha=1);
 
 	TArray<FVector3f> GetComputedPositions() { return OutputPositions; }
 
