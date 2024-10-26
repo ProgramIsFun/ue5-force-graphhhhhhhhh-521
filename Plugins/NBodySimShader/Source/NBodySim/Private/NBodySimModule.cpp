@@ -122,6 +122,11 @@ void FNBodySimModule::ComputeSimulation_RenderThread(FNBodySimParameters& SimPar
 		FMemory::Memcpy(OutputPositions.GetData(), RawBufferData, SimParameters.NumBodies * sizeof(FVector3f));
 	
 		RHIUnlockBuffer(CSBuffers.PositionsBuffer);
+
+		
+
+
+		
 	}
 	RenderEveryFrameLock.Unlock();
 }

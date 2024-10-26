@@ -40,36 +40,14 @@ float3 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 
 	if (0)
 	{
-		ForceMagnitude =GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID] / (Distance * Distance);
+		ForceMagnitude = GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID] / (Distance * Distance);
 	}
 	else
 	{
-		ForceMagnitude=1;
+		ForceMagnitude = -0.001;
 	}
 	
 	return Direction * ForceMagnitude;
-}
-
-float Wrap(const float Val, const float Min, const float Max)
-{
-	float Size = Max - Min;
-	if (Size == 0)
-	{
-		// Guard against zero-sized ranges causing an infinite loop.
-		return Max;
-	}
-
-	float EndVal = Val;
-	while (EndVal < Min)
-	{
-		EndVal += Size;
-	}
-
-	while (EndVal > Max)
-	{
-		EndVal -= Size;
-	}
-	return EndVal;
 }
 
 [numthreads(256, 1, 1)]
@@ -81,7 +59,7 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	if (1)
 	{
 		
-		float3 Acceleration;// { 0, 0 };
+		float3 Acceleration= float3(0, 0, 0);
 
 		for (uint i = 0; i < NumBodies; i++)
 		{
@@ -111,19 +89,4 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 		Positions[ID.x] = pos;  // Write it back to the buffer
 	}
 
-	// Makes particles wrap along screen bounds.
-	// float ScreenHeight = ViewportWidth / CameraAspectRatio;
-	// float3 HalfScreen;
-	// HalfScreen.x = ViewportWidth / 2.0f;
-	// HalfScreen.y = ScreenHeight / 2.0f;
-	//
-	// Positions[ID.x].x = Wrap(Positions[ID.x].x, -HalfScreen.x, HalfScreen.x);
-	// Positions[ID.x].y = Wrap(Positions[ID.x].y, -HalfScreen.y, HalfScreen.y);
-	//
-	// float3 Velocity = Bodies[ID.x].Velocity + Acceleration * DeltaTime;
-	// float3 Position = Bodies[ID.x].Position + Velocity * DeltaTime;
-	
-	// Save new position instead of velocity for test.
-	// OutputVelocities[ID.x] = Position;
-	// OutputVelocities[ID.x] = Bodies[ID.x].Velocity + Acceleration * DeltaTime;
 }
