@@ -122,7 +122,9 @@ For the center force, This could be ignored for now.
 
 
 
+### 3 
 
+Try to run the shaders when there are only two elements to see whether they compute the value correctly. 
 
 
 
