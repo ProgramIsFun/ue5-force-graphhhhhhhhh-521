@@ -14,6 +14,8 @@ const float GravityConstant;
 const float CameraAspectRatio;
 const float ViewportWidth;
 const float DeltaTime;
+const float alpha;
+
 
 /**
  *	Compute and return the resultant 2D gravitational force between Target and AffectingBody.

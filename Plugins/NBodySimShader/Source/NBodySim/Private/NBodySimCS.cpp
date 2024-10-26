@@ -34,6 +34,8 @@ public:
 		SHADER_PARAMETER(float, CameraAspectRatio)
 		SHADER_PARAMETER(float, ViewportWidth)
 		SHADER_PARAMETER(float, DeltaTime)
+		SHADER_PARAMETER(float, alpha)
+
 	END_SHADER_PARAMETER_STRUCT()
 
 public:
@@ -154,7 +156,7 @@ void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListI
 	PassParameters.CameraAspectRatio = SimParameters.CameraAspectRatio;
 	PassParameters.ViewportWidth = SimParameters.ViewportWidth;
 	PassParameters.DeltaTime = SimParameters.DeltaTime;
-
+	PassParameters.alpha = SimParameters.alpha;
 
 	// Dispatch.
 	TShaderMapRef<FNBodySimCS> ComputeShader(GetGlobalShaderMap(GMaxRHIFeatureLevel));
