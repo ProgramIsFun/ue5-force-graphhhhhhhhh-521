@@ -22,34 +22,46 @@ const float alpha;
  */
 float3 CalculateGravitationalForce(uint TargetBodyID, uint AffectingBodyID)
 {
-	float Distance = distance(Positions[TargetBodyID], Positions[AffectingBodyID]);
 
 
-	float3 Direction = Positions[AffectingBodyID] - Positions[TargetBodyID];
-	Direction = normalize(Direction);
-
-
-	/**
-	 *	Since we do not handle collision, we cant really compute small distance force.
-	 *	This would make some body to get super high acceleration.
-	 *	We also avoid diving by zero.
-	 */
-	// Distance = max(Distance, 100.0f);
+	float3 dir = Positions[AffectingBodyID] - Positions[TargetBodyID];
 
 	
-	float ForceMagnitude;
+	float d = distance(Positions[TargetBodyID], Positions[AffectingBodyID]);
 
+
+
+	// float d= length(dir);
+	float l = d * d;
+	float distancemin1 = 1;
+	if (l < distancemin1)
+	{
+		l = sqrt(distancemin1 * l);
+	}
+	
+	// dir = normalize(dir);
+
+	float ForceMagnitude;
 	if (0)
 	{
-		ForceMagnitude = GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID] / (Distance * Distance);
+		ForceMagnitude = GravityConstant * Masses[TargetBodyID] * Masses[AffectingBodyID] /
+			(d * d);
 	}
 	else
 	{
-		ForceMagnitude = -0.1;
+		ForceMagnitude = -60;
 	}
-
 	
-	return Direction * ForceMagnitude;
+	//
+	// float l = dir.Size() * dir.Size();
+	// if (l < distancemin)
+	// {
+	// 	l = sqrt(distancemin * l);
+	// }
+	// nodeVelocities[node.Key] += dir * nodeStrength * alpha / l;
+	// 				
+	
+	return dir * ForceMagnitude * alpha /l;
 }
 
 [numthreads(256, 1, 1)]
@@ -60,7 +72,6 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 
 	if (1)
 	{
-		
 		float3 Acceleration= float3(0, 0, 0);
 
 		for (uint i = 0; i < NumBodies; i++)
@@ -80,8 +91,12 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 				Acceleration += GravityForce;
 			}
 		}
+		// nodeVelocities[node.Key] *= velocityDecay;
+
+		const float velocityDecay = 0.6;
 
 		Velocities[ID.x] += Acceleration * DeltaTime;
+		Velocities[ID.x] *= velocityDecay;
 		Positions[ID.x] += Velocities[ID.x] * DeltaTime;
 	}
 	else
