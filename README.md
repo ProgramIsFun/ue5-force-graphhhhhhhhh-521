@@ -132,6 +132,20 @@ Perhaps need to add additional debugger of the shader, because sometimes it retu
 
 add the link force 
 
+Assuming the following is the correct workflow. 
+
+We need to be able to retrieve the position and also the velocity array. 
+we will change the position and velocity And write it as a parameter and update the shader.  
+
+The question is shall we update the velocity thing to the shader 
+before We get the position, or after we get the position. 
+
+Because the shader will compute the position force according to the velocity, perhaps that should be done before. 
+
+And because the shader will update The position according to the velocity, perhaps we should also pass The Alpha value to the shader.
+
+
+
 ## Reference
 
 ### https://github.com/thomaswall/ue4-force-graph

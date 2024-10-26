@@ -171,6 +171,14 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 	bool log = true;
 
+
+	iterations += 1;
+
+
+	if (iterations > maxiterations)
+	{
+		return;
+	}
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
 	if (use_shaders)
 	{
@@ -192,13 +200,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	if (!use_shaders)
 	{
 
-		iterations += 1;
-
-
-		if (iterations > maxiterations)
-		{
-			return;
-		}
+		
 
 
 		double StartTime = FPlatformTime::Seconds();
