@@ -80,6 +80,8 @@ void FNBodySimModule::UpdateDeltaTime(float DeltaTime,float alpha)
 {
 	RenderEveryFrameLock.Lock();
 	CachedNBodySimParameters.DeltaTime = DeltaTime;
+	CachedNBodySimParameters.alpha = alpha;
+
 	RenderEveryFrameLock.Unlock();
 }
 
