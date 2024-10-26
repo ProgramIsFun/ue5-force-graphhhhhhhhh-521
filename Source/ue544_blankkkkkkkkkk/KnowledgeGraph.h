@@ -83,6 +83,10 @@ public:
 	bool use_instance_static_mesh = true;
 
 
+	// Use TextRenderComponent or not
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_text_render_component = true;
+	
 	UPROPERTY(VisibleAnywhere)
 	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
 

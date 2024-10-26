@@ -102,9 +102,12 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 		{
 			BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
 		}
-		
 
-		TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
+
+		if (use_text_render_component)
+		{
+			TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
+		}
 	}
 
 	if (use_instance_static_mesh)

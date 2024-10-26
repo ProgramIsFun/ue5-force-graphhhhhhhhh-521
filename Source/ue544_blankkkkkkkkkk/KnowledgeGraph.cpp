@@ -64,21 +64,28 @@ void AKnowledgeGraph::BeginPlay()
 
 		PrimaryActorTick.TickInterval = tick_interval;
 	}
+
 	
-	for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
-	{
-		UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
-		if (TextComponent)
-		{
-			TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));
-			TextComponent->SetupAttachment(RootComponent);
-			TextComponent->RegisterComponent();  // This is important to initialize the component
-			TextComponents11111111111111111111.Add(TextComponent);  // Assuming TextComponents is a valid TArray<UTextRenderComponent*>
-		}
-	}
+	
 	
 	if (testing_shaders_from_other_repo)
 	{
+		if (use_text_render_component)
+		{
+			for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
+			{
+				UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
+				if (TextComponent)
+				{
+					TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));
+					TextComponent->SetupAttachment(RootComponent);
+					TextComponent->RegisterComponent();  // This is important to initialize the component
+					TextComponents11111111111111111111.Add(TextComponent);  // Assuming TextComponents is a valid TArray<UTextRenderComponent*>
+				}
+			}
+		}
+
+		
 		if (!SimulationConfig)
 		{
 			// UE_LOG(LogNBodySimulation, Error,
