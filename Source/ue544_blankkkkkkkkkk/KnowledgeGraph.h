@@ -75,7 +75,7 @@ public:
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool testing_shaders_from_other_repo = true;
+	bool use_shaders = true;
 
 
 	// Use instance static mesh or not

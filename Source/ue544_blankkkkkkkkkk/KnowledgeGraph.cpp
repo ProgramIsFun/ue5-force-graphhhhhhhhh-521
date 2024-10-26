@@ -16,7 +16,7 @@ AKnowledgeGraph::AKnowledgeGraph()
 	PrimaryActorTick.bCanEverTick = true;
 
 
-	if (testing_shaders_from_other_repo)
+	if (use_shaders)
 	{
 		PrimaryActorTick.bStartWithTickEnabled = true;
 		PrimaryActorTick.TickGroup = TG_DuringPhysics;
@@ -45,7 +45,7 @@ AKnowledgeGraph::~AKnowledgeGraph()
 
 void AKnowledgeGraph::BeginDestroy()
 {
-	if (testing_shaders_from_other_repo)
+	if (use_shaders)
 	{
 		FNBodySimModule::Get().EndRendering();
 		
@@ -68,7 +68,7 @@ void AKnowledgeGraph::BeginPlay()
 	
 	
 	
-	if (testing_shaders_from_other_repo)
+	if (use_shaders)
 	{
 		if (use_text_render_component)
 		{
@@ -133,7 +133,7 @@ void AKnowledgeGraph::BeginPlay()
 
 
 	
-	if (!testing_shaders_from_other_repo)
+	if (!use_shaders)
 	{
 		ClearLogFile();
 
@@ -177,7 +177,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	bool log = true;
 
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
-	if (testing_shaders_from_other_repo)
+	if (use_shaders)
 	{
 		if (use_constant_delta_time<0)
 		{
@@ -194,7 +194,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		}
 	}
 
-	if (!testing_shaders_from_other_repo)
+	if (!use_shaders)
 	{
 
 		iterations += 1;
