@@ -148,6 +148,13 @@ Because the shader will compute the position force according to the velocity, pe
 And because the shader will update The position according to the velocity, perhaps we should also pass The Alpha value to the shader.
 
 
+Two thing to test. One thing is, does the shade only one once between each tech increase the time interval of each tech? See if only once. 
+
+Second thing is Let's say we update a variable. Does the result immediately result from the update value or the previous update
+
+
+
+
 
 ## Reference
 
