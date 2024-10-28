@@ -173,13 +173,9 @@ How about we just compute the link force also in the same shader?
 
 GPT give me two suggestions on computing the link force.
 
+
 StructuredBuffer<uint> LinkIndices;                // Flatten 2D array of indices
 const uint MaxLinksPerBody;                        // Maximum number of linked bodies per node
-Step 2: Modify Compute Shader Code to Compute Link Forces
-
-Include computation in CalculateVelocitiesCS:
-
-
 
 // Link forces calculation
 for (uint j = 0; j < MaxLinksPerBody; j++)
@@ -197,8 +193,6 @@ for (uint j = 0; j < MaxLinksPerBody; j++)
 }
 
 
-
-This approach uses two buffers:
 
 Offset/Count Buffer: Each entry contains a starting index and the count of connections for the corresponding body.
 Links Buffer: A flat buffer that contains all the links in a single array, sequenced as per the offsets and counts indicated in the first buffer.
