@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "NBodySimModule.h"
 #include "Components/TextRenderComponent.h"
+#include "ue544_blankkkkkkkkkk/KnowledgeNode.h"
 #include "ue544_blankkkkkkkkkk/utillllllssss.h"
 
 // Sets default values
@@ -36,51 +37,102 @@ void ASimulationEngine::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
+
+	if (!debug)
 	{
-		UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
-		if (TextComponent)
+		for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
 		{
-			TextComponent->SetText(FText::FromString("Sample Text"));
-			TextComponent->SetupAttachment(RootComponent);
-			TextComponent->RegisterComponent();  // This is important to initialize the component
-			TextComponents11111111111111111111.Add(TextComponent);  // Assuming TextComponents is a valid TArray<UTextRenderComponent*>
+			UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
+			if (TextComponent)
+			{
+				TextComponent->SetText(FText::FromString("Sample Text"));
+				TextComponent->SetupAttachment(RootComponent);
+				TextComponent->RegisterComponent();  // This is important to initialize the component
+				TextComponents11111111111111111111.Add(TextComponent);  // Assuming TextComponents is a valid TArray<UTextRenderComponent*>
+			}
 		}
-	}
 	
-	if (!SimulationConfig)
+		if (!SimulationConfig)
+		{
+			// UE_LOG(LogNBodySimulation, Error, TEXT("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine."));
+
+			UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
+			return;
+		}
+
+		// Compute static variables.
+		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
+		SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
+	
+		InitBodies();
+	
+		FNBodySimModule::Get().BeginRendering();
+		FNBodySimModule::Get().InitWithParameters(SimParameters);
+	}
+	else
 	{
-		// UE_LOG(LogNBodySimulation, Error, TEXT("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine."));
+		AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
 
-		UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
-		return;
+
+		// UStaticMeshComponent* CubeComponent = NewObject<UStaticMeshComponent>(ActorB);
+		// CubeComponent->RegisterComponent();
+		// CubeComponent->AttachToComponent(ActorB->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+			
+		if (kn)
+		{
+			UStaticMeshComponent* MeshComp = NewObject<UStaticMeshComponent>(kn);
+			MeshComp->AttachToComponent(kn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+			MeshComp->RegisterComponent(); // Don't forget to register the component
+			
+			
+			UStaticMesh* CubeMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+        
+			if (CubeMesh)
+			{
+				MeshComp->SetStaticMesh(CubeMesh);
+			}
+			else
+			{
+				ll("CubeMesh failed", 1,2);
+				// qq();
+				return;
+			}
+			
+
+		}
+
 	}
-
-	// Compute static variables.
-	SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
-	SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
-	
-	InitBodies();
-	
-	FNBodySimModule::Get().BeginRendering();
-	FNBodySimModule::Get().InitWithParameters(SimParameters);
 }
 
 void ASimulationEngine::BeginDestroy()
 {
-	FNBodySimModule::Get().EndRendering();
-	Super::BeginDestroy();
+	if (!debug)
+	{
+		FNBodySimModule::Get().EndRendering();
+		Super::BeginDestroy();
+	}
+	else
+	{
+		
+	}
 }
 
 // Called every frame
 void ASimulationEngine::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	SimParameters.DeltaTime = DeltaTime;
-	FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
+	if (!debug)
+	{
+		SimParameters.DeltaTime = DeltaTime;
+		FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
 	
-	UpdateBodiesPosition(DeltaTime);
+		UpdateBodiesPosition(DeltaTime);
+	}
+	else
+	{
+		
+	}
 }
 
 
