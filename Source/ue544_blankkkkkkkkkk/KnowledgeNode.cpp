@@ -45,7 +45,9 @@ AKnowledgeNode::AKnowledgeNode()
 		float Scale = 0.2;
 		SphereMesh->SetWorldScale3D(FVector(Scale, Scale, Scale));
 	}
-	else
+
+
+	if (1)
 	{
 		TextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextRenderComponent"));
 		RootComponent = TextComponent;
@@ -53,7 +55,7 @@ AKnowledgeNode::AKnowledgeNode()
 		// Configure the default text settings
 		TextComponent->SetText(FText::FromString(TEXT("Hello, World!")));
 		TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
-		TextComponent->SetWorldSize(1.f);
+		TextComponent->SetWorldSize(100.f);
 	}
 }
 

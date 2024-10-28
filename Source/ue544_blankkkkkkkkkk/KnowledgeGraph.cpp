@@ -87,7 +87,8 @@ void AKnowledgeGraph::BeginPlay()
 			for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
 			{
 				UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(
-					this, FName("TextComponent" + FString::FromInt(i)));
+					this, FName("TextComponent" + FString::FromInt(i))
+					);
 				if (TextComponent)
 				{
 					TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));

@@ -40,6 +40,38 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 		if (use_a_lot_of_actor)
 		{
 			AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
+
+
+			// UStaticMeshComponent* CubeComponent = NewObject<UStaticMeshComponent>(ActorB);
+			// CubeComponent->RegisterComponent();
+			// CubeComponent->AttachToComponent(ActorB->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+			
+			if (kn)
+			{
+				UStaticMeshComponent* MeshComp = NewObject<UStaticMeshComponent>(kn);
+				MeshComp->AttachToComponent(kn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+				MeshComp->RegisterComponent(); // Don't forget to register the component
+			
+			
+				UStaticMesh* CubeMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+        
+				if (CubeMesh)
+				{
+					MeshComp->SetStaticMesh(CubeMesh);
+				}
+				else
+				{
+					ll("CubeMesh failed", log,2);
+					qq();
+					return;
+				}
+			
+
+			}
+
+
+			
 			AddNode1(jid, kn);
 		}
 		else
@@ -986,7 +1018,7 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 				UClass* loadedClass = StaticLoadClass(UObject::StaticClass(), nullptr,
 				                                      TEXT(
 					                                      // "Blueprint'/Game/Characters/Enemies/BP_LitchBoss1.BP_LitchBoss1_C'"
-					                                      "Blueprint'/Game/kkkkk/extending_the_edge77.extending_the_edge77_C'"
+					                                      "Blueprint'/Game/arttttttt/iii9.iii9_C'"
 
 				                                      ));
 				if (loadedClass)
@@ -996,6 +1028,8 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 				}
 				else
 				{
+					qq();
+					return;
 					ll("error loading classsssssssssssssssssssssss");
 
 					e = GetWorld()->SpawnActor<AKnowledgeEdge>(
