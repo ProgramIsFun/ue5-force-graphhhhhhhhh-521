@@ -152,11 +152,24 @@ does the shade only Once, if we set the TICK interval to be very large.
 
 The result is If we set the TICK interval to maybe perhaps 1 second, it runs a few hundred times already. 
 The possible reasons is The callback function is called every frame.  So the shader is called every frame.
-
-
+Right now, we could assume that if we do not set the interval, and then it will run exactly once between each tick.
 
 Second thing is Let's say we update a variable. Does the result immediately result from the update value or the previous update
 
+
+
+
+
+Let's also test can we overwrite the position directly in the shader
+It seems pretty hard because in every initialized phrase, if the buffer is already there, we will not overwritten it. 
+Perhaps could reference the following project. 
+- https://github.com/UE4-OceanProject/ComputeShaderDev
+
+
+https://forums.unrealengine.com/t/loading-data-to-from-structured-buffer-compute-shaders/470083/2
+
+The above seem pretty complicated. 
+How about we just compute the link force also in the same shader? 
 
 
 
