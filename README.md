@@ -184,16 +184,17 @@ Include computation in CalculateVelocitiesCS:
 // Link forces calculation
 for (uint j = 0; j < MaxLinksPerBody; j++)
 {
-    uint LinkedBodyIndex = LinkIndices[ID.x * MaxLinksPerBody + j];
-    // Check for a valid link
-    if (LinkedBodyIndex >= NumBodies) break; // Assuming invalid indices are set to an out-of-bounds index
+        uint LinkedBodyIndex = LinkIndices[ID.x * MaxLinksPerBody + j];
 
-    float2 LinkDirection = normalize(Positions[LinkedBodyIndex] - Positions[ID.x]);
-    float LinkStrength = 1.0f;           // Constant strength for all links, can be modified as necessary
-    Acceleration += LinkDirection * LinkStrength;
+        Check for sentinel value indicating no more connections
+        
+        if (LinkedBodyIndex == UINT_MAX) 
+            break;  // This stops processing further links for this node
+
+        float2 LinkDirection = normalize(Positions[LinkedBodyIndex] - Positions[ID.x]);
+        float LinkStrength = 1.0f;  // Placeholder strength
+        Acceleration += LinkDirection * LinkStrength;
 }
-
-
 
 
 
