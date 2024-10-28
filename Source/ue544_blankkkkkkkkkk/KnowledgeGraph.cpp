@@ -12,12 +12,12 @@
 
 AKnowledgeGraph::~AKnowledgeGraph()
 {
-	ll("AKnowledgeGraph::~AKnowledgeGraph",true,2);
+	ll("AKnowledgeGraph::~AKnowledgeGraph", true, 2);
 }
 
 
 AKnowledgeGraph::AKnowledgeGraph()
-: Super()
+	: Super()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -28,31 +28,20 @@ AKnowledgeGraph::AKnowledgeGraph()
 		PrimaryActorTick.TickGroup = TG_DuringPhysics;
 
 
-		if(1)
+		if (1)
 		{
 			InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
 				TEXT("InstancedStaticMeshComponent"));
 		}
-
 	}
-
 }
-
-
-
-
-
-
-
-
 
 void AKnowledgeGraph::BeginDestroy()
 {
-	ll("AKnowledgeGraph::BeginDestroy",true,2);
+	ll("AKnowledgeGraph::BeginDestroy", true, 2);
 	if (use_shaders)
 	{
 		FNBodySimModule::Get().EndRendering();
-		
 	}
 
 	Super::BeginDestroy();
@@ -60,8 +49,8 @@ void AKnowledgeGraph::BeginDestroy()
 
 void AKnowledgeGraph::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	ll("AKnowledgeGraph::EndPlay",true,2);
-	ll("EndPlayReason: " + FString::FromInt((int)EndPlayReason),true,2);
+	ll("AKnowledgeGraph::EndPlay", true, 2);
+	ll("EndPlayReason: " + FString::FromInt((int)EndPlayReason), true, 2);
 	// if (use_shaders)
 	// {
 	// 	FNBodySimModule::Get().EndRendering();
@@ -72,6 +61,9 @@ void AKnowledgeGraph::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AKnowledgeGraph::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ClearLogFile();
+
 
 	if (use_tick_interval)
 	{
@@ -88,41 +80,42 @@ void AKnowledgeGraph::BeginPlay()
 	}
 
 
-	
-	
 	if (use_shaders)
 	{
 		if (use_text_render_component)
 		{
 			for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
 			{
-				UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this, FName("TextComponent" + FString::FromInt(i)));
+				UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(
+					this, FName("TextComponent" + FString::FromInt(i)));
 				if (TextComponent)
 				{
 					TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));
 					TextComponent->SetupAttachment(RootComponent);
-					TextComponent->RegisterComponent();  // This is important to initialize the component
-					TextComponents11111111111111111111.Add(TextComponent);  // Assuming TextComponents is a valid TArray<UTextRenderComponent*>
+					TextComponent->RegisterComponent(); // This is important to initialize the component
+					TextComponents11111111111111111111.Add(TextComponent);
+					// Assuming TextComponents is a valid TArray<UTextRenderComponent*>
 				}
 			}
 		}
 
-		
+
 		if (!SimulationConfig)
 		{
-			ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",true,2);
+			ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",
+			   true, 2);
 
 			qq();
 			return;
 		}
 
-		
+
 		// In a new commits because we are no longer wrapping the simulation in Fix containing Cube container.
 		// the following two lines is useless. 
 		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
 		SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
 		//
-		InitBodies();   // In this function, we also set a lot of things in SimParameters
+		InitBodies(); // In this function, we also set a lot of things in SimParameters
 		//
 		FNBodySimModule::Get().BeginRendering();
 		FNBodySimModule::Get().InitWithParameters(SimParameters);
@@ -146,45 +139,28 @@ void AKnowledgeGraph::BeginPlay()
 	}
 
 
-
-
-
-	
 	if (!use_shaders)
 	{
-		ClearLogFile();
-
-
 		
-	
 		// generateGraph();
 		timeThisMemberFunction(
 			"AKnowledgeGraph::generateGraph",
 			&AKnowledgeGraph::generateGraph);
 
 
-		if (!init)
-		{
-		
-			timeThisMemberFunction(
-				"AKnowledgeGraph::initializeNodePosition",
-				&AKnowledgeGraph::initializeNodePosition);
+		timeThisMemberFunction(
+			"AKnowledgeGraph::initializeNodePosition",
+			&AKnowledgeGraph::initializeNodePosition);
 
 
-			update_Node_world_position_according_to_position_array();
+		update_Node_world_position_according_to_position_array();
 
 
-		
-			timeThisMemberFunction(
-				"AKnowledgeGraph::CalculateBiasstrengthOflinks",
-				&AKnowledgeGraph::CalculateBiasstrengthOflinks);
-		}
-
-		
+		timeThisMemberFunction(
+			"AKnowledgeGraph::CalculateBiasstrengthOflinks",
+			&AKnowledgeGraph::CalculateBiasstrengthOflinks);
 	}
-
 }
-
 
 
 void AKnowledgeGraph::Tick(float DeltaTime)
@@ -197,73 +173,67 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	iterations += 1;
 
 	ll("TICK----------------------------------------------------------------------------"
-			"----------------------------------------------------------------------------",log);
-		
-	ll("iterations: " + FString::FromInt(iterations),log);
+	   "----------------------------------------------------------------------------", log);
+
+	ll("iterations: " + FString::FromInt(iterations), log);
 
 
 	if (iterations > maxiterations)
 	{
-		ll("iterations is greater than maxiterations",log);
+		ll("iterations is greater than maxiterations", log);
 		qq();
 		return;
 	}
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
 	if (use_shaders)
 	{
-		if (use_constant_delta_time<0)
+		if (use_constant_delta_time < 0)
 		{
 			SimParameters.DeltaTime = DeltaTime;
-			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
+			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime, 1);
 			UpdateBodiesPosition(DeltaTime);
 		}
 		else
 		{
 			float DeltaTime = use_constant_delta_time;
 			SimParameters.DeltaTime = DeltaTime;
-			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime,1);
+			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime, 1);
 			UpdateBodiesPosition(DeltaTime);
 		}
 	}
 
 	if (!use_shaders)
 	{
-
-		
-
-
 		double StartTime = FPlatformTime::Seconds();
 
-		
-		
-		
-		ll("alpha: " + FString::SanitizeFloat(alpha),log);
+
+		ll("alpha: " + FString::SanitizeFloat(alpha), log);
 
 		if (alpha < alphaMin)
 		{
-			ll("alpha is less than alphaMin",log);
+			ll("alpha is less than alphaMin", log);
 			// UE_LOG(LogTemp, Warning, TEXT("alpha is less than alphaMin"));
 			qq();
 		}
 
 		alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
-		ll("alpha: " + FString::SanitizeFloat(alpha),log);
+		ll("alpha: " + FString::SanitizeFloat(alpha), log);
 
 
-		ll("apply forces",log);
+		ll("apply forces", log);
 		ApplyForces();
 
-		ll("update actor location based on velocity",log);
+		ll("update actor location based on velocity", log);
 		update_position_array_according_to_velocity_array();
 
 
 		update_Node_world_position_according_to_position_array();
 
-		
-		ll("update link position",log);
+
+		ll("update link position", log);
 		update_link_position();
-		
-		
+
+
 		// Optionally, log the average time every N ticks
 		if (0)
 		{
@@ -272,8 +242,6 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 			lll(FString::SanitizeFloat(ElapsedTime));
 
 			ElapsedTimes.Add(ElapsedTime);
-
 		}
 	}
-	
 }

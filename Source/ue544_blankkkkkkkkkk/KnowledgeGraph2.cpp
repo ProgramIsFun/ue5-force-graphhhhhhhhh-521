@@ -938,7 +938,6 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		                                  all_nodes[link.Value->target]->numberOfConnected);
 	}
 
-	init = true;
 }
 
 void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)

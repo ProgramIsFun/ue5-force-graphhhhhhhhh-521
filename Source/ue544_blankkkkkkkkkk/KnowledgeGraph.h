@@ -201,7 +201,7 @@ public:
 	float initialAngle = PI * (3 - sqrt(5));
 
 
-	bool init = false;
+	
 
 	// FSimpleOctree* OctreeData;
 	OctreeNode* OctreeData2;
