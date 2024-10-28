@@ -70,7 +70,7 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	if (ID.x >= NumBodies) return;
 
 
-	if (1)
+	if (0)
 	{
 		float3 Acceleration= float3(0, 0, 0);
 

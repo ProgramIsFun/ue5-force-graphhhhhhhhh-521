@@ -11,8 +11,8 @@
 #define print(text) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White,text)
 
 
-AKnowledgeGraph::AKnowledgeGraph(const FObjectInitializer& ObjectInitializer)
-: Super(ObjectInitializer)
+AKnowledgeGraph::AKnowledgeGraph()
+: Super()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -179,9 +179,16 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 	iterations += 1;
 
+	ll("TICK----------------------------------------------------------------------------"
+			"----------------------------------------------------------------------------",log);
+		
+	ll("iterations: " + FString::FromInt(iterations),log);
+
 
 	if (iterations > maxiterations)
 	{
+		ll("iterations is greater than maxiterations",log);
+		qq();
 		return;
 	}
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
@@ -213,16 +220,13 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		
 		
 		
-		ll("TICK----------------------------------------------------------------------------"
-			"----------------------------------------------------------------------------",log);
 		ll("alpha: " + FString::SanitizeFloat(alpha),log);
-		ll("iterations: " + FString::FromInt(iterations),log);
 
 		if (alpha < alphaMin)
 		{
 			ll("alpha is less than alphaMin",log);
 			// UE_LOG(LogTemp, Warning, TEXT("alpha is less than alphaMin"));
-			return;
+			qq();
 		}
 
 		alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
