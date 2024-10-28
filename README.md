@@ -171,6 +171,63 @@ https://forums.unrealengine.com/t/loading-data-to-from-structured-buffer-compute
 The above seem pretty complicated. 
 How about we just compute the link force also in the same shader? 
 
+GPT give me two suggestions on computing the link force.
+
+StructuredBuffer<uint> LinkIndices;                // Flatten 2D array of indices
+const uint MaxLinksPerBody;                        // Maximum number of linked bodies per node
+Step 2: Modify Compute Shader Code to Compute Link Forces
+
+Include computation in CalculateVelocitiesCS:
+
+
+
+// Link forces calculation
+for (uint j = 0; j < MaxLinksPerBody; j++)
+{
+    uint LinkedBodyIndex = LinkIndices[ID.x * MaxLinksPerBody + j];
+    // Check for a valid link
+    if (LinkedBodyIndex >= NumBodies) break; // Assuming invalid indices are set to an out-of-bounds index
+
+    float2 LinkDirection = normalize(Positions[LinkedBodyIndex] - Positions[ID.x]);
+    float LinkStrength = 1.0f;           // Constant strength for all links, can be modified as necessary
+    Acceleration += LinkDirection * LinkStrength;
+}
+
+
+
+
+
+This approach uses two buffers:
+
+Offset/Count Buffer: Each entry contains a starting index and the count of connections for the corresponding body.
+Links Buffer: A flat buffer that contains all the links in a single array, sequenced as per the offsets and counts indicated in the first buffer.
+Shader Code Adjustment:
+StructuredBuffer<uint2> LinkInfo;       // Holds pairs (offset, count) for each body
+StructuredBuffer<uint> LinkIndices;     // Flat array containing all links
+
+// In your compute shader
+for (uint j = 0; j < LinkInfo[ID.x].y; j++) // LinkInfo[ID.x].y gives the count of links
+{
+uint index = LinkInfo[ID.x].x + j;  // Starting index + offset
+uint LinkedBodyIndex = LinkIndices[index];
+// Calculate forces similar to previous examples
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
