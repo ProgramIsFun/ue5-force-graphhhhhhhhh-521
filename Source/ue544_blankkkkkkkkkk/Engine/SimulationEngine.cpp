@@ -96,6 +96,9 @@ void ASimulationEngine::BeginPlay()
 			{
 				ll("CubeMesh failed", 1,2);
 				// qq();
+
+				UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
+
 				return;
 			}
 			
@@ -110,12 +113,13 @@ void ASimulationEngine::BeginDestroy()
 	if (!debug)
 	{
 		FNBodySimModule::Get().EndRendering();
-		Super::BeginDestroy();
 	}
 	else
 	{
 		
 	}
+	Super::BeginDestroy();
+
 }
 
 // Called every frame

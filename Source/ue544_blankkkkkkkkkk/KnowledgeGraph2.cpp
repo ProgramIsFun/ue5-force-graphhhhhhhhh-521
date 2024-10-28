@@ -52,8 +52,12 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 				UStaticMeshComponent* MeshComp = NewObject<UStaticMeshComponent>(kn);
 				MeshComp->AttachToComponent(kn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 				MeshComp->RegisterComponent(); // Don't forget to register the component
-			
-			
+
+
+				float sss = 100.f;
+				FVector NewScale = FVector(sss, sss, sss);
+				MeshComp->SetWorldScale3D(NewScale);
+
 				UStaticMesh* CubeMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
         
 				if (CubeMesh)
