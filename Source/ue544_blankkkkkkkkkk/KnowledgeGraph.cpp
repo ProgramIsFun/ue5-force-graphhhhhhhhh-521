@@ -182,9 +182,27 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	if (iterations > maxiterations)
 	{
 		ll("iterations is greater than maxiterations", log);
-		qq();
+		// qq();
 		return;
 	}
+
+
+	ll("alpha: " + FString::SanitizeFloat(alpha), log);
+
+	if (alpha < alphaMin)
+	{
+		ll("alpha is less than alphaMin", log);
+		// UE_LOG(LogTemp, Warning, TEXT("alpha is less than alphaMin"));
+		qq();
+	}
+
+	alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
+	ll("alpha: " + FString::SanitizeFloat(alpha), log);
+
+
+
+
+	
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
 	if (use_shaders)
 	{
@@ -207,18 +225,6 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	{
 		double StartTime = FPlatformTime::Seconds();
 
-
-		ll("alpha: " + FString::SanitizeFloat(alpha), log);
-
-		if (alpha < alphaMin)
-		{
-			ll("alpha is less than alphaMin", log);
-			// UE_LOG(LogTemp, Warning, TEXT("alpha is less than alphaMin"));
-			qq();
-		}
-
-		alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
-		ll("alpha: " + FString::SanitizeFloat(alpha), log);
 
 
 		ll("apply forces", log);

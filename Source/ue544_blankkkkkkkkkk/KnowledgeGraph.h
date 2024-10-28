@@ -77,10 +77,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool initialize_with_zero_position = true;
 
-
-
 	
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_shaders = true;
 
@@ -109,13 +106,44 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float LOGGGGGGGGG = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	int32 maxiterations = 1000000;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// Use extremely small tick interval
+	bool use_tick_interval = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	float tick_interval = 0.9f;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	int jnodes1 = 50;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// Calculate many body force or not. 
+	bool manybody = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool many_body_use_brute_force = true;
+
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	// bool many_body_octree_use_recursion = true;	
+
+	// Use a lot of actor Or not
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_a_lot_of_actor = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool connect_to_previous = true;
+
+	
+
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alpha = 1;
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float iterations = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	int32 maxiterations = 1000000;
 
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alphaMin = 0.001;
@@ -141,39 +169,12 @@ public:
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float theta2 = 0.81;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	// Use extremely small tick interval
-	bool use_tick_interval = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	float tick_interval = 0.9f;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	int jnodes1 = 50;
 
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	int biasinitway = 0;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool connect_to_previous = true;
-
+	
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float initialRadius = 10;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	// Calculate many body force or not. 
-	bool manybody = true;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool many_body_use_brute_force = true;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	// bool many_body_octree_use_recursion = true;	
-
-	// Use a lot of actor Or not
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_a_lot_of_actor = true;
 
 
 	// Called when the game starts or when spawned
