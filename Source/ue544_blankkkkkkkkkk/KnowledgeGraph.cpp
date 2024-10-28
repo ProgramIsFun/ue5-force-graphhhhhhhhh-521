@@ -227,6 +227,9 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		update_position_array_according_to_velocity_array();
 
 
+		ll("Logging out The position of the first node: " + nodePositions[0].ToString(), log);
+
+
 		update_Node_world_position_according_to_position_array();
 
 
