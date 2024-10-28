@@ -40,7 +40,7 @@ class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 
 public:
 	AKnowledgeGraph();
-	
+	~AKnowledgeGraph();
 	void GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster);
 
 
@@ -71,6 +71,12 @@ public:
 
 
 	void tttttttttttt();
+
+	
+	// Every node will be Initialize with position 0. 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool initialize_with_zero_position = true;
+
 
 
 	
@@ -173,6 +179,9 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void BeginDestroy() override;
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	void update_position_array_according_to_velocity_array();
 	void update_link_position();
 

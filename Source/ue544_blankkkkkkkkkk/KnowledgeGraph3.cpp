@@ -19,8 +19,19 @@ void AKnowledgeGraph::InitBodies()
 		float RandomMass = FMath::FRandRange(SimulationConfig->InitialBodyMassRange.X,
 		                                     SimulationConfig->InitialBodyMassRange.Y);
 
-		FVector3f RandomPosition(RandPointInCircle(SimulationConfig->BodySpawnCircleRadius));
+		FVector3f RandomPosition;
+		if (!initialize_with_zero_position)
+		{
+			RandomPosition= FVector3f(RandPointInCircle(SimulationConfig->BodySpawnCircleRadius));
+		}
+		else
+		{
+			RandomPosition = FVector3f(0,0,0);
+		}
 
+
+
+		
 		/**
 		 *	For the velocity, we need to have a starting velocity for each body so that they are rotating into the circle clockwise.
 		 *	This allow to have a nice starting movement.
@@ -37,6 +48,8 @@ void AKnowledgeGraph::InitBodies()
 
 		float MeshScale = FMath::Sqrt(RandomMass) * SimulationConfig->MeshScaling;
 
+		
+		
 		FTransform MeshTransform(
 			FRotator(),
 			FVector(RandomPosition),

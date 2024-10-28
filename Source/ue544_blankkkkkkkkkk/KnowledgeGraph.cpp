@@ -10,6 +10,11 @@
 
 #define print(text) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White,text)
 
+AKnowledgeGraph::~AKnowledgeGraph()
+{
+	ll("AKnowledgeGraph::~AKnowledgeGraph",true,2);
+}
+
 
 AKnowledgeGraph::AKnowledgeGraph()
 : Super()
@@ -43,6 +48,7 @@ AKnowledgeGraph::AKnowledgeGraph()
 
 void AKnowledgeGraph::BeginDestroy()
 {
+	ll("AKnowledgeGraph::BeginDestroy",true,2);
 	if (use_shaders)
 	{
 		FNBodySimModule::Get().EndRendering();
@@ -50,6 +56,17 @@ void AKnowledgeGraph::BeginDestroy()
 	}
 
 	Super::BeginDestroy();
+}
+
+void AKnowledgeGraph::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	ll("AKnowledgeGraph::EndPlay",true,2);
+	ll("EndPlayReason: " + FString::FromInt((int)EndPlayReason),true,2);
+	// if (use_shaders)
+	// {
+	// 	FNBodySimModule::Get().EndRendering();
+	// }
+	Super::EndPlay(EndPlayReason);
 }
 
 void AKnowledgeGraph::BeginPlay()
