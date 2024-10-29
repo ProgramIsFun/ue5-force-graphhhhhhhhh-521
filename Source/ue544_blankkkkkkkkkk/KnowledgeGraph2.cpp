@@ -967,7 +967,7 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 {
 	if (!all_nodes.Contains(id))
 	{
-		kn->strength = nodeStrength;
+		kn->strength1111 = nodeStrength;
 		// kn->velocity = FVector(0, 0, 0);
 		nodeVelocities[id] = FVector(0, 0, 0);
 
