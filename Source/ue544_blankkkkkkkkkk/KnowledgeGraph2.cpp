@@ -124,7 +124,6 @@ void AKnowledgeGraph::generateGraph()
 {
 	switch (wayofinitnodeslinks)
 	{
-	//json crap
 
 
 	case 0:
