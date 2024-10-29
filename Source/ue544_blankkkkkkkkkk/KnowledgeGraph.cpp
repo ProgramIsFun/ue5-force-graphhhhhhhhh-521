@@ -193,7 +193,9 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	{
 		ll("alpha is less than alphaMin", log);
 		// UE_LOG(LogTemp, Warning, TEXT("alpha is less than alphaMin"));
-		qq();
+		// qq();
+		return;
+
 	}
 
 	alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving

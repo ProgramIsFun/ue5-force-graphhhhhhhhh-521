@@ -54,7 +54,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 				MeshComp->RegisterComponent(); // Don't forget to register the component
 
 
-				float sss = 100.f;
+				float sss = static_mesh_size;
 				FVector NewScale = FVector(sss, sss, sss);
 				MeshComp->SetWorldScale3D(NewScale);
 
@@ -70,8 +70,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 					qq();
 					return;
 				}
-			
-
+				
 			}
 
 
