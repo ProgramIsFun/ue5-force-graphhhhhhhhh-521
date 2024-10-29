@@ -62,7 +62,6 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 				{
 					CubeMesh = LoadObject<UStaticMesh>(
 						nullptr,
-
 						TEXT(
 							"/Engine/BasicShapes/Cube.Cube"
 						)
@@ -71,7 +70,6 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 				else
 				{
 					CubeMesh = SelectedMesh1111111111111;
-					
 				}
 				if (CubeMesh)
 				{
@@ -88,20 +86,6 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 		}
 		else
 		{
-			UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(this);
-
-			if (TextComponent)
-			{
-				// Optional: Set the text of the TextRenderComponent
-				TextComponent->SetText(FText::FromString(FString::Printf(TEXT("Text %d"), i)));
-				// Optional: Set other properties of the TextRenderComponent
-				TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
-				TextComponent->SetWorldSize(50.0f); // Size of the text
-				// Attach the TextRenderComponent to the Actor
-				TextComponent->SetupAttachment(RootComponent);
-				// Register the component with the Actor
-				TextComponent->RegisterComponent();
-			}
 		}
 	}
 
@@ -1000,94 +984,81 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 
 void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 {
-	// UObject* SpawnClass = Cast<UObject>(
-	// 	StaticLoadObject(UObject::StaticClass(),
-	// 	                 NULL,
-	// 	                 TEXT("Blueprint'/Game/cylinder.cylinder'")
-	// 	)
-	// );
-	// UBlueprint* GeneratedObj = Cast<UBlueprint>(SpawnClass);
 	AKnowledgeEdge* e;
-	if (1)
+
+
+	// Use an actor for a link.
+	bool useActorforLink = true;
+	if (useActorforLink)
 	{
 		UClass* bpClass;
-		if (0)
+		if (1)
 		{
-		}
-		else
-		{
-			// bool PlayingInEditor = GEditor ? true : false;
+			// This approach works in both play and editor and package game. 
 
+			UClass* loadedClass = StaticLoadClass(UObject::StaticClass(), nullptr,
+			                                      TEXT(
+				                                      // "Blueprint'/Game/Characters/Enemies/BP_LitchBoss1.BP_LitchBoss1_C'"
+				                                      "Blueprint'/Game/arttttttt/iii9.iii9_C'"
 
-			if (1)
+			                                      ));
+			if (loadedClass)
 			{
-				// This approach works in both play and editor and package game. 
-
-				UClass* loadedClass = StaticLoadClass(UObject::StaticClass(), nullptr,
-				                                      TEXT(
-					                                      // "Blueprint'/Game/Characters/Enemies/BP_LitchBoss1.BP_LitchBoss1_C'"
-					                                      "Blueprint'/Game/arttttttt/iii9.iii9_C'"
-
-				                                      ));
-				if (loadedClass)
-				{
-					e = GetWorld()->SpawnActor<AKnowledgeEdge>(loadedClass);
-					// SpawnedActor->TeleportTo(position, rotation.ToOrientationRotator());		
-				}
-				else
-				{
-					qq();
-					return;
-					ll("error loading classsssssssssssssssssssssss");
-
-					e = GetWorld()->SpawnActor<AKnowledgeEdge>(
-						AKnowledgeEdge::StaticClass()
-					);
-					// GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Red, "error loading class");
-				}
+				e = GetWorld()->SpawnActor<AKnowledgeEdge>(loadedClass);
+				// SpawnedActor->TeleportTo(position, rotation.ToOrientationRotator());		
 			}
 			else
 			{
-				// This approach works in Only play in editor
+				qq();
+				return;
+				ll("error loading classsssssssssssssssssssssss");
 
-
-				// Load the Blueprint
-				UBlueprint* LoadedBP = Cast<UBlueprint>(StaticLoadObject(
-						UBlueprint::StaticClass(),
-						nullptr,
-						TEXT(
-							// "Blueprint'/Game/NewBlueprint22222.NewBlueprint22222'"
-							"Blueprint'/Game/kkkkk/NewBlueprint22222.NewBlueprint22222'"
-						)
-					)
-				);
-				if (!LoadedBP)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Failed to load the Blueprint."));
-					eeeee();
-				}
-
-				// Check if the Blueprint class is valid
-				bpClass = LoadedBP->GeneratedClass;
-				if (!bpClass)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Generated class from Blueprint is null."));
-					eeeee();
-				}
 				e = GetWorld()->SpawnActor<AKnowledgeEdge>(
-					bpClass
+					AKnowledgeEdge::StaticClass()
 				);
+				// GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Red, "error loading class");
 			}
 		}
-	}
-	else
-	{
-	}
+		else
+		{
+			// This approach works in Only play in editor
 
 
-	e->source = source;
-	e->target = target;
-	e->strength = 1;
-	e->distance = edgeDistance;
-	all_links.Emplace(id, e);
+			// Load the Blueprint
+			UBlueprint* LoadedBP = Cast<UBlueprint>(StaticLoadObject(
+					UBlueprint::StaticClass(),
+					nullptr,
+					TEXT(
+						// "Blueprint'/Game/NewBlueprint22222.NewBlueprint22222'"
+						"Blueprint'/Game/kkkkk/NewBlueprint22222.NewBlueprint22222'"
+					)
+				)
+			);
+			if (!LoadedBP)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to load the Blueprint."));
+				eeeee();
+			}
+
+			// Check if the Blueprint class is valid
+			bpClass = LoadedBP->GeneratedClass;
+			if (!bpClass)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Generated class from Blueprint is null."));
+				eeeee();
+			}
+			e = GetWorld()->SpawnActor<AKnowledgeEdge>(
+				bpClass
+			);
+		}
+
+
+		e->source = source;
+		e->target = target;
+		e->strength = 1;
+		e->distance = edgeDistance;
+		all_links.Emplace(id, e);
+	}
+	
+
 }
