@@ -55,7 +55,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
 
-	bool debug = true;
+	bool debug = false;
 
 
 };
