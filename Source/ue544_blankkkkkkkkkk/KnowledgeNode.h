@@ -46,7 +46,7 @@ public:
 
 
 	int numberOfConnected = 0;
-	float strength1111 = -60; 
+	// float strength1111 = -60; 
 	FVector velocity;
 	
 
