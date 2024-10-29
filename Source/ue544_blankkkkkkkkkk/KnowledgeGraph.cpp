@@ -81,10 +81,9 @@ void AKnowledgeGraph::BeginPlay()
 
 
 
-
 	if (use_shaders)
 	{
-		if (use_text_render_component)
+		if (use_text_render_components_directly_on_this_actor)
 		{
 			for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
 			{
@@ -131,10 +130,12 @@ void AKnowledgeGraph::BeginPlay()
 
 	if (!use_shaders)
 	{
+
 		// generateGraph();
 		timeThisMemberFunction(
 			"AKnowledgeGraph::generateGraph",
-			&AKnowledgeGraph::generateGraph);
+			&AKnowledgeGraph::generateGraph
+			);
 
 
 

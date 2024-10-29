@@ -122,7 +122,7 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 		}
 
 
-		if (use_text_render_component)
+		if (use_text_render_components_directly_on_this_actor)
 		{
 			TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
 		}

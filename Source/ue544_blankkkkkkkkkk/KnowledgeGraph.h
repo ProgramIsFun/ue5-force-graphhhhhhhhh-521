@@ -100,7 +100,7 @@ public:
 	
 	// Use TextRenderComponent or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_text_render_component = true;
+	bool use_text_render_components_directly_on_this_actor = true;
 
 	// The size of TextRenderComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
