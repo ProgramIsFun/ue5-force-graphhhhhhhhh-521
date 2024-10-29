@@ -14,10 +14,13 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 {
 	bool log = true;
 
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
-	SpawnParams.Instigator = GetInstigator();
+	//
+	// FActorSpawnParameters SpawnParams;
+	//
+	//
+	//
+	// SpawnParams.Owner = this;
+	// SpawnParams.Instigator = GetInstigator();
 
 
 	nodePositions.SetNumUninitialized(jnodes1);

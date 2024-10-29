@@ -79,6 +79,9 @@ void AKnowledgeGraph::BeginPlay()
 		check(InstancedStaticMeshComponent);
 	}
 
+
+
+
 	if (use_shaders)
 	{
 		if (use_text_render_component)
@@ -93,6 +96,9 @@ void AKnowledgeGraph::BeginPlay()
 					TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));
 					TextComponent->SetupAttachment(RootComponent);
 					TextComponent->RegisterComponent(); // This is important to initialize the component
+
+
+
 					TextComponents11111111111111111111.Add(TextComponent);
 					// Assuming TextComponents is a valid TArray<UTextRenderComponent*>
 				}
@@ -125,7 +131,6 @@ void AKnowledgeGraph::BeginPlay()
 
 	if (!use_shaders)
 	{
-		
 		// generateGraph();
 		timeThisMemberFunction(
 			"AKnowledgeGraph::generateGraph",
