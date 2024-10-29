@@ -72,6 +72,8 @@ public:
 
 	void tttttttttttt();
 
+
+	
 	
 	// Every node will be Initialize with position 0. 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
@@ -87,9 +89,21 @@ public:
 	bool use_instance_static_mesh = true;
 
 
+	// The size of Static mesh
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	float static_mesh_size = 10;
+
+	
 	// Use TextRenderComponent or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_text_render_component = true;
+
+	// The size of TextRenderComponent
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	float text_size = 10;
+	
+
+
 	
 	UPROPERTY(VisibleAnywhere)
 	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
