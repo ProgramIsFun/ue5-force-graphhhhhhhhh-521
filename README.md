@@ -1,3 +1,6 @@
+
+
+
 I don't understand why, but sometimes if gpu output A ray size is zero. You delete that actor in the map and change it to simulation engine actor. 
 And then it will work as normal again. 
 

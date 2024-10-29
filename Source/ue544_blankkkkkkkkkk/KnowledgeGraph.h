@@ -56,7 +56,8 @@ public:
 
 	void initializeNodePosition();
 
-	void initializeNodePosition_Individual(AKnowledgeNode* node, int index, int NumDimensions, float InitialRadius);
+	void initializeNodePosition_Individual(int index
+		);
 
 	void CalculateBiasstrengthOflinks();
 
@@ -150,7 +151,7 @@ public:
 
 	// Use a lot of actor Or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_a_lot_of_actor = true;
+	bool use_actorfornode = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool connect_to_previous = true;

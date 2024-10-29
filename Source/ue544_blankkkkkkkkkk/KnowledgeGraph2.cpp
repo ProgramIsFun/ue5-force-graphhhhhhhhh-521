@@ -14,14 +14,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 {
 	bool log = true;
 
-	//
-	// FActorSpawnParameters SpawnParams;
-	//
-	//
-	//
-	// SpawnParams.Owner = this;
-	// SpawnParams.Instigator = GetInstigator();
-
+	
 
 	nodePositions.SetNumUninitialized(jnodes1);
 	nodeVelocities.SetNumUninitialized(jnodes1);
@@ -38,8 +31,6 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 	{
 		int jid = i;
 
-		// Use actor for a node
-		bool use_actorfornode = true;
 		if (use_actorfornode)
 		{
 			AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
@@ -87,8 +78,21 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 			}
 			AddNode1(jid, kn);
 		}
-		else
+
+		if (use_text_render_components_directly_on_this_actor)
 		{
+			UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(
+				this, FName("TextComponent" + FString::FromInt(i))
+			);
+			if (TextComponent)
+			{
+				TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));
+				TextComponent->SetupAttachment(RootComponent);
+				TextComponent->RegisterComponent(); // This is important to initialize the component
+
+				TextComponents11111111111111111111.Add(TextComponent);
+				// Assuming TextComponents is a valid TArray<UTextRenderComponent*>
+			}
 		}
 	}
 
@@ -127,8 +131,6 @@ void AKnowledgeGraph::generateGraph()
 {
 	switch (wayofinitnodeslinks)
 	{
-
-
 	case 0:
 		{
 			// const FString JsonFilePath = FPaths::ProjectContentDir() + "/data/graph.json";
@@ -831,30 +833,106 @@ void AKnowledgeGraph::tttttttttttt()
 
 void AKnowledgeGraph::initializeNodePosition()
 {
+	if (use_shaders)
+	{
+		check(InstancedStaticMeshComponent);
+		check(SimulationConfig);
+	
+		SimParameters.Bodies.SetNumUninitialized(
+			jnodes1
+		);
+		BodyTransforms.SetNumUninitialized(
+			jnodes1);
+		
+	}
+
+
+
+
+
+
+
+
+
+
+	
 	if (!use_parallel)
 	{
-		// To replicate the node indexing from the original JS function
-		for (auto& node : all_nodes11111111111)
+		// for (
+		// 	auto& node : all_nodes11111111111
+		// 	)
+		// {
+		// 	int index = node.Key;
+		// 	initializeNodePosition_Individual(
+		// 		index);
+		// }
+		for (
+			int32 index = 0; index < jnodes1; index++
+		)
 		{
-			int index = node.Key;
-			// Calculate index-based radius differently based on the number of dimensions
-			initializeNodePosition_Individual(node.Value, index, 3, initialRadius);
+			
+			initializeNodePosition_Individual(
+				index);
 		}
 	}
 	else
 	{
-		ParallelFor(all_nodes11111111111.Num(), [&](int32 index)
-		            {
-			            initializeNodePosition_Individual(all_nodes11111111111[index], index, 3, initialRadius);
-		            }
+		// ParallelFor(
+		// 	all_nodes11111111111.Num()
+		// 	, [&](int32 index)
+		//             {
+		// 	            initializeNodePosition_Individual(
+		// 	            	index);
+		//             }
+		// );
 
+		ParallelFor(
+			jnodes1, [&](int32 index)
+					{
+						initializeNodePosition_Individual(
+							index);
+					}
 		);
 	}
 }
 
-void AKnowledgeGraph::initializeNodePosition_Individual(AKnowledgeNode* node, int index, int NumDimensions,
-                                                        float InitialRadius)
+void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 {
+	if (use_shaders)
+	{
+		float RandomMass = FMath::FRandRange(SimulationConfig->InitialBodyMassRange.X,
+		                                     SimulationConfig->InitialBodyMassRange.Y);
+
+		FVector3f RandomPosition;
+		if (!initialize_with_zero_position)
+		{
+			RandomPosition= FVector3f(RandPointInCircle(SimulationConfig->BodySpawnCircleRadius));
+		}
+		else
+		{
+			RandomPosition = FVector3f(0,0,0);
+		}
+
+
+		FVector3f RandomVelocity
+		{
+			0, 0, 0
+		};
+
+		float MeshScale = FMath::Sqrt(RandomMass) * SimulationConfig->MeshScaling;
+		
+		FTransform MeshTransform(
+			FRotator(),
+			FVector(RandomPosition),
+			FVector(MeshScale, MeshScale, MeshScale)
+		);
+
+		BodyTransforms[index] = MeshTransform;
+		SimParameters.Bodies[index] = FBodyData(RandomMass, RandomPosition, RandomVelocity);
+	}
+	
+
+	
 	// Calculate index-based radius
 	float radius;
 	int nDim = 3;
@@ -899,18 +977,16 @@ void AKnowledgeGraph::initializeNodePosition_Individual(AKnowledgeNode* node, in
 		                   radius * sin(rollAngle) * sin(yawAngle));
 	}
 
-	// Set the initial position of the node Actor
-	if (node)
-	{
-		// Check if pointer is valid
-		// node->SetActorLocation(init_pos, false);
+	
+	// Check if pointer is valid
+	// node->SetActorLocation(init_pos, false);
 
 
-		nodePositions[index] = init_pos;
+	nodePositions[index] = init_pos;
 
 
-		ll("index: " + FString::FromInt(index) + " init_pos: " + init_pos.ToString());
-	}
+	ll("index: " + FString::FromInt(index) + " init_pos: " + init_pos.ToString());
+
 }
 
 void AKnowledgeGraph::update_Node_world_position_according_to_position_array()
@@ -971,7 +1047,7 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 	if (!all_nodes11111111111.Contains(id))
 	{
 		nodeVelocities[id] = FVector(0, 0, 0);
-		
+
 		all_nodes11111111111.Emplace(id, kn);
 	}
 	else
@@ -1021,8 +1097,6 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 		else
 		{
 			// This approach works in Only play in editor
-
-
 			// Load the Blueprint
 			UBlueprint* LoadedBP = Cast<UBlueprint>(StaticLoadObject(
 					UBlueprint::StaticClass(),
@@ -1038,7 +1112,6 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 				UE_LOG(LogTemp, Error, TEXT("Failed to load the Blueprint."));
 				eeeee();
 			}
-
 			// Check if the Blueprint class is valid
 			bpClass = LoadedBP->GeneratedClass;
 			if (!bpClass)
@@ -1058,6 +1131,9 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 		e->distance = edgeDistance;
 		all_links1111111.Emplace(id, e);
 	}
-	
-
+	else
+	{
+		ll("Right now We only have actor option for link. ", true, 2);
+		qq();
+	}
 }

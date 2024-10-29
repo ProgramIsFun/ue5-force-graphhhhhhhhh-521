@@ -65,12 +65,31 @@ void AKnowledgeGraph::BeginPlay()
 	ClearLogFile();
 
 
-	if (use_tick_interval)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
+	ll("")
+	if (
+			(use_actorfornode && use_instance_static_mesh)
+			||
+			(use_text_render_components_directly_on_this_actor && use_instance_static_mesh)
+			||
+			(use_actorfornode && use_text_render_components_directly_on_this_actor)
 
-		PrimaryActorTick.TickInterval = tick_interval;
+		)
+	{
+		ll("You can only choose one to be true in these three boolean values. ", 1, 2);
+		qq();
+		return;
 	}
+
+
+	if (
+		!use_shaders && !use_actorfornode
+	)
+	{
+		ll("If CPU we must use actor for node for right now. ", 1, 2);
+		qq();
+		return;
+	}
+
 
 	check(SimulationConfig);
 
@@ -80,48 +99,54 @@ void AKnowledgeGraph::BeginPlay()
 	}
 
 
+	if (!SimulationConfig)
+	{
+		ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",
+		   true, 2);
 
+		qq();
+		return;
+	}
+
+
+
+
+
+
+	
+	if (use_tick_interval)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
+
+		PrimaryActorTick.TickInterval = tick_interval;
+	}
+
+	
+	// generateGraph();
+	timeThisMemberFunction(
+		"AKnowledgeGraph::generateGraph",
+		&AKnowledgeGraph::generateGraph
+		);
+	
+	
+	timeThisMemberFunction(
+		"AKnowledgeGraph::initializeNodePosition",
+		&AKnowledgeGraph::initializeNodePosition);
+
+	if(use_instance_static_mesh)
+	{
+		InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
+	}
+	
 	if (use_shaders)
 	{
-		if (use_text_render_components_directly_on_this_actor)
-		{
-			for (int32 i = 0; i < SimulationConfig->NumberOfBody; i++)
-			{
-				UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(
-					this, FName("TextComponent" + FString::FromInt(i))
-					);
-				if (TextComponent)
-				{
-					TextComponent->SetText(FText::FromString("Sample Text : " + FString::FromInt(i)));
-					TextComponent->SetupAttachment(RootComponent);
-					TextComponent->RegisterComponent(); // This is important to initialize the component
-
-
-
-					TextComponents11111111111111111111.Add(TextComponent);
-					// Assuming TextComponents is a valid TArray<UTextRenderComponent*>
-				}
-			}
-		}
-
-
-		if (!SimulationConfig)
-		{
-			ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",
-			   true, 2);
-
-			qq();
-			return;
-		}
-
-
+		
 		// In a new commits because we are no longer wrapping the simulation in Fix containing Cube container.
 		// the following two lines is useless. 
 		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
 		SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
-		//
-		InitBodies(); // In this function, we also set a lot of things in SimParameters
-		//
+		SimParameters.GravityConstant = SimulationConfig->GravitationalConstant;
+		SimParameters.NumBodies = jnodes1;
 		FNBodySimModule::Get().BeginRendering();
 		FNBodySimModule::Get().InitWithParameters(SimParameters);
 
@@ -130,23 +155,8 @@ void AKnowledgeGraph::BeginPlay()
 
 	if (!use_shaders)
 	{
-
-		// generateGraph();
-		timeThisMemberFunction(
-			"AKnowledgeGraph::generateGraph",
-			&AKnowledgeGraph::generateGraph
-			);
-
-
-
-		timeThisMemberFunction(
-			"AKnowledgeGraph::initializeNodePosition",
-			&AKnowledgeGraph::initializeNodePosition);
-
-
 		update_Node_world_position_according_to_position_array();
-
-
+		
 		timeThisMemberFunction(
 			"AKnowledgeGraph::CalculateBiasstrengthOflinks",
 			&AKnowledgeGraph::CalculateBiasstrengthOflinks);
