@@ -93,6 +93,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float static_mesh_size = 10;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	UStaticMesh* SelectedMesh1111111111111;
+
 	
 	// Use TextRenderComponent or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)

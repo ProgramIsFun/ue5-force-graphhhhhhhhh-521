@@ -41,16 +41,13 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 		{
 			AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
 
-
-			// UStaticMeshComponent* CubeComponent = NewObject<UStaticMeshComponent>(ActorB);
-			// CubeComponent->RegisterComponent();
-			// CubeComponent->AttachToComponent(ActorB->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
-			
 			if (kn)
 			{
 				UStaticMeshComponent* MeshComp = NewObject<UStaticMeshComponent>(kn);
-				MeshComp->AttachToComponent(kn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+				MeshComp->AttachToComponent(
+					kn->GetRootComponent(),
+					FAttachmentTransformRules::SnapToTargetIncludingScale
+				);
 				MeshComp->RegisterComponent(); // Don't forget to register the component
 
 
@@ -58,23 +55,35 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 				FVector NewScale = FVector(sss, sss, sss);
 				MeshComp->SetWorldScale3D(NewScale);
 
-				UStaticMesh* CubeMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
-        
+
+				UStaticMesh* CubeMesh;
+				// SelectedMesh1111111111111
+				if (0)
+				{
+					CubeMesh = LoadObject<UStaticMesh>(
+						nullptr,
+
+						TEXT(
+							"/Engine/BasicShapes/Cube.Cube"
+						)
+					);
+				}
+				else
+				{
+					CubeMesh = SelectedMesh1111111111111;
+					
+				}
 				if (CubeMesh)
 				{
 					MeshComp->SetStaticMesh(CubeMesh);
 				}
 				else
 				{
-					ll("CubeMesh failed", log,2);
+					ll("CubeMesh failed", log, 2);
 					qq();
 					return;
 				}
-				
 			}
-
-
-			
 			AddNode1(jid, kn);
 		}
 		else
@@ -85,14 +94,11 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 			{
 				// Optional: Set the text of the TextRenderComponent
 				TextComponent->SetText(FText::FromString(FString::Printf(TEXT("Text %d"), i)));
-
 				// Optional: Set other properties of the TextRenderComponent
 				TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
 				TextComponent->SetWorldSize(50.0f); // Size of the text
-
 				// Attach the TextRenderComponent to the Actor
 				TextComponent->SetupAttachment(RootComponent);
-
 				// Register the component with the Actor
 				TextComponent->RegisterComponent();
 			}
@@ -972,7 +978,6 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		link.Value->strength = 1.0 / fmin(all_nodes[link.Value->source]->numberOfConnected,
 		                                  all_nodes[link.Value->target]->numberOfConnected);
 	}
-
 }
 
 void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
