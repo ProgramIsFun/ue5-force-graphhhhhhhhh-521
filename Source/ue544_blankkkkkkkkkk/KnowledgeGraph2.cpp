@@ -29,15 +29,15 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 		velocity.Z = 0.0f;
 	}
 
-
 	//Retrieving an array property and printing each field
 	int jnodes11 = jnodes1;
 	for (int32 i = 0; i < jnodes11; i++)
 	{
 		int jid = i;
 
-
-		if (use_a_lot_of_actor)
+		// Use actor for a node
+		bool use_actorfornode = true;
+		if (use_actorfornode)
 		{
 			AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
 
