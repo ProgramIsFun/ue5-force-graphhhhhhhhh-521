@@ -47,7 +47,7 @@ AKnowledgeNode::AKnowledgeNode()
 	}
 
 
-	if (1)
+	if (0)
 	{
 		TextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextRenderComponent"));
 		RootComponent = TextComponent;
@@ -56,6 +56,18 @@ AKnowledgeNode::AKnowledgeNode()
 		TextComponent->SetText(FText::FromString(TEXT("Hello, World!")));
 		TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
 		TextComponent->SetWorldSize(100.f);
+	}
+
+
+	// This section is required because if we do not set a root component
+	// If we attach objects to the root component of this actor
+	// Then the objects will not be visible in the editor
+	if (1)
+	{
+		MySphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
+		MySphere->SetHiddenInGame(true, true);
+		RootComponent = MySphere;
+		
 	}
 }
 
