@@ -211,7 +211,7 @@ public:
 	TArray<FVector> nodeVelocities;
 
 
-	TMap<int32, AKnowledgeEdge*> all_links;
+	TMap<int32, AKnowledgeEdge*> all_links1111111;
 
 	// TMap<FString, NodeStrength> octree_node_strengths;
 	//    FVector GetWeightedDistance(FVector prev_loc);

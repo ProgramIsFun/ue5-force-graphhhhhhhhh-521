@@ -205,7 +205,7 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 	int32 Index = 0;
 	// link forces
 	// After loop, the velocity of all notes have been altered a little bit because of the link force already. 
-	for (auto& link : all_links)
+	for (auto& link : all_links1111111)
 	{
 		ll("ApplyForcesssssssssssssssssssss Index: " + FString::FromInt(Index), log);
 
@@ -445,7 +445,7 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 
 void AKnowledgeGraph::update_link_position()
 {
-	for (auto& link : all_links)
+	for (auto& link : all_links1111111)
 	{
 		auto l = link.Value;
 
@@ -927,15 +927,15 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	bool log = true;
 	//link forces
 	float n = all_nodes11111111111.Num();
-	float m = all_links.Num();
+	float m = all_links1111111.Num();
 
-	for (auto& link : all_links)
+	for (auto& link : all_links1111111)
 	{
 		all_nodes11111111111[link.Value->source]->numberOfConnected += 1;
 		all_nodes11111111111[link.Value->target]->numberOfConnected += 1;
 	}
 
-	for (auto& link : all_links)
+	for (auto& link : all_links1111111)
 	{
 		ll("all_nodes[link.Value->source]->numberOfConnected: " + FString::FromInt(
 			   all_nodes11111111111[link.Value->source]->numberOfConnected), log);
@@ -1056,7 +1056,7 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 		e->target = target;
 		e->strength = 1;
 		e->distance = edgeDistance;
-		all_links.Emplace(id, e);
+		all_links1111111.Emplace(id, e);
 	}
 	
 
