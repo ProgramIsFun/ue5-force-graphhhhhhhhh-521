@@ -205,7 +205,7 @@ public:
 	void update_link_position();
 
 
-	TMap<int32, AKnowledgeNode*> all_nodes;
+	TMap<int32, AKnowledgeNode*> all_nodes11111111111;
 
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
