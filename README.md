@@ -203,9 +203,9 @@ StructuredBuffer<uint> LinkIndices;     // Flat array containing all links
 // In your compute shader
 for (uint j = 0; j < LinkInfo[ID.x].y; j++) // LinkInfo[ID.x].y gives the count of links
 {
-uint index = LinkInfo[ID.x].x + j;  // Starting index + offset
-uint LinkedBodyIndex = LinkIndices[index];
-// Calculate forces similar to previous examples
+    uint index = LinkInfo[ID.x].x + j;  // Starting index + offset
+    uint LinkedBodyIndex = LinkIndices[index];
+    // Calculate forces similar to previous examples
 }
 
 
@@ -219,8 +219,8 @@ StructuredBuffer<uint> LinkIndices;  // Flat array containing all links
 [numthreads(x, 1, 1)]
 void ComputeShader(uint3 ID : SV_DispatchThreadID)
 {
-uint linkCount = LinkCounts[ID.x];  // Get count of links
-uint offset = LinkOffsets[ID.x];    // Get starting offset
+    uint linkCount = LinkCounts[ID.x];  // Get count of links
+    uint offset = LinkOffsets[ID.x];    // Get starting offset
 
     for (uint j = 0; j < linkCount; j++)
     {
