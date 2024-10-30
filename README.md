@@ -215,8 +215,6 @@ uint LinkedBodyIndex = LinkIndices[index];
 StructuredBuffer<uint> LinkOffsets;  // Holds the offset for each body
 StructuredBuffer<uint> LinkCounts;   // Holds the count of links for each body
 StructuredBuffer<uint> LinkIndices;  // Flat array containing all links
-Step 2: Modify the Shader Logic
-Next, modify the compute shader to use these new buffers instead of using a single buffer storing uint2:
 
 [numthreads(x, 1, 1)]
 void ComputeShader(uint3 ID : SV_DispatchThreadID)
