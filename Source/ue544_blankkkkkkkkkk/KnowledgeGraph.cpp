@@ -113,7 +113,6 @@ void AKnowledgeGraph::BeginPlay()
 
 		PrimaryActorTick.TickInterval = tick_interval;
 	}
-
 	
 	// generateGraph();
 	timeThisMemberFunction(
@@ -121,6 +120,14 @@ void AKnowledgeGraph::BeginPlay()
 		&AKnowledgeGraph::generateGraph
 		);
 	
+	if (use_shaders)
+	{
+		SimParameters.Bodies.SetNumUninitialized(
+			jnodes1
+		);
+		BodyTransforms.SetNumUninitialized(
+			jnodes1);
+	}
 	
 	timeThisMemberFunction(
 		"AKnowledgeGraph::initializeNodePosition",
