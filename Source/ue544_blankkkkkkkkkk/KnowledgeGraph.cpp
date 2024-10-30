@@ -64,8 +64,10 @@ void AKnowledgeGraph::BeginPlay()
 
 	ClearLogFile();
 
-	
-	if (
+
+	if (0)
+	{
+		if (
 			(use_actorfornode && use_instance_static_mesh)
 			||
 			(use_text_render_components_directly_on_this_actor && use_instance_static_mesh)
@@ -73,11 +75,12 @@ void AKnowledgeGraph::BeginPlay()
 			(use_actorfornode && use_text_render_components_directly_on_this_actor)
 
 		)
-	{
-		ll("You can only choose one to be true in these three boolean values. ", 1, 2);
-		prechecksucceeded = false;
-		qq();
-		return;
+		{
+			ll("You can only choose one to be true in these three boolean values. ", 1, 2);
+			prechecksucceeded = false;
+			qq();
+			return;
+		}
 	}
 
 
@@ -162,6 +165,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	{
 		ll("prechecksucceeded is false", true, 2);
 		qq();
+		return;
 	}
 
 	
