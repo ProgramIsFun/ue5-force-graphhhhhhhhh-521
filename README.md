@@ -215,6 +215,8 @@ for (uint j = 0; j < LinkInfo[ID.x].y; j++) // LinkInfo[ID.x].y gives the count 
 StructuredBuffer<uint> LinkOffsets;  // Holds the offset for each body
 StructuredBuffer<uint> LinkCounts;   // Holds the count of links for each body
 StructuredBuffer<uint> LinkIndices;  // Flat array containing all links
+StructuredBuffer<float> LinkStrengths;  // Holds the strength of each link
+StructuredBuffer<float> LinkBiases;     // Holds the bias of each link
 
 [numthreads(x, 1, 1)]
 void ComputeShader(uint3 ID : SV_DispatchThreadID)
@@ -227,8 +229,9 @@ void ComputeShader(uint3 ID : SV_DispatchThreadID)
         uint index = offset + j;  // Compute global index in the LinkIndices
         uint LinkedBodyIndex = LinkIndices[index]; // Get the linked body index
 
-        // Process further using LinkedBodyIndex, for example, calculate forces
-    }
+        // Process further using LinkedBodyIndex, 
+        // LinkStrengths[index], LinkBiases[index] etc.
+
 }
 
 ///////////////////////////////////////////////////////////////////
