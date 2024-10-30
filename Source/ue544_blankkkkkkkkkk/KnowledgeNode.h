@@ -46,15 +46,12 @@ public:
 
 
 	int numberOfConnected = 0;
-	// float strength1111 = -60; 
-	FVector velocity;
+	
 	
 
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* MySphere;
-
-
-
+	
 	UPROPERTY(VisibleAnywhere)
 	UTextRenderComponent* TextComponent;
 	

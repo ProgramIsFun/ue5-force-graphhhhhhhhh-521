@@ -186,7 +186,7 @@ public:
 	float initialAngle = PI * (3 - sqrt(5));
 
 
-	int biasinitway = 0;
+	// int biasinitway = 0;
 	
 	float initialRadius = 10;
 	

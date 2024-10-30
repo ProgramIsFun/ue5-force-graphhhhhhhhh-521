@@ -468,17 +468,7 @@ void AKnowledgeGraph::ApplyForces()
 
 	ll("11111111111111111Warning printing out all things. ", log, 1);
 
-	if (0)
-	{
-		// Print out the position and velocity of all the nodes. 
-		for (auto& node : all_nodes11111111111)
-		{
-			auto kn = node.Value;
-			ll("node: " + FString::FromInt(node.Key), log);
-			ll("position: " + kn->GetActorLocation().ToString(), log);
-			ll("velocity: " + kn->velocity.ToString(), log);
-		}
-	}
+	
 
 
 	ll("Ready to calculate link.--------------------------------------", log);
@@ -491,19 +481,6 @@ void AKnowledgeGraph::ApplyForces()
 	ll("Finish calculating link.--------------------------------------", log);
 
 
-	if (0)
-	{
-		ll("222222222222222222Warning printing out all things. ", log, 1);
-
-		// Print out the position and velocity of all the nodes. 
-		for (auto& node : all_nodes11111111111)
-		{
-			auto kn = node.Value;
-			ll("node: " + FString::FromInt(node.Key), log);
-			ll("position: " + kn->GetActorLocation().ToString(), log);
-			ll("velocity: " + kn->velocity.ToString(), log);
-		}
-	}
 
 	if (manybody)
 	{
@@ -700,14 +677,9 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		ll("!!!!!!!!!!!!!!!!!!!!!!!bias: " + FString::SanitizeFloat(bias), log);
 
 
-		if (biasinitway)
-		{
-			link.Value->bias = bias > 0.5 ? (1 - bias) * 0.5 + bias : bias * 0.5;
-		}
-		else
-		{
-			link.Value->bias = bias;
-		}
+		
+		link.Value->bias = bias;
+		
 		ll("!!!!!!!!!!!!!!!!!!!!!!!bias: " + FString::SanitizeFloat(link.Value->bias), log);
 
 		link.Value->strength = 1.0 / fmin(all_nodes11111111111[link.Value->source]->numberOfConnected,
