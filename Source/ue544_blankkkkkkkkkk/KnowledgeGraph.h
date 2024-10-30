@@ -263,6 +263,11 @@ public:
 		UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
 	}
 
+	bool prechecksucceeded=true;
+
+
+
+	
 	//////////// Testing new shader. /////////////////////////////////////////////////////////////
 
 

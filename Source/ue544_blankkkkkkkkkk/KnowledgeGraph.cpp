@@ -64,8 +64,7 @@ void AKnowledgeGraph::BeginPlay()
 
 	ClearLogFile();
 
-
-	ll("")
+	
 	if (
 			(use_actorfornode && use_instance_static_mesh)
 			||
@@ -76,6 +75,7 @@ void AKnowledgeGraph::BeginPlay()
 		)
 	{
 		ll("You can only choose one to be true in these three boolean values. ", 1, 2);
+		prechecksucceeded = false;
 		qq();
 		return;
 	}
@@ -86,33 +86,23 @@ void AKnowledgeGraph::BeginPlay()
 	)
 	{
 		ll("If CPU we must use actor for node for right now. ", 1, 2);
+		prechecksucceeded = false;
 		qq();
 		return;
 	}
-
-
-	check(SimulationConfig);
-
 	if (use_instance_static_mesh)
 	{
 		check(InstancedStaticMeshComponent);
 	}
-
-
+	
 	if (!SimulationConfig)
 	{
 		ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",
 		   true, 2);
-
+		prechecksucceeded = false;
 		qq();
 		return;
 	}
-
-
-
-
-
-
 	
 	if (use_tick_interval)
 	{
@@ -168,6 +158,13 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if(!prechecksucceeded)
+	{
+		ll("prechecksucceeded is false", true, 2);
+		qq();
+	}
+
+	
 	bool log = true;
 
 
