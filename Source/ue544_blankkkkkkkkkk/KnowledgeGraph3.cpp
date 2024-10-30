@@ -2,12 +2,6 @@
 
 
 
-void AKnowledgeGraph::InitBodies()
-{
-	
-	
-
-}
 
 
 void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)

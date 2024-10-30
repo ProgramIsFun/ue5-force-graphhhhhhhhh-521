@@ -233,29 +233,21 @@ public:
 
 
 
-	
-	//////////// Testing new shader. /////////////////////////////////////////////////////////////
-
-
-	
 	FNBodySimParameters SimParameters;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=Attributes)
 	TObjectPtr<USimulationConfig> SimulationConfig;
 
-	/** Store the transform of all body of the simulation. */
 	UPROPERTY()
 	TArray<FTransform> BodyTransforms;
 
 	UPROPERTY(VisibleAnywhere, Instanced)
 	TObjectPtr<UInstancedStaticMeshComponent> InstancedStaticMeshComponent;
 
-	void InitBodies();
 
 	void UpdateBodiesPosition(float DeltaTime);
 
 
-	///////////////////////////////////////////////////////////////////////////////////////
 };
 
 

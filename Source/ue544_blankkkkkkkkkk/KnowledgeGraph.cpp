@@ -140,7 +140,6 @@ void AKnowledgeGraph::BeginPlay()
 	
 	if (use_shaders)
 	{
-		
 		// In a new commits because we are no longer wrapping the simulation in Fix containing Cube container.
 		// the following two lines is useless. 
 		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
