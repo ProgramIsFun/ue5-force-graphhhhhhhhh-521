@@ -41,6 +41,13 @@ class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 public:
 	AKnowledgeGraph();
 	~AKnowledgeGraph();
+	virtual void BeginPlay() override;
+	virtual void BeginDestroy() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+
+
+	
 	void GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster);
 
 
@@ -69,7 +76,6 @@ public:
 
 
 	void update_Node_world_position_according_to_position_array();
-
 	void update_position_array_according_to_velocity_array();
 	void update_link_position();
 	
@@ -175,9 +181,6 @@ public:
 	
 	float initialRadius = 10;
 	
-	virtual void BeginPlay() override;
-	virtual void BeginDestroy() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 
 
@@ -235,9 +238,6 @@ public:
 
 	FNBodySimParameters SimParameters;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=Attributes)
-	TObjectPtr<USimulationConfig> SimulationConfig;
-
 	UPROPERTY()
 	TArray<FTransform> BodyTransforms;
 

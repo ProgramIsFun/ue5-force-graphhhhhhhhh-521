@@ -569,13 +569,17 @@ void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 {
 	if (use_shaders)
 	{
-		float RandomMass = FMath::FRandRange(SimulationConfig->InitialBodyMassRange.X,
-		                                     SimulationConfig->InitialBodyMassRange.Y);
+		float RandomMass = FMath::FRandRange(
+		20.0
+			,
+			50.0);
 
 		FVector3f RandomPosition;
 		if (!initialize_with_zero_position)
 		{
-			RandomPosition= FVector3f(RandPointInCircle(SimulationConfig->BodySpawnCircleRadius));
+			RandomPosition= FVector3f(RandPointInCircle(
+			1000.0
+				));
 		}
 		else
 		{
@@ -588,7 +592,7 @@ void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 			0, 0, 0
 		};
 
-		float MeshScale = FMath::Sqrt(RandomMass) * SimulationConfig->MeshScaling;
+		float MeshScale = FMath::Sqrt(RandomMass) * 2.0;
 		
 		FTransform MeshTransform(
 			FRotator(),

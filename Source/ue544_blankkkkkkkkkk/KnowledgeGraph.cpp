@@ -98,14 +98,6 @@ void AKnowledgeGraph::BeginPlay()
 		check(InstancedStaticMeshComponent);
 	}
 	
-	if (!SimulationConfig)
-	{
-		ll("Failed to start simulation : SimulationConfig data asset has not been assigned in simulation engine.",
-		   true, 2);
-		prechecksucceeded = false;
-		qq();
-		return;
-	}
 	
 	if (use_tick_interval)
 	{
@@ -142,9 +134,11 @@ void AKnowledgeGraph::BeginPlay()
 	{
 		// In a new commits because we are no longer wrapping the simulation in Fix containing Cube container.
 		// the following two lines is useless. 
-		SimParameters.ViewportWidth = SimulationConfig->CameraOrthoWidth;
-		SimParameters.CameraAspectRatio = SimulationConfig->CameraAspectRatio;
-		SimParameters.GravityConstant = SimulationConfig->GravitationalConstant;
+		SimParameters.ViewportWidth = 8000.0;
+		SimParameters.CameraAspectRatio =1.777778;
+		SimParameters.GravityConstant = 1000.0;
+
+
 		SimParameters.NumBodies = jnodes1;
 		FNBodySimModule::Get().BeginRendering();
 		FNBodySimModule::Get().InitWithParameters(SimParameters);
