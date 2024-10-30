@@ -220,9 +220,15 @@ We use components instead of an actor for each link.
 
 
 
+This perhaps explain why flatten 1D array is better than 2D array. 
+https://stackoverflow.com/questions/19759343/cuda-is-it-better-to-use-m-for-2d-static-arrays-or-flatten-them-to-m
+
+
 
 To prevent race condition when calculating the link force in the shader, perhaps each thread will only deal with the change of position or velocity of that node only. 
 So one link could affect 2 Threats. 
+
+So we compute a flattened one D away, which store the bias of each link. 
 
 
 
