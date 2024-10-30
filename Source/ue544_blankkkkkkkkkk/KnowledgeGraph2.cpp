@@ -663,17 +663,16 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 	for (auto& link : all_links1)
 	{
+		int s1=all_nodes1[link.Value->source]->numOfConnected;
+		int s2=all_nodes1[link.Value->target]->numOfConnected;
 		
-		float ttttttttttt = all_nodes1[link.Value->source]->numOfConnected +
-			all_nodes1[link.Value->target]->numOfConnected;
-
-		float bias = all_nodes1[link.Value->source]->numOfConnected /
-			ttttttttttt;
+		float ttttttttttt = s1 + s2;
+		float bias = s1 / ttttttttttt;
 		
 		link.Value->bias = bias;
 		
-		link.Value->strength = 1.0 / fmin(all_nodes1[link.Value->source]->numOfConnected,
-		                                  all_nodes1[link.Value->target]->numOfConnected);
+		link.Value->strength = 1.0 / fmin(s1,
+		                                  s2);
 	}
 }
 
