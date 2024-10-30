@@ -4,6 +4,7 @@
 
 
 #include "utillllllssss.h"
+#include <map>
 // #include "Misc/FileHelper.h"
 // #include "Serialization/JsonSerializer.h"
 
@@ -655,10 +656,17 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	float n = all_nodes1.Num();
 	float m = all_links1.Num();
 
+	// std::map<int32, int32> map1;
+
 	for (auto& link : all_links1)
 	{
 		all_nodes1[link.Value->source]->numOfConnected += 1;
 		all_nodes1[link.Value->target]->numOfConnected += 1;
+
+		
+		
+		// map1[link.Value->source] += 1;
+		
 	}
 
 	for (auto& link : all_links1)
@@ -674,6 +682,9 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		link.Value->strength = 1.0 / fmin(s1,
 		                                  s2);
 	}
+
+
+	
 }
 
 void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)

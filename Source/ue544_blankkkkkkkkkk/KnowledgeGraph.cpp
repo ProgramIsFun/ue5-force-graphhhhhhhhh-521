@@ -152,11 +152,12 @@ void AKnowledgeGraph::BeginPlay()
 		{
 			update_Node_world_position_according_to_position_array();
 		}
-		
 		timeThisMemberFunction(
-			"AKnowledgeGraph::CalculateBiasstrengthOflinks",
-			&AKnowledgeGraph::CalculateBiasstrengthOflinks);
+	"AKnowledgeGraph::CalculateBiasstrengthOflinks",
+	&AKnowledgeGraph::CalculateBiasstrengthOflinks);
+
 	}
+	
 }
 
 
