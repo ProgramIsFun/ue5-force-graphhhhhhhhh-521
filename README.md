@@ -221,6 +221,9 @@ We use components instead of an actor for each link.
 
 
 
+To prevent race condition when calculating the link force in the shader, perhaps each thread will only deal with the change of position or velocity of that node only. 
+So one link could affect 2 Threats. 
+
 
 
 
