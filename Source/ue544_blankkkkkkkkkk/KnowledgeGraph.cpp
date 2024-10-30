@@ -97,21 +97,21 @@ void AKnowledgeGraph::BeginPlay()
 	{
 		check(InstancedStaticMeshComponent);
 	}
-	
-	
+
+
 	if (use_tick_interval)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Restricting tick interval"));
 
 		PrimaryActorTick.TickInterval = tick_interval;
 	}
-	
+
 	// generateGraph();
 	timeThisMemberFunction(
 		"AKnowledgeGraph::generateGraph",
 		&AKnowledgeGraph::generateGraph
-		);
-	
+	);
+
 	if (use_shaders)
 	{
 		SimParameters.Bodies.SetNumUninitialized(
@@ -120,29 +120,28 @@ void AKnowledgeGraph::BeginPlay()
 		BodyTransforms.SetNumUninitialized(
 			jnodes1);
 	}
-	
+
 	timeThisMemberFunction(
 		"AKnowledgeGraph::initializeNodePosition",
 		&AKnowledgeGraph::initializeNodePosition);
 
-	if(use_instance_static_mesh_fornode)
+	if (use_instance_static_mesh_fornode)
 	{
 		InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
 	}
-	
+
 	if (use_shaders)
 	{
 		// In a new commits because we are no longer wrapping the simulation in Fix containing Cube container.
 		// the following two lines is useless. 
 		SimParameters.ViewportWidth = 8000.0;
-		SimParameters.CameraAspectRatio =1.777778;
+		SimParameters.CameraAspectRatio = 1.777778;
 		SimParameters.GravityConstant = 1000.0;
 
 
 		SimParameters.NumBodies = jnodes1;
 		FNBodySimModule::Get().BeginRendering();
 		FNBodySimModule::Get().InitWithParameters(SimParameters);
-
 	}
 
 
@@ -153,11 +152,9 @@ void AKnowledgeGraph::BeginPlay()
 			update_Node_world_position_according_to_position_array();
 		}
 		timeThisMemberFunction(
-	"AKnowledgeGraph::CalculateBiasstrengthOflinks",
-	&AKnowledgeGraph::CalculateBiasstrengthOflinks);
-
+			"AKnowledgeGraph::CalculateBiasstrengthOflinks",
+			&AKnowledgeGraph::CalculateBiasstrengthOflinks);
 	}
-	
 }
 
 
@@ -165,14 +162,14 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(!prechecksucceeded)
+	if (!prechecksucceeded)
 	{
 		ll("prechecksucceeded is false", true, 2);
 		qq();
 		return;
 	}
 
-	
+
 	bool log = true;
 
 
@@ -200,16 +197,12 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		// UE_LOG(LogTemp, Warning, TEXT("alpha is less than alphaMin"));
 		// qq();
 		return;
-
 	}
 
 	alpha += (alphaTarget - alpha) * alphaDecay; //need to restart this if want to keep moving
 	ll("alpha: " + FString::SanitizeFloat(alpha), log);
 
 
-
-
-	
 	// GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White, "TICK");
 	if (use_shaders)
 	{
@@ -231,7 +224,6 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	if (!use_shaders)
 	{
 		double StartTime = FPlatformTime::Seconds();
-
 
 
 		ll("apply forces", log);
