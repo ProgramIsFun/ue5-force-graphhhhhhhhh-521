@@ -46,7 +46,17 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 
+	FNBodySimParameters SimParameters;
+	
+	UPROPERTY()
+	TArray<FTransform> BodyTransforms;
 
+	UPROPERTY(VisibleAnywhere, Instanced)
+	TObjectPtr<UInstancedStaticMeshComponent> InstancedStaticMeshComponent;
+
+
+	void UpdateBodiesPosition(float DeltaTime);
+	
 	
 	void GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster);
 
@@ -199,10 +209,17 @@ public:
 	TArray<double> ElapsedTimes;
 
 
+
+
+
+
+
+
+
+
+	
 	virtual void Tick(float DeltaTime) override;
 
-
-	// Member function that times another member function
 	template <typename Func, typename... Args>
 	auto timeThisMemberFunction(const char* functionName, Func function, Args&&... args)
 	{
@@ -233,21 +250,8 @@ public:
 	}
 
 	bool prechecksucceeded=true;
-
-
-
-	FNBodySimParameters SimParameters;
 	
-	UPROPERTY()
-	TArray<FTransform> BodyTransforms;
-
-	UPROPERTY(VisibleAnywhere, Instanced)
-	TObjectPtr<UInstancedStaticMeshComponent> InstancedStaticMeshComponent;
-
-
-	void UpdateBodiesPosition(float DeltaTime);
-
-
+	
 };
 
 
