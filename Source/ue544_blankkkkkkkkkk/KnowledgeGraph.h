@@ -100,6 +100,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_instance_static_mesh = true;
 	
+	// Use a lot of actor Or not
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_actorfornode = true;
+	
 	// The size of Static mesh
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float static_mesh_size = 10;
@@ -148,9 +152,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool many_body_use_brute_force = true;
 	
-	// Use a lot of actor Or not
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_actorfornode = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool connect_to_previous = true;
