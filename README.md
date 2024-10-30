@@ -215,7 +215,8 @@ uint LinkedBodyIndex = LinkIndices[index];
 
 
 
-
+It take too much time for generating too much actor for each link. 
+We use components instead of an actor for each link. 
 
 
 

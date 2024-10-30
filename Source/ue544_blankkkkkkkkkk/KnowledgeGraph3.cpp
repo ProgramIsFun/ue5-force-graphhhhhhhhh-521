@@ -15,7 +15,7 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 		       TEXT(
 			       "Size differ for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (%d) Output(%d)"
 		       ), SimParameters.Bodies.Num(), GPUOutputPositions.Num());
-		qq();
+		// qq();
 		return;
 	}else
 	{

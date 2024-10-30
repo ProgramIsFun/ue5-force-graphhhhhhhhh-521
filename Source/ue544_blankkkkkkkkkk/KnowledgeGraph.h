@@ -77,14 +77,12 @@ public:
 		);
 
 	void CalculateBiasstrengthOflinks();
-
-
+	
 	void ApplyForces();
 	void calculate_link_force_and_update_velocity();
 	void calculate_charge_force_and_update_velocity();
 	void calculate_centre_force_and_update_position();
-
-
+	
 	void update_Node_world_position_according_to_position_array();
 	void update_position_array_according_to_velocity_array();
 	void update_link_position();
