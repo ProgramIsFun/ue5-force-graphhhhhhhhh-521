@@ -28,19 +28,19 @@ void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
 	// Update bodies visual with new positions.
 	for (int i = 0; i < SimParameters.Bodies.Num(); i++)
 	{
-		if (use_instance_static_mesh)
+		if (use_instance_static_mesh_fornode)
 		{
 			BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
 		}
 
 
-		if (use_text_render_components_directly_on_this_actor)
+		if (use_text_render_components_fornode)
 		{
 			TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
 		}
 	}
 
-	if (use_instance_static_mesh)
+	if (use_instance_static_mesh_fornode)
 	{
 		InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
 	}

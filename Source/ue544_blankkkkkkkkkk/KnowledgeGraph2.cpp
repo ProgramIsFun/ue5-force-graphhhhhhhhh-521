@@ -31,7 +31,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 	{
 		int jid = i;
 
-		if (use_actorfornode)
+		if (use_actor_fornode)
 		{
 			AKnowledgeNode* kn = GetWorld()->SpawnActor<AKnowledgeNode>();
 
@@ -79,7 +79,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 			AddNode1(jid, kn);
 		}
 
-		if (use_text_render_components_directly_on_this_actor)
+		if (use_text_render_components_fornode)
 		{
 			UTextRenderComponent* TextComponent = NewObject<UTextRenderComponent>(
 				this, FName("TextComponent" + FString::FromInt(i))

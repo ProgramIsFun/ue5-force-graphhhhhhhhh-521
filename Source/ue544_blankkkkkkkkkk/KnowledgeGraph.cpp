@@ -68,11 +68,11 @@ void AKnowledgeGraph::BeginPlay()
 	if (0)
 	{
 		if (
-			(use_actorfornode && use_instance_static_mesh)
+			(use_actor_fornode && use_instance_static_mesh_fornode)
 			||
-			(use_text_render_components_directly_on_this_actor && use_instance_static_mesh)
+			(use_text_render_components_fornode && use_instance_static_mesh_fornode)
 			||
-			(use_actorfornode && use_text_render_components_directly_on_this_actor)
+			(use_actor_fornode && use_text_render_components_fornode)
 
 		)
 		{
@@ -85,7 +85,7 @@ void AKnowledgeGraph::BeginPlay()
 
 
 	if (
-		!use_shaders && !use_actorfornode
+		!use_shaders && !use_actor_fornode
 	)
 	{
 		ll("If CPU we must use actor for node for right now. ", 1, 2);
@@ -93,7 +93,7 @@ void AKnowledgeGraph::BeginPlay()
 		qq();
 		return;
 	}
-	if (use_instance_static_mesh)
+	if (use_instance_static_mesh_fornode)
 	{
 		check(InstancedStaticMeshComponent);
 	}
@@ -125,7 +125,7 @@ void AKnowledgeGraph::BeginPlay()
 		"AKnowledgeGraph::initializeNodePosition",
 		&AKnowledgeGraph::initializeNodePosition);
 
-	if(use_instance_static_mesh)
+	if(use_instance_static_mesh_fornode)
 	{
 		InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
 	}

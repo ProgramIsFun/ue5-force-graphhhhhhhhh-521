@@ -98,11 +98,11 @@ public:
 	
 	// Use instance static mesh or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_instance_static_mesh = true;
+	bool use_instance_static_mesh_fornode = true;
 	
 	// Use a lot of actor Or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_actorfornode = true;
+	bool use_actor_fornode = true;
 	
 	// The size of Static mesh
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
@@ -113,7 +113,7 @@ public:
 	
 	// Use TextRenderComponent or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_text_render_components_directly_on_this_actor = true;
+	bool use_text_render_components_fornode = true;
 
 	// The size of TextRenderComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
