@@ -207,7 +207,7 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 	int32 Index = 0;
 	// link forces
 	// After loop, the velocity of all notes have been altered a little bit because of the link force already. 
-	for (auto& link : all_links1111111)
+	for (auto& link : all_links1)
 	{
 		ll("ApplyForcesssssssssssssssssssss Index: " + FString::FromInt(Index), log);
 
@@ -273,7 +273,7 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 		);
 
 
-		OctreeData2->AddAll1(all_nodes11111111111, nodePositions);
+		OctreeData2->AddAll1(all_nodes1, nodePositions);
 
 		OctreeData2->AccumulateStrengthAndComputeCenterOfMass();
 
@@ -284,7 +284,7 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 
 		if (!use_parallel)
 		{
-			for (auto& node : all_nodes11111111111)
+			for (auto& node : all_nodes1)
 			{
 				ll("--------------------------------------", log);
 				ll(
@@ -297,7 +297,7 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 		}
 		else
 		{
-			ParallelFor(all_nodes11111111111.Num(), [&](int32 Index)
+			ParallelFor(all_nodes1.Num(), [&](int32 Index)
 			{
 				TraverseBFS(OctreeData2, SampleCallback, alpha, Index, nodePositions, nodeVelocities);
 			});
@@ -312,11 +312,11 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 		if (!use_parallel)
 		{
 			// Brute force
-			for (auto& node : all_nodes11111111111)
+			for (auto& node : all_nodes1)
 			{
 				auto kn = node.Value;
 
-				for (auto& node2 : all_nodes11111111111)
+				for (auto& node2 : all_nodes1)
 				{
 					auto kn2 = node2.Value;
 					if (kn != kn2)
@@ -337,10 +337,10 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 		}
 		else
 		{
-			ParallelFor(all_nodes11111111111.Num(), [&](int32 Index)
+			ParallelFor(all_nodes1.Num(), [&](int32 Index)
 			{
-				auto node = all_nodes11111111111[Index];
-				for (auto& node2 : all_nodes11111111111)
+				auto node = all_nodes1[Index];
+				for (auto& node2 : all_nodes1)
 				{
 					auto kn2 = node2.Value;
 					if (node != kn2)
@@ -392,16 +392,16 @@ void AKnowledgeGraph::calculate_centre_force_and_update_position()
 	// }
 	FVector center = FVector(0, 0, 0);
 	FVector aggregation = FVector(0, 0, 0);
-	for (auto& node : all_nodes11111111111)
+	for (auto& node : all_nodes1)
 	{
 		// aggregation += node.Value->GetActorLocation();
 		aggregation += nodePositions[node.Key];
 	}
-	for (auto& node : all_nodes11111111111)
+	for (auto& node : all_nodes1)
 	{
 		nodePositions[node.Key] =
 			nodePositions[node.Key] - (
-				aggregation / all_nodes11111111111.Num() - center
+				aggregation / all_nodes1.Num() - center
 			) * 1;
 		// node.Value->SetActorLocation(
 		// 	node.Value->GetActorLocation() - (aggregation / all_nodes.Num() - center) * 1
@@ -417,7 +417,7 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 {
 	if (!use_parallel)
 	{
-		for (auto& node : all_nodes11111111111)
+		for (auto& node : all_nodes1)
 		{
 			auto kn = node.Value;
 
@@ -437,7 +437,7 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 	{
 		// Assertion failed: ComponentsThatNeedEndOfFrameUpdate_OnGameThread.IsValidIndex(ArrayIndex) [File:D:\build\++UE5\Sync\Engine\Source\Runtime\Engine\Private\LevelTick.cpp] [Line: 872]
 
-		ParallelFor(all_nodes11111111111.Num(), [&](int32 Index)
+		ParallelFor(all_nodes1.Num(), [&](int32 Index)
 		{
 			nodeVelocities[Index] *= velocityDecay;
 			nodePositions[Index] = nodePositions[Index] + nodeVelocities[Index];
@@ -447,13 +447,13 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 
 void AKnowledgeGraph::update_link_position()
 {
-	for (auto& link : all_links1111111)
+	for (auto& link : all_links1)
 	{
 		auto l = link.Value;
 
 		l->ChangeLoc(
-			all_nodes11111111111[l->source]->GetActorLocation(),
-			all_nodes11111111111[l->target]->GetActorLocation()
+			all_nodes1[l->source]->GetActorLocation(),
+			all_nodes1[l->target]->GetActorLocation()
 		);
 	}
 }
@@ -641,7 +641,7 @@ void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 
 void AKnowledgeGraph::update_Node_world_position_according_to_position_array()
 {
-	for (auto& node : all_nodes11111111111)
+	for (auto& node : all_nodes1)
 	{
 		int index = node.Key;
 		node.Value->SetActorLocation(nodePositions[index]);
@@ -652,25 +652,25 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 {
 	bool log = true;
 	//link forces
-	float n = all_nodes11111111111.Num();
-	float m = all_links1111111.Num();
+	float n = all_nodes1.Num();
+	float m = all_links1.Num();
 
-	for (auto& link : all_links1111111)
+	for (auto& link : all_links1)
 	{
-		all_nodes11111111111[link.Value->source]->numberOfConnected += 1;
-		all_nodes11111111111[link.Value->target]->numberOfConnected += 1;
+		all_nodes1[link.Value->source]->numberOfConnected += 1;
+		all_nodes1[link.Value->target]->numberOfConnected += 1;
 	}
 
-	for (auto& link : all_links1111111)
+	for (auto& link : all_links1)
 	{
 		ll("all_nodes[link.Value->source]->numberOfConnected: " + FString::FromInt(
-			   all_nodes11111111111[link.Value->source]->numberOfConnected), log);
+			   all_nodes1[link.Value->source]->numberOfConnected), log);
 
 
-		float ttttttttttt = all_nodes11111111111[link.Value->source]->numberOfConnected +
-			all_nodes11111111111[link.Value->target]->numberOfConnected;
+		float ttttttttttt = all_nodes1[link.Value->source]->numberOfConnected +
+			all_nodes1[link.Value->target]->numberOfConnected;
 
-		float bias = all_nodes11111111111[link.Value->source]->numberOfConnected /
+		float bias = all_nodes1[link.Value->source]->numberOfConnected /
 			ttttttttttt;
 
 
@@ -682,18 +682,18 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		
 		ll("!!!!!!!!!!!!!!!!!!!!!!!bias: " + FString::SanitizeFloat(link.Value->bias), log);
 
-		link.Value->strength = 1.0 / fmin(all_nodes11111111111[link.Value->source]->numberOfConnected,
-		                                  all_nodes11111111111[link.Value->target]->numberOfConnected);
+		link.Value->strength = 1.0 / fmin(all_nodes1[link.Value->source]->numberOfConnected,
+		                                  all_nodes1[link.Value->target]->numberOfConnected);
 	}
 }
 
 void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 {
-	if (!all_nodes11111111111.Contains(id))
+	if (!all_nodes1.Contains(id))
 	{
 		nodeVelocities[id] = FVector(0, 0, 0);
 
-		all_nodes11111111111.Emplace(id, kn);
+		all_nodes1.Emplace(id, kn);
 	}
 	else
 	{
@@ -774,7 +774,7 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 		e->target = target;
 		e->strength = 1;
 		e->distance = edgeDistance;
-		all_links1111111.Emplace(id, e);
+		all_links1.Emplace(id, e);
 	}
 	else
 	{

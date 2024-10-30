@@ -193,12 +193,12 @@ public:
 
 
 
-	TMap<int32, AKnowledgeNode*> all_nodes11111111111;
+	TMap<int32, AKnowledgeNode*> all_nodes1;
 
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
 	
-	TMap<int32, AKnowledgeEdge*> all_links1111111;
+	TMap<int32, AKnowledgeEdge*> all_links1;
 
 	
 	// FSimpleOctree* OctreeData;
