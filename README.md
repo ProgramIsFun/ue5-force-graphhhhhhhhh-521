@@ -251,7 +251,12 @@ So one link could affect 2 Threats.
 So we compute a flattened one D away, which store the bias of each link. 
 Another flattened 1D array calculate the strength of each link. 
 
-If the connection is sparse, maybe using the 
+It seems that having too many array of the same size is not very good, right? 
+Perhaps need to find an example which use a buffer of a custom struct.
+
+
+
+
 
 
 
