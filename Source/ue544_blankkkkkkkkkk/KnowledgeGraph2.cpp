@@ -657,20 +657,20 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 	for (auto& link : all_links1)
 	{
-		all_nodes1[link.Value->source]->numberOfConnected += 1;
-		all_nodes1[link.Value->target]->numberOfConnected += 1;
+		all_nodes1[link.Value->source]->numOfConnected += 1;
+		all_nodes1[link.Value->target]->numOfConnected += 1;
 	}
 
 	for (auto& link : all_links1)
 	{
 		ll("all_nodes[link.Value->source]->numberOfConnected: " + FString::FromInt(
-			   all_nodes1[link.Value->source]->numberOfConnected), log);
+			   all_nodes1[link.Value->source]->numOfConnected), log);
 
 
-		float ttttttttttt = all_nodes1[link.Value->source]->numberOfConnected +
-			all_nodes1[link.Value->target]->numberOfConnected;
+		float ttttttttttt = all_nodes1[link.Value->source]->numOfConnected +
+			all_nodes1[link.Value->target]->numOfConnected;
 
-		float bias = all_nodes1[link.Value->source]->numberOfConnected /
+		float bias = all_nodes1[link.Value->source]->numOfConnected /
 			ttttttttttt;
 
 
@@ -682,8 +682,8 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		
 		ll("!!!!!!!!!!!!!!!!!!!!!!!bias: " + FString::SanitizeFloat(link.Value->bias), log);
 
-		link.Value->strength = 1.0 / fmin(all_nodes1[link.Value->source]->numberOfConnected,
-		                                  all_nodes1[link.Value->target]->numberOfConnected);
+		link.Value->strength = 1.0 / fmin(all_nodes1[link.Value->source]->numOfConnected,
+		                                  all_nodes1[link.Value->target]->numOfConnected);
 	}
 }
 

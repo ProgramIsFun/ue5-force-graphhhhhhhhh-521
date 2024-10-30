@@ -45,7 +45,7 @@ public:
 
 
 
-	int numberOfConnected = 0;
+	int numOfConnected = 0;
 	
 	
 
