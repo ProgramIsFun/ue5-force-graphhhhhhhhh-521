@@ -160,14 +160,10 @@ Right now, we could assume that if we do not set the interval, and then it will 
 Second thing is Let's say we update a variable. Does the result immediately result from the update value or the previous update
 
 
-
-
-
 Let's also test can we overwrite the position directly in the shader
 It seems pretty hard because in every initialized phrase, if the buffer is already there, we will not overwritten it. 
 Perhaps could reference the following project. 
 - https://github.com/UE4-OceanProject/ComputeShaderDev
-
 
 https://forums.unrealengine.com/t/loading-data-to-from-structured-buffer-compute-shaders/470083/2
 
@@ -176,6 +172,7 @@ How about we just compute the link force also in the same shader?
 
 GPT give me two suggestions on computing the link force.
 
+///////////////////////////////////////////////
 
 StructuredBuffer<uint> LinkIndices;                // Flatten 2D array of indices
 const uint MaxLinksPerBody;                        // Maximum number of linked bodies per node
@@ -195,7 +192,7 @@ for (uint j = 0; j < MaxLinksPerBody; j++)
         Acceleration += LinkDirection * LinkStrength;
 }
 
-
+////////////////////////////////////////////////
 
 Offset/Count Buffer: Each entry contains a starting index and the count of connections for the corresponding body.
 Links Buffer: A flat buffer that contains all the links in a single array, sequenced as per the offsets and counts indicated in the first buffer.
@@ -211,12 +208,9 @@ uint LinkedBodyIndex = LinkIndices[index];
 // Calculate forces similar to previous examples
 }
 
+///////////////////////////////////////////////////////////////////
 
 
-
-
-It take too much time for generating too much actor for each link. 
-We use components instead of an actor for each link. 
 
 
 
@@ -229,8 +223,15 @@ To prevent race condition when calculating the link force in the shader, perhaps
 So one link could affect 2 Threats. 
 
 So we compute a flattened one D away, which store the bias of each link. 
+Another flattened 1D array calculate the strength of each link. 
+
+If the connection is sparse, maybe using the 
 
 
+
+### 5
+It take too much time for generating too much actor for each link.
+We use components instead of an actor for each link.
 
 
 

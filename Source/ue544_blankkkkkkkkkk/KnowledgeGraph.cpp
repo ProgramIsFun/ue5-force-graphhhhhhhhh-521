@@ -148,7 +148,10 @@ void AKnowledgeGraph::BeginPlay()
 
 	if (!use_shaders)
 	{
-		update_Node_world_position_according_to_position_array();
+		if (0)
+		{
+			update_Node_world_position_according_to_position_array();
+		}
 		
 		timeThisMemberFunction(
 			"AKnowledgeGraph::CalculateBiasstrengthOflinks",
