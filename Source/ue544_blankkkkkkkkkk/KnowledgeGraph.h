@@ -70,34 +70,26 @@ public:
 
 	void update_Node_world_position_according_to_position_array();
 
-
-	void tttttttttttt();
-
-
-	
+	void update_position_array_according_to_velocity_array();
+	void update_link_position();
 	
 	// Every node will be Initialize with position 0. 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool initialize_with_zero_position = true;
-
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_shaders = true;
-
-
+	
 	// Use instance static mesh or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_instance_static_mesh = true;
-
-
+	
 	// The size of Static mesh
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float static_mesh_size = 10;
-
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	UStaticMesh* SelectedMesh1111111111111;
-
 	
 	// Use TextRenderComponent or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
@@ -107,17 +99,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float text_size = 10;
 	
-
-
-	
 	UPROPERTY(VisibleAnywhere)
 	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
 
 	// If want to use constant delta time
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float use_constant_delta_time = -1;
-
-
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_parallel = false;
@@ -134,8 +121,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float tick_interval = 0.9f;
-
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	int jnodes1 = 50;
 
@@ -145,35 +131,27 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool many_body_use_brute_force = true;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	// bool many_body_octree_use_recursion = true;	
-
+	
 	// Use a lot of actor Or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_actorfornode = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool connect_to_previous = true;
-
 	
-
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alpha = 1;
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float iterations = 0;
-
-
+	
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alphaMin = 0.001;
 	// float alphaMin = 0.09;
-
-
+	
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	// float alphaDecay = pow(alphaMin, 0.05);
 	float alphaDecay = 1 - FMath::Pow(alphaMin, 1.0 / 300);
-
-
+	
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	int32 wayofinitnodeslinks = 2;
 
@@ -188,41 +166,29 @@ public:
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float theta2 = 0.81;
 
+	float alphaTarget = 0;
+	float velocityDecay = 0.6;
+	float initialAngle = PI * (3 - sqrt(5));
 
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+
 	int biasinitway = 0;
 	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float initialRadius = 10;
-
-
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 	virtual void BeginDestroy() override;
-
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	void update_position_array_according_to_velocity_array();
-	void update_link_position();
 
 
 	TMap<int32, AKnowledgeNode*> all_nodes11111111111;
 
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
-
-
+	
 	TMap<int32, AKnowledgeEdge*> all_links1111111;
 
-	// TMap<FString, NodeStrength> octree_node_strengths;
-	//    FVector GetWeightedDistance(FVector prev_loc);
-	float alphaTarget = 0;
-	float velocityDecay = 0.6;
-	float initialAngle = PI * (3 - sqrt(5));
-
-
 	
-
 	// FSimpleOctree* OctreeData;
 	OctreeNode* OctreeData2;
 

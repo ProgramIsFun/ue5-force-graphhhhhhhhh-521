@@ -520,9 +520,6 @@ void AKnowledgeGraph::ApplyForces()
 }
 
 
-void AKnowledgeGraph::tttttttttttt()
-{
-}
 
 void AKnowledgeGraph::initializeNodePosition()
 {
