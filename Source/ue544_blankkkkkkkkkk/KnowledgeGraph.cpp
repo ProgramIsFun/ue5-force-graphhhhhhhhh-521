@@ -130,17 +130,7 @@ void AKnowledgeGraph::BeginPlay()
 		InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
 	}
 
-	if (use_shaders)
-	{
-		// In a new commits because we are no longer wrapping the simulation in Fix containing Cube container.
-		// the following two lines is useless. 
-		SimParameters.ViewportWidth = 8000.0;
-		SimParameters.CameraAspectRatio = 1.777778;
-		SimParameters.GravityConstant = 1000.0;
-		SimParameters.NumBodies = jnodes1;
-		FNBodySimModule::Get().BeginRendering();
-		FNBodySimModule::Get().InitWithParameters(SimParameters);
-	}
+	
 
 
 	if (!use_shaders)
@@ -154,6 +144,18 @@ void AKnowledgeGraph::BeginPlay()
 	timeThisMemberFunction(
 		"AKnowledgeGraph::CalculateBiasstrengthOflinks",
 		&AKnowledgeGraph::CalculateBiasstrengthOflinks);
+
+
+	if (use_shaders)
+	{
+		SimParameters.ViewportWidth = 8000.0;
+		SimParameters.CameraAspectRatio = 1.777778;
+		SimParameters.GravityConstant = 1000.0;
+		SimParameters.NumBodies = jnodes1;
+		FNBodySimModule::Get().BeginRendering();
+		FNBodySimModule::Get().InitWithParameters(SimParameters);
+		
+	}
 	
 }
 
