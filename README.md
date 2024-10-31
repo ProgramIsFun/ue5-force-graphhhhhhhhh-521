@@ -138,22 +138,27 @@ Perhaps need to add additional debugger of the shader, because sometimes it retu
 
 add the link force 
 
-Assuming the following is the correct workflow. 
 
-We need to be able to retrieve the position and also the velocity array. 
-we will change the position and velocity And write it as a parameter and update the shader.  
+We can either 
+1. Deal with the lake forest in cpu and past results to the shade by overwriting the velocity.
 
-The question is shall we update the velocity thing to the shader 
-before We get the position, or after we get the position. 
 
-Because the shader will compute the position force according to the velocity, perhaps that should be done before. 
+
+
+We need to be able to retrieve the position and also the velocity array.
+we will change the position and velocity And write it as a parameter and update the shader.
+
+The question is shall we update the velocity thing to the shader
+before We get the position, or after we get the position.
+
+Because the shader will compute the position force according to the velocity, perhaps that should be done before.
 
 And because the shader will update The position according to the velocity, perhaps we should also pass The Alpha value to the shader.
 
 
 does the shade only Once, if we set the TICK interval to be very large.
 
-The result is If we set the TICK interval to maybe perhaps 1 second, it runs a few hundred times already. 
+The result is If we set the TICK interval to maybe perhaps 1 second, it runs a few hundred times already.
 The possible reasons is The callback function is called every frame.  So the shader is called every frame.
 Right now, we could assume that if we do not set the interval, and then it will run exactly once between each tick.
 
@@ -161,18 +166,24 @@ Second thing is Let's say we update a variable. Does the result immediately resu
 
 
 Let's also test can we overwrite the position directly in the shader
-It seems pretty hard because in every initialized phrase, if the buffer is already there, we will not overwritten it. 
-Perhaps could reference the following project. 
-- https://github.com/UE4-OceanProject/ComputeShaderDev
+It seems pretty hard because in every initialized phrase, if the buffer is already there, we will not overwritten it.
+Perhaps could reference the following project.
+
+https://github.com/UE4-OceanProject/ComputeShaderDev
 
 https://forums.unrealengine.com/t/loading-data-to-from-structured-buffer-compute-shaders/470083/2
 
-The above seem pretty complicated. 
-How about we just compute the link force also in the same shader? 
+The above seem pretty complicated.
+
+
+
+
+2. Or we could compute the link force in the shader.
+
 
 GPT give me two suggestions on computing the link force.
 
-///////////////////////////////////////////////
+2.1
 
 StructuredBuffer<uint> LinkIndices;                // Flatten 2D array of indices
 const uint MaxLinksPerBody;                        // Maximum number of linked bodies per node
@@ -192,7 +203,7 @@ for (uint j = 0; j < MaxLinksPerBody; j++)
         Acceleration += LinkDirection * LinkStrength;
 }
 
-////////////////////////////////////////////////
+2.2 
 
 Offset/Count Buffer: Each entry contains a starting index and the count of connections for the corresponding body.
 Links Buffer: A flat buffer that contains all the links in a single array, sequenced as per the offsets and counts indicated in the first buffer.
@@ -210,7 +221,7 @@ for (uint j = 0; j < LinkInfo[ID.x].y; j++) // LinkInfo[ID.x].y gives the count 
 
 
 
-
+2.3
 
 StructuredBuffer<uint> LinkOffsets;  // Holds the offset for each body
 StructuredBuffer<uint> LinkCounts;   // Holds the count of links for each body
@@ -234,15 +245,12 @@ void ComputeShader(uint3 ID : SV_DispatchThreadID)
 
 }
 
-///////////////////////////////////////////////////////////////////
-
 
 
 
 
 This perhaps explain why flatten 1D array is better than 2D array. 
 https://stackoverflow.com/questions/19759343/cuda-is-it-better-to-use-m-for-2d-static-arrays-or-flatten-them-to-m
-
 
 
 To prevent race condition when calculating the link force in the shader, perhaps each thread will only deal with the change of position or velocity of that node only. 
