@@ -778,6 +778,13 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 	}
 	else
 	{
+		// ULineBatchComponent* LineBatch = NewObject<ULineBatchComponent>(this);
+		// LineBatch->RegisterComponent();
+		// LineBatch->DrawLine(StartPosition, EndPosition, FLinearColor::Green, SDPG_World, 10.0f, 10.0f);
+
+
+
+		
 		ll("Right now We only have actor option for link. ", true, 2);
 		qq();
 	}
