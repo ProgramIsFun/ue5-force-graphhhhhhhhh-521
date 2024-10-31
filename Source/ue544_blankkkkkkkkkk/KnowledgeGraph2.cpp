@@ -786,17 +786,21 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 	}
 
-	for (auto& link : all_links2)
+
+	if (!use_shaders)
 	{
-		int s1=Nodeconnection[link.source];
-		int s2=Nodeconnection[link.target];
+		for (auto& link : all_links2)
+		{
+			int s1=Nodeconnection[link.source];
+			int s2=Nodeconnection[link.target];
 		
-		float ttttttttttt = s1 + s2;
-		float bias = s1 / ttttttttttt;
+			float ttttttttttt = s1 + s2;
+			float bias = s1 / ttttttttttt;
 		
-		link.bias = bias;
-		link.strength = 1.0 / fmin(s1,
-		                                  s2);
+			link.bias = bias;
+			link.strength = 1.0 / fmin(s1,
+			                           s2);
+		}
 	}
 	
 	if (use_shaders)
@@ -818,19 +822,48 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 			
 			LinkOffsets[i] = Index;
 			LinkCounts[i] = Nodeconnection[i];
-			Index += Nodeconnection[i];
 
 			
 			for (int j = 0; j < outcount; j++)
 			{
 				LinkIndices[LinkOffsets[i] + j] = connectout[i][j];
 				Linkinout[LinkOffsets[i] + j] = 1;
+
+
+
+
+				int s1=Nodeconnection[i];
+				int s2=Nodeconnection[connectout[i][j]];
+		
+				float ttttttttttt = s1 + s2;
+				float bias = s1 / ttttttttttt;
+				LinkBiases[LinkOffsets[i] + j] = bias;
+				LinkStrengths[LinkOffsets[i] + j] = 1.0 / fmin(s1,
+				                                              s2);
+				
 			}
 			for (int j = 0; j < incount; j++)
 			{
-				LinkIndices[LinkOffsets[i] + outcount + j] = connectin[i][j];
-				Linkinout[LinkOffsets[i] + outcount + j] = 0;
+				int indexnow=LinkOffsets[i] + outcount + j;
+				LinkIndices[indexnow] = connectin[i][j];
+				Linkinout[indexnow] = 0;
+
+
+
+				int s1=Nodeconnection[j];
+				int s2=Nodeconnection[connectin[i][j]];
+				float ttttttttttt = s1 + s2;
+				float bias = s1 / ttttttttttt;
+				LinkBiases[indexnow] = bias;
+				LinkStrengths[indexnow] = 1.0 / fmin(s1,
+															  s2);
+				
 			}
+
+
+			
+			Index += Nodeconnection[i];
+
 		}
 	}
 	
