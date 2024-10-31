@@ -518,16 +518,41 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 }
 
 void AKnowledgeGraph::update_link_position()
-{
+{	UWorld* World = GetWorld();
+	if (!World) return;
+
 	for (auto& link : all_links2)
 	{
-		auto l = link.edge;
 
-		l->ChangeLoc(
-			nodePositions[link.source],
-			nodePositions[link.target]
-		);
+		FVector Location1 = nodePositions[link.source];
+		FVector Location2 = nodePositions[link.target];
+			
+		if (useactorforlink)
+		{
+			auto l = link.edge;
+			l->ChangeLoc(
+				Location1,
+				Location2
+			);
+			
+		}
+
+		if (usedebuglinetrace)
+		{
+			DrawDebugLine(
+				World,
+				Location1,
+				Location2,
+				FColor::Red,
+				false,
+				-1,
+				0,
+				10.0f
+			);
+		}
 	}
+
+
 }
 
 void AKnowledgeGraph::ApplyForces()
@@ -832,14 +857,6 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 			);
 		}
 
-		//
-		// e->strength = 1;
-		//
-		link.strength = 1;
-		//
-		// e->distance = edgeDistance;
-		//
-		link.distance = edgeDistance;
 
 		// all_links1.Emplace(id, e);
 		link.edge = e;
@@ -856,9 +873,16 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 
 		// all_links2.Add(ALLLink(source, target));
 
-		ll("Right now We only have actor option for link. ", true, 2);
-		qq();
 	}
+	//
+	// e->strength = 1;
+	//
+	link.strength = 1;
+	//
+	// e->distance = edgeDistance;
+	//
+	link.distance = edgeDistance;
+
 
 	all_links2.Add(link);
 
