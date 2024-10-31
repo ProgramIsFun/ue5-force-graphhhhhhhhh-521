@@ -64,7 +64,7 @@ public:
 	TObjectPtr<UInstancedStaticMeshComponent> InstancedStaticMeshComponent;
 
 
-	void UpdateBodiesPosition(float DeltaTime);
+	void UpdateBodiesPosition();
 	
 	
 	void GenerateConnectedGraph(int32 NumClusters, int32 NodesPerCluster);

@@ -4,7 +4,7 @@
 
 
 
-void AKnowledgeGraph::UpdateBodiesPosition(float DeltaTime)
+void AKnowledgeGraph::UpdateBodiesPosition()
 {
 	// Retrieve GPU computed bodies position.
 	TArray<FVector3f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
