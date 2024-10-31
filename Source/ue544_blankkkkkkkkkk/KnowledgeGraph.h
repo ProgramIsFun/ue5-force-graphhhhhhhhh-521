@@ -41,10 +41,19 @@ class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 public:
 	AKnowledgeGraph();
 	~AKnowledgeGraph();
-	virtual void BeginPlay() override;
-	virtual void BeginDestroy() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	bool prechecksucceeded=true;
 
+
+	TMap<int32, AKnowledgeNode*> all_nodes1;
+
+	TArray<FVector> nodePositions;
+	TArray<FVector> nodeVelocities;
+	
+	TMap<int32, AKnowledgeEdge*> all_links1;
+	OctreeNode* OctreeData2;
+
+
+	TArray<double> ElapsedTimes;
 
 	FNBodySimParameters SimParameters;
 	
@@ -89,14 +98,19 @@ public:
 	
 	// Every node will be Initialize with position 0. 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool initialize_with_zero_position = true;
+	bool initialize_with_zero_position = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_shaders = true;
+	bool use_shaders = false;
+
+
+	// 1////////////////////////////////////////////////////////////////////////////
 	
 	// Use instance static mesh or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_instance_static_mesh_fornode = true;
+	bool use_instance_static_mesh_fornode = false;
+
+	// 2////////////////////////////////////////////////////////////////////////////
 	
 	// Use a lot of actor Or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
@@ -104,14 +118,16 @@ public:
 	
 	// The size of Static mesh
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	float static_mesh_size = 10;
+	float static_mesh_size = 0.3f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	UStaticMesh* SelectedMesh1111111111111;
+
+	// 3////////////////////////////////////////////////////////////////////////////
 	
 	// Use TextRenderComponent or not
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_text_render_components_fornode = true;
+	bool use_text_render_components_fornode = false;
 
 	// The size of TextRenderComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
@@ -120,6 +136,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<UTextRenderComponent*> TextComponents11111111111111111111;
 
+	////////////////////////////////////////////////////////////////////////////
+
+
+
+	
 	// If want to use constant delta time
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float use_constant_delta_time = -1;
@@ -150,75 +171,32 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool many_body_use_brute_force = true;
 	
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool connect_to_previous = true;
 	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alpha = 1;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float iterations = 0;
-	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float alphaMin = 0.001;
-	// float alphaMin = 0.09;
-	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	// float alphaDecay = pow(alphaMin, 0.05);
 	float alphaDecay = 1 - FMath::Pow(alphaMin, 1.0 / 300);
-	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	int32 wayofinitnodeslinks = 2;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float edgeDistance = 30;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float nodeStrength = -60;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float distancemin = 1;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float distancemax = 10000000;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	float theta2 = 0.81;
-
 	float alphaTarget = 0;
 	float velocityDecay = 0.6;
 	float initialAngle = PI * (3 - sqrt(5));
-
-
-	// int biasinitway = 0;
-	
 	float initialRadius = 10;
 	
 
 
 
-	TMap<int32, AKnowledgeNode*> all_nodes1;
-
-	TArray<FVector> nodePositions;
-	TArray<FVector> nodeVelocities;
 	
-	TMap<int32, AKnowledgeEdge*> all_links1;
-
-	
-	// FSimpleOctree* OctreeData;
-	OctreeNode* OctreeData2;
-
-
-	TArray<double> ElapsedTimes;
-
-
-
-
-
-
-
-
-
-
-	
+	virtual void BeginPlay() override;
+	virtual void BeginDestroy() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Tick(float DeltaTime) override;
-
 	template <typename Func, typename... Args>
 	auto timeThisMemberFunction(const char* functionName, Func function, Args&&... args)
 	{
@@ -242,13 +220,10 @@ public:
 
 		return ElapsedTime;
 	}
-
 	void qq()
 	{
 		UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
 	}
-
-	bool prechecksucceeded=true;
 	
 	
 };
