@@ -19,6 +19,7 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 
 	nodePositions.SetNumUninitialized(jnodes1);
 	nodeVelocities.SetNumUninitialized(jnodes1);
+	all_nodes2.SetNumUninitialized(jnodes1);
 	for (FVector& velocity : nodeVelocities)
 	{
 		velocity.X = 0.0f;
@@ -77,7 +78,15 @@ void AKnowledgeGraph::defaultGenerateGraphMethod()
 					return;
 				}
 			}
-			AddNode1(jid, kn);
+		
+			int id = jid;
+			
+			nodeVelocities[id] = FVector(0, 0, 0);
+
+	
+			// all_nodes1.Emplace(id, kn);
+			all_nodes2[id]=Node(id, kn);
+		
 		}
 
 		if (use_text_render_components_fornode)
@@ -274,7 +283,9 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 		);
 
 
-		OctreeData2->AddAll1(all_nodes1, nodePositions);
+		OctreeData2->AddAll1(
+			all_nodes2,
+			nodePositions);
 
 		OctreeData2->AccumulateStrengthAndComputeCenterOfMass();
 
@@ -689,16 +700,7 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 {
-	if (!all_nodes1.Contains(id))
-	{
-		nodeVelocities[id] = FVector(0, 0, 0);
-
-		all_nodes1.Emplace(id, kn);
-	}
-	else
-	{
-		ll("Fatal error: Node with ID " + FString::FromInt(id) + " already exists!");
-	}
+	
 }
 
 

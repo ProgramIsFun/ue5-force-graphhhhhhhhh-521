@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "CoreMinimal.h"
+#include "KnowledgeGraph.h"
 #include "KnowledgeNode.h"
 // #include "PointData.h" // Make sure this include points to your actual PointData structure file location
 
@@ -73,7 +74,12 @@ struct OctreeNode
 	void AccumulateStrengthAndComputeCenterOfMass();
 	void Cover(float X0, float Y0, float Z0);
 	bool check_contain_data_or_not();
-	void AddAll1(TMap<int32, AKnowledgeNode*> Map1, TArray<FVector> nodePositions);
+	// void AddAll1(TMap<int32, AKnowledgeNode*> Map1, TArray<FVector> nodePositions);
+	void AddAll1(
+		TArray<Node> all_nodes,
+		TArray<FVector> nodePositions
+	);
+
 };
 
 // void AddDataPoint(OctreeNode* node, AKnowledgeNode* newNode, FVector position);

@@ -66,6 +66,29 @@ public:
 	}
 };
 
+class Node
+{
+public:
+
+	int id;
+	AKnowledgeNode* node;
+
+	// Node(AKnowledgeNode* node)
+	// {
+	// 	this->node = node;
+	// }
+
+	Node(int id, AKnowledgeNode* node)
+	{
+		this->id = id;
+		this->node = node;
+	}
+	
+};
+
+
+
+
 
 UCLASS()
 class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
@@ -78,8 +101,11 @@ public:
 	bool prechecksucceeded=true;
 
 
-	TMap<int32, AKnowledgeNode*> all_nodes1;
+	// TMap<int32, AKnowledgeNode*> all_nodes1;
 
+	TArray<Node> all_nodes2;
+
+	
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
 	

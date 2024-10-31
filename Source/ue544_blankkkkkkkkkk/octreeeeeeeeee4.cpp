@@ -3,6 +3,7 @@
 #include <queue>
 #include <stack>
 
+#include "KnowledgeGraph.h"
 #include "utillllllssss.h"
 #include "Chaos/AABB.h"
 
@@ -94,7 +95,11 @@ bool OctreeNode::check_contain_data_or_not()
 }
 
 
-void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> all_nodes, TArray<FVector> nodePositions)
+void OctreeNode::AddAll1(
+	
+	TArray<Node> all_nodes,
+	TArray<FVector> nodePositions
+)
 {
 
 	// ll("This assumed the id of the map must be zero to N - 1. ");
@@ -119,12 +124,9 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> all_nodes, TArray<FVector>
 	float Z1 = -std::numeric_limits<float>::infinity();
 
 	// Compute the points and their extent
+	int i = 0;
 	for (auto& node : all_nodes)
 	{
-		auto i = node.Key;
-
-	
-		
 		// FVector D = Map[i]->GetActorLocation();
 		FVector D = nodePositions[i];
 		float X = D.X;
@@ -140,6 +142,8 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> all_nodes, TArray<FVector>
 		X1 = FMath::Max(X1, X);
 		Y1 = FMath::Max(Y1, Y);
 		Z1 = FMath::Max(Z1, Z);
+
+		i++;
 	}
 
 	// Cover the extent
@@ -154,9 +158,10 @@ void OctreeNode::AddAll1(TMap<int32, AKnowledgeNode*> all_nodes, TArray<FVector>
 	// {
 	// 	AddDataPoint(this,  nodePositions[i],i);
 	// }
-
+	i = 0;
 	for (auto& node : all_nodes)
 	{
-		AddDataPoint(this,  nodePositions[node.Key],node.Key);
+		AddDataPoint(this,  nodePositions[i],i);
+		i++;
 	}
 }
