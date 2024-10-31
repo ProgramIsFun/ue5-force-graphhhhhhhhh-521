@@ -17,15 +17,7 @@ AKnowledgeNode::AKnowledgeNode()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	if (0)
-	{
-		AutoPossessPlayer = EAutoReceiveInput::Player0;
-	}
-	else
-	{
-		
-	}
-
+	
 	if (0)
 	{
 		MySphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
@@ -78,23 +70,7 @@ void AKnowledgeNode::BeginPlay()
 }
 
 
-void AKnowledgeNode::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction("IncreaseTextSizeeeeeeee", IE_Pressed, this, &AKnowledgeNode::IncreaseTextSize);
-}
-void AKnowledgeNode::IncreaseTextSize()
-{
-	if (TextComponent)
-	{
-		ll("Increasing text size");
-		float CurrentSize = TextComponent->WorldSize;
-		TextComponent->SetWorldSize(CurrentSize + 10.0f); // Increase text size by 10 units
-		ll("CurrentSize+10.0f: "+ FString::SanitizeFloat(CurrentSize + 10.0f));
 
-	}
-
-}
 
 
 // Called every frame

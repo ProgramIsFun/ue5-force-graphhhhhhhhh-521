@@ -658,11 +658,17 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 	// std::map<int32, int32> map1;
 
+
+	std::map<int32, int32> Nodeconnection;
+	
 	for (auto& link : all_links1)
 	{
-		all_nodes1[link.Value->source]->numOfConnected += 1;
-		all_nodes1[link.Value->target]->numOfConnected += 1;
+		
+		// all_nodes1[link.Value->source]->numOfConnected += 1;
+		// all_nodes1[link.Value->target]->numOfConnected += 1;
 
+		Nodeconnection[link.Value->source] += 1;
+		Nodeconnection[link.Value->target] += 1;
 		
 		
 		// map1[link.Value->source] += 1;
@@ -671,8 +677,8 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 	for (auto& link : all_links1)
 	{
-		int s1=all_nodes1[link.Value->source]->numOfConnected;
-		int s2=all_nodes1[link.Value->target]->numOfConnected;
+		int s1=Nodeconnection[link.Value->source];
+		int s2=Nodeconnection[link.Value->target];
 		
 		float ttttttttttt = s1 + s2;
 		float bias = s1 / ttttttttttt;

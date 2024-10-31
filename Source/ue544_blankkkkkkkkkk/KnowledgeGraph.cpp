@@ -223,7 +223,6 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 	if (!use_shaders)
 	{
-		double StartTime = FPlatformTime::Seconds();
 
 
 		ll("apply forces", log);
@@ -243,14 +242,5 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 		update_link_position();
 
 
-		// Optionally, log the average time every N ticks
-		if (0)
-		{
-			double EndTime = FPlatformTime::Seconds();
-			double ElapsedTime = EndTime - StartTime;
-			lll(FString::SanitizeFloat(ElapsedTime));
-
-			ElapsedTimes.Add(ElapsedTime);
-		}
 	}
 }

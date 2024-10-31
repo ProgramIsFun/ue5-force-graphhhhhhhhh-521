@@ -20,7 +20,7 @@ struct ConnectedNode
 // class FORCEGRAPH_API AKnowledgeNode : public AActor
 
 UCLASS()
-class UE544_BLANKKKKKKKKKK_API AKnowledgeNode : public APawn
+class UE544_BLANKKKKKKKKKK_API AKnowledgeNode : public AActor
 {
 	GENERATED_BODY()
 
@@ -34,19 +34,14 @@ protected:
 
 
 public:
-	void IncreaseTextSize();
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
-
 	
-public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 
 
-	int numOfConnected = 0;
-	
+	// int numOfConnected = 0;   
+	//
 	
 
 	UPROPERTY(VisibleAnywhere)
