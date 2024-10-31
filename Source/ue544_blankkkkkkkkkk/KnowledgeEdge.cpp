@@ -70,7 +70,10 @@ void AKnowledgeEdge::UpdateLoc()
     //current_scale.Z *= _distance;
     SetActorScale3D(current_scale);
     
-    FRotator new_rot = UKismetMathLibrary::FindLookAtRotation(node2_loc, node1_loc);//.Add(0,90,0);
+    FRotator new_rot = UKismetMathLibrary::FindLookAtRotation(
+    	node2_loc,
+    	node1_loc
+    	);//.Add(0,90,0);
     //TubeMesh->SetWorldRotation(FRotator(0,90,0) + new_rot);
     SetActorRotation(new_rot);
     

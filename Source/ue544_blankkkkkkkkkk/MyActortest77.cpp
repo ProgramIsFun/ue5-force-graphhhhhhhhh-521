@@ -23,5 +23,9 @@ void AMyActortest77::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+
+
+
 }
 
