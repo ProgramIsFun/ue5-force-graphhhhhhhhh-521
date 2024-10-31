@@ -798,6 +798,8 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 			float bias = s1 / ttttttttttt;
 		
 			link.bias = bias;
+
+			// Better have a check because strength is set to 1 when it is initialized. 
 			link.strength = 1.0 / fmin(s1,
 			                           s2);
 		}
@@ -847,9 +849,7 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 				int indexnow=LinkOffsets[i] + outcount + j;
 				LinkIndices[indexnow] = connectin[i][j];
 				Linkinout[indexnow] = 0;
-
-
-
+				
 				int s1=Nodeconnection[j];
 				int s2=Nodeconnection[connectin[i][j]];
 				float ttttttttttt = s1 + s2;
@@ -859,17 +859,9 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 															  s2);
 				
 			}
-
-
-			
 			Index += Nodeconnection[i];
-
 		}
 	}
-	
-
-
-	
 }
 
 
