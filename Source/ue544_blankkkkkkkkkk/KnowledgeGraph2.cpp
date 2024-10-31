@@ -804,18 +804,32 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		int32 Index = 0;
 		for (int i = 0; i < n; i++)
 		{
+
+			int outcount = connectout[i].size();
+			int incount = connectin[i].size();
+			int totalcount = Nodeconnection[i];
+
+			if (totalcount!=outcount+incount)
+			{
+				ll("totalcount!=outcount+incount", true,2);
+				qq();
+			}
+
+			
 			LinkOffsets[i] = Index;
 			LinkCounts[i] = Nodeconnection[i];
 			Index += Nodeconnection[i];
-			for (int j = 0; j < connectout[i].size(); j++)
+
+			
+			for (int j = 0; j < outcount; j++)
 			{
 				LinkIndices[LinkOffsets[i] + j] = connectout[i][j];
 				Linkinout[LinkOffsets[i] + j] = 1;
 			}
-			for (int j = 0; j < connectin[i].size(); j++)
+			for (int j = 0; j < incount; j++)
 			{
-				LinkIndices[LinkOffsets[i] + connectout[i].size() + j] = connectin[i][j];
-				Linkinout[LinkOffsets[i] + connectout[i].size() + j] = 0;
+				LinkIndices[LinkOffsets[i] + outcount + j] = connectin[i][j];
+				Linkinout[LinkOffsets[i] + outcount + j] = 0;
 			}
 		}
 	}
