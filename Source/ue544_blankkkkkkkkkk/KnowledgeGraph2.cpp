@@ -664,14 +664,8 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	for (auto& link : all_links1)
 	{
 		
-		// all_nodes1[link.Value->source]->numOfConnected += 1;
-		// all_nodes1[link.Value->target]->numOfConnected += 1;
-
 		Nodeconnection[link.Value->source] += 1;
 		Nodeconnection[link.Value->target] += 1;
-		
-		
-		// map1[link.Value->source] += 1;
 		
 	}
 

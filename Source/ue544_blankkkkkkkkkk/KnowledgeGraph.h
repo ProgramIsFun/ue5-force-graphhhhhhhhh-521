@@ -50,6 +50,8 @@ public:
 	TArray<FVector> nodeVelocities;
 	
 	TMap<int32, AKnowledgeEdge*> all_links1;
+
+
 	OctreeNode* OctreeData2;
 
 

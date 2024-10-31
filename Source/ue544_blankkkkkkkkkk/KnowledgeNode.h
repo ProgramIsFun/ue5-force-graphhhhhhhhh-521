@@ -40,8 +40,6 @@ public:
 
 
 
-	// int numOfConnected = 0;   
-	//
 	
 
 	UPROPERTY(VisibleAnywhere)
