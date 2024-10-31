@@ -214,12 +214,12 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 {
 	bool log = true;
 
-	int32 Index = 0;
+	
 	// link forces
 	// After loop, the velocity of all notes have been altered a little bit because of the link force already. 
 	for (auto& link : all_links2)
 	{
-		ll("ApplyForcesssssssssssssssssssss Index: " + FString::FromInt(Index), log);
+		// ll("ApplyForcesssssssssssssssssssss Index: " + FString::FromInt(Index), log);
 
 
 		FVector source_pos = nodePositions[link.source];
@@ -266,7 +266,6 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 		// source_node->velocity += new_v * (1 - link.Value->bias);
 		nodeVelocities[link.source] += new_v * (1 - link.bias);
 
-		Index++;
 	}
 }
 
@@ -296,22 +295,37 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 
 		if (!use_parallel)
 		{
-			for (auto& node : all_nodes1)
+
+			int32 Index = 0;
+			for (auto& node : all_nodes2)
 			{
 				ll("--------------------------------------", log);
 				ll(
 					"Traverse the tree And calculate velocity on this Actor Kn, nodekey: -"
 					+
-					FString::FromInt(node.Key), log);
-				TraverseBFS(OctreeData2, SampleCallback, alpha, node.Key, nodePositions, nodeVelocities);
+					FString::FromInt(
+					Index
+					), log);
+
+				
+				TraverseBFS(OctreeData2,
+					SampleCallback,
+					alpha,
+					Index
+					,
+					nodePositions,
+					nodeVelocities
+					);
 				ll("Finished traversing the tree based on this Actor Kn. ", log);
+				Index++;
 			}
 		}
 		else
 		{
-			ParallelFor(all_nodes1.Num(), [&](int32 Index)
+			ParallelFor(all_nodes2.Num(), [&](int32 Index)
 			{
-				TraverseBFS(OctreeData2, SampleCallback, alpha, Index, nodePositions, nodeVelocities);
+				TraverseBFS(OctreeData2,
+					SampleCallback, alpha, Index, nodePositions, nodeVelocities);
 			});
 		}
 
@@ -324,41 +338,22 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 		if (!use_parallel)
 		{
 			// Brute force
-			for (auto& node : all_nodes1)
+			int32 Index = 0;
+			for (auto& node : all_nodes2)
 			{
-				auto kn = node.Value;
+				auto kn = node.node;
 
-				for (auto& node2 : all_nodes1)
+
+				int32 Index2 = 0;
+
+				for (auto& node2 : all_nodes2)
 				{
-					auto kn2 = node2.Value;
+					auto kn2 = node2.node;
 					if (kn != kn2)
 					{
 						// FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
-						FVector dir = nodePositions[node2.Key] - nodePositions[node.Key];
-
-						float l = dir.Size() * dir.Size();
-						if (l < distancemin)
-						{
-							l = sqrt(distancemin * l);
-						}
-						nodeVelocities[node.Key] += dir * nodeStrength * alpha / l;
-						// kn->velocity += dir * nodeStrength * alpha / l; 
-					}
-				}
-			}
-		}
-		else
-		{
-			ParallelFor(all_nodes1.Num(), [&](int32 Index)
-			{
-				auto node = all_nodes1[Index];
-				for (auto& node2 : all_nodes1)
-				{
-					auto kn2 = node2.Value;
-					if (node != kn2)
-					{
-						// FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
-						FVector dir = nodePositions[node2.Key] - nodePositions[Index];
+						FVector dir = nodePositions[
+							Index2] - nodePositions[Index];
 
 						float l = dir.Size() * dir.Size();
 						if (l < distancemin)
@@ -368,6 +363,41 @@ void AKnowledgeGraph::calculate_charge_force_and_update_velocity()
 						nodeVelocities[Index] += dir * nodeStrength * alpha / l;
 						// kn->velocity += dir * nodeStrength * alpha / l; 
 					}
+					Index2++;
+				}
+
+
+				
+				Index++;
+			}
+		}
+		else
+		{
+			ParallelFor(all_nodes2.Num(), [&](int32 Index)
+			{
+				auto node = all_nodes2[Index];
+
+
+
+				int32 Index2 = 0;
+				for (auto& node2 : all_nodes2)
+				{
+					
+					auto kn2 = node2.node;
+					if (node.node != kn2)
+					{
+						// FVector dir = kn2->GetActorLocation() - kn->GetActorLocation();
+						FVector dir = nodePositions[Index2] - nodePositions[Index];
+
+						float l = dir.Size() * dir.Size();
+						if (l < distancemin)
+						{
+							l = sqrt(distancemin * l);
+						}
+						nodeVelocities[Index] += dir * nodeStrength * alpha / l;
+						// kn->velocity += dir * nodeStrength * alpha / l; 
+					}
+					Index2++;
 				}
 			});
 		}
@@ -404,20 +434,35 @@ void AKnowledgeGraph::calculate_centre_force_and_update_position()
 	// }
 	FVector center = FVector(0, 0, 0);
 	FVector aggregation = FVector(0, 0, 0);
-	for (auto& node : all_nodes1)
+
+
+	int32 Index = 0;
+	for (auto& node : all_nodes2)
 	{
 		// aggregation += node.Value->GetActorLocation();
-		aggregation += nodePositions[node.Key];
+		aggregation += nodePositions[
+			Index
+		];
+
+		Index++;
 	}
-	for (auto& node : all_nodes1)
+
+	Index = 0;
+	for (auto& node : all_nodes2)
 	{
-		nodePositions[node.Key] =
-			nodePositions[node.Key] - (
-				aggregation / all_nodes1.Num() - center
+		nodePositions[
+			Index
+		] =
+			nodePositions[
+				Index
+			] - (
+				aggregation / all_nodes2.Num() - center
 			) * 1;
 		// node.Value->SetActorLocation(
 		// 	node.Value->GetActorLocation() - (aggregation / all_nodes.Num() - center) * 1
 		// );
+		Index++;
+
 	}
 
 
@@ -429,11 +474,16 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 {
 	if (!use_parallel)
 	{
-		for (auto& node : all_nodes1)
-		{
-			auto kn = node.Value;
 
-			nodeVelocities[node.Key] *= velocityDecay;
+
+		int32 Index = 0;
+		for (auto& node : all_nodes2)
+		{
+			auto kn = node.node;
+
+			nodeVelocities[
+				Index
+			] *= velocityDecay;
 			// kn->velocity *= velocityDecay;
 
 			// FVector NewLocation = kn->GetActorLocation() + kn->velocity;
@@ -442,14 +492,24 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 			// 	NewLocation
 			// );
 
-			nodePositions[node.Key] = nodePositions[node.Key] + nodeVelocities[node.Key];
+			nodePositions[
+				Index
+			] = nodePositions[
+			Index
+				
+			] + nodeVelocities[
+			Index
+
+				];
+
+			Index++;
 		}
 	}
 	else
 	{
 		// Assertion failed: ComponentsThatNeedEndOfFrameUpdate_OnGameThread.IsValidIndex(ArrayIndex) [File:D:\build\++UE5\Sync\Engine\Source\Runtime\Engine\Private\LevelTick.cpp] [Line: 872]
 
-		ParallelFor(all_nodes1.Num(), [&](int32 Index)
+		ParallelFor(all_nodes2.Num(), [&](int32 Index)
 		{
 			nodeVelocities[Index] *= velocityDecay;
 			nodePositions[Index] = nodePositions[Index] + nodeVelocities[Index];
@@ -464,8 +524,8 @@ void AKnowledgeGraph::update_link_position()
 		auto l = link.edge;
 
 		l->ChangeLoc(
-			all_nodes1[link.source]->GetActorLocation(),
-			all_nodes1[link.target]->GetActorLocation()
+			nodePositions[link.source],
+			nodePositions[link.target]
 		);
 	}
 }
@@ -653,10 +713,14 @@ void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 
 void AKnowledgeGraph::update_Node_world_position_according_to_position_array()
 {
-	for (auto& node : all_nodes1)
+	int32 Index = 0;
+	for (auto& node : all_nodes2)
 	{
-		int index = node.Key;
-		node.Value->SetActorLocation(nodePositions[index]);
+		
+		node.node->SetActorLocation(nodePositions[
+			Index
+		]);
+		Index++;
 	}
 }
 
@@ -664,7 +728,7 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 {
 	bool log = true;
 	//link forces
-	float n = all_nodes1.Num();
+	float n = all_nodes2.Num();
 	float m = all_links2.Num();
 
 	// std::map<int32, int32> map1;

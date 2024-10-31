@@ -3,9 +3,11 @@
 #include <functional>
 
 #include "CoreMinimal.h"
-#include "KnowledgeGraph.h"
+// #include "KnowledgeGraph.h"
 #include "KnowledgeNode.h"
 // #include "PointData.h" // Make sure this include points to your actual PointData structure file location
+
+class Node;
 
 struct PointData
 {
