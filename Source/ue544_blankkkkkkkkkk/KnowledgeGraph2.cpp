@@ -861,6 +861,16 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 			}
 			Index += Nodeconnection[i];
 		}
+
+
+
+
+		SimParameters.LinkOffsets = LinkOffsets;
+		SimParameters.LinkCounts = LinkCounts;
+		SimParameters.LinkIndices = LinkIndices;
+		SimParameters.LinkStrengths = LinkStrengths;
+		SimParameters.LinkBiases = LinkBiases;
+		SimParameters.Linkinout = Linkinout;
 	}
 }
 

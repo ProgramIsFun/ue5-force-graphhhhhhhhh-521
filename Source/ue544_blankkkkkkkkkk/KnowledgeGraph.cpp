@@ -137,8 +137,6 @@ void AKnowledgeGraph::BeginPlay()
 		SimParameters.ViewportWidth = 8000.0;
 		SimParameters.CameraAspectRatio = 1.777778;
 		SimParameters.GravityConstant = 1000.0;
-
-
 		SimParameters.NumBodies = jnodes1;
 		FNBodySimModule::Get().BeginRendering();
 		FNBodySimModule::Get().InitWithParameters(SimParameters);
@@ -151,10 +149,12 @@ void AKnowledgeGraph::BeginPlay()
 		{
 			update_Node_world_position_according_to_position_array();
 		}
-		timeThisMemberFunction(
-			"AKnowledgeGraph::CalculateBiasstrengthOflinks",
-			&AKnowledgeGraph::CalculateBiasstrengthOflinks);
 	}
+
+	timeThisMemberFunction(
+		"AKnowledgeGraph::CalculateBiasstrengthOflinks",
+		&AKnowledgeGraph::CalculateBiasstrengthOflinks);
+	
 }
 
 

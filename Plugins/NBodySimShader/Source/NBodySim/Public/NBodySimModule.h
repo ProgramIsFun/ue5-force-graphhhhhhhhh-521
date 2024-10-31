@@ -13,7 +13,20 @@
 struct FNBodySimParameters
 {
 public:
+
+
+	TArray<int> LinkOffsets;  // Holds the offset for each body
+	TArray<int> LinkCounts;   // Holds the count of links for each body
+	TArray<int> LinkIndices;  // Flat array containing all links
+	TArray<float> LinkStrengths;  // Holds the strength of each link
+	TArray<float> LinkBiases;     // Holds the bias of each link
+	TArray<int> Linkinout;  
+
+	
+
+
 	TArray<FBodyData> Bodies;
+	
 	uint32 NumBodies;
 	float GravityConstant;
 	float CameraAspectRatio;
@@ -21,7 +34,13 @@ public:
 	float DeltaTime;
 	float alpha;
 	
-	FNBodySimParameters(): NumBodies(0), GravityConstant(0), CameraAspectRatio(0), ViewportWidth(0), DeltaTime(0),alpha(1)
+	FNBodySimParameters():
+	NumBodies(0),
+	GravityConstant(0),
+	CameraAspectRatio(0),
+	ViewportWidth(0),
+	DeltaTime(0),
+	alpha(1)
 	{
 	}
 };
