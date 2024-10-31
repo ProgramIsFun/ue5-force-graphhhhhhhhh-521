@@ -156,6 +156,23 @@ public:
 	void update_Node_world_position_according_to_position_array();
 	void update_position_array_according_to_velocity_array();
 	void update_link_position();
+
+
+
+	/////////////////////////////////////////////////////////////////////////////////
+
+	TArray<int> LinkOffsets;  // Holds the offset for each body
+	TArray<int> LinkCounts;   // Holds the count of links for each body
+	TArray<int> LinkIndices;  // Flat array containing all links
+	TArray<float> LinkStrengths;  // Holds the strength of each link
+	TArray<float> LinkBiases;     // Holds the bias of each link
+	
+
+
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// Every node will be Initialize with position 0. 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
