@@ -23,4 +23,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+
+	FVector Location1;
+	FVector Location2;
+
+	UStaticMeshComponent* TempComponent1;
+	UStaticMeshComponent* TempComponent2;
+
 };
