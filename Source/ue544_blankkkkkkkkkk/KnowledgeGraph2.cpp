@@ -705,7 +705,7 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 {
 	AKnowledgeEdge* e;
-	ALLLink link=ALLLink(source, target);
+	Link link=Link(source, target);
 	if (useactorforlink)
 	{
 		UClass* bpClass;

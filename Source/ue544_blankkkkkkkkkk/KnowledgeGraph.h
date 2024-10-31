@@ -32,7 +32,7 @@
 
 
 
-class ALLLink
+class Link
 {
 public:
 	int32 source;
@@ -45,14 +45,14 @@ public:
 	
 	AKnowledgeEdge* edge;
 	
-	ALLLink(int32 source, int32 target, AKnowledgeEdge* edge)
+	Link(int32 source, int32 target, AKnowledgeEdge* edge)
 	{
 		this->source = source;
 		this->target = target;
 		this->edge = edge;
 	}
 
-	ALLLink(int32 source, int32 target)
+	Link(int32 source, int32 target)
 	{
 		this->source = source;
 		this->target = target;
@@ -60,7 +60,7 @@ public:
 
 	
 
-	ALLLink()
+	Link()
 	{
 		
 	}
@@ -83,8 +83,7 @@ public:
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
 	
-	// TMap<int32, AKnowledgeEdge*> all_links1;
-	TArray<ALLLink> all_links2;
+	TArray<Link> all_links2;
 
 	OctreeNode* OctreeData2;
 
