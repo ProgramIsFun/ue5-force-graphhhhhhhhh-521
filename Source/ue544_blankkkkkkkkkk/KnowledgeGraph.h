@@ -32,6 +32,40 @@
 
 
 
+class ALLLink
+{
+public:
+	int32 source;
+	int32 target;
+
+	float bias;
+	float strength;
+	float distance;
+
+	
+	AKnowledgeEdge* edge;
+	
+	ALLLink(int32 source, int32 target, AKnowledgeEdge* edge)
+	{
+		this->source = source;
+		this->target = target;
+		this->edge = edge;
+	}
+
+	ALLLink(int32 source, int32 target)
+	{
+		this->source = source;
+		this->target = target;
+	}
+
+	
+
+	ALLLink()
+	{
+		
+	}
+};
+
 
 UCLASS()
 class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
@@ -49,8 +83,8 @@ public:
 	TArray<FVector> nodePositions;
 	TArray<FVector> nodeVelocities;
 	
-	TMap<int32, AKnowledgeEdge*> all_links1;
-
+	// TMap<int32, AKnowledgeEdge*> all_links1;
+	TArray<ALLLink> all_links2;
 
 	OctreeNode* OctreeData2;
 

@@ -208,18 +208,18 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 	int32 Index = 0;
 	// link forces
 	// After loop, the velocity of all notes have been altered a little bit because of the link force already. 
-	for (auto& link : all_links1)
+	for (auto& link : all_links2)
 	{
 		ll("ApplyForcesssssssssssssssssssss Index: " + FString::FromInt(Index), log);
 
 
-		FVector source_pos = nodePositions[link.Value->source];
+		FVector source_pos = nodePositions[link.source];
 		// ll("source_pos: " + source_pos.ToString(), log);
-		FVector source_velocity = nodeVelocities[link.Value->source];
+		FVector source_velocity = nodeVelocities[link.source];
 		// ll("source_velocity: " + source_velocity.ToString(), log);
-		FVector target_pos = nodePositions[link.Value->target];
+		FVector target_pos = nodePositions[link.target];
 		// ll("target_pos: " + target_pos.ToString(), log);
-		FVector target_velocity = nodeVelocities[link.Value->target];
+		FVector target_velocity = nodeVelocities[link.target];
 		// ll("target_velocity: " + target_velocity.ToString(), log);
 
 
@@ -237,8 +237,8 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 
 		// ll("l: " + FString::SanitizeFloat(l), log);
 		// By looking at the javascript code, we can see strength Will only be computed when there is a change Of the graph structure to the graph.
-		l = (l - link.Value->distance) /
-			l * alpha * link.Value->strength;
+		l = (l - link.distance) /
+			l * alpha * link.strength;
 		// ll("l: " + FString::SanitizeFloat(l), log);
 		new_v *= l;
 
@@ -251,11 +251,11 @@ void AKnowledgeGraph::calculate_link_force_and_update_velocity()
 			// ll("new_v: " + new_v.ToString(), log);
 			// ll("link.Value->bias: " + FString::SanitizeFloat(link.Value->bias), log);
 			// target_node->velocity -= new_v * (link.Value->bias);
-			nodeVelocities[link.Value->target] -= new_v * (link.Value->bias);
+			nodeVelocities[link.target] -= new_v * (link.bias);
 		}
 
 		// source_node->velocity += new_v * (1 - link.Value->bias);
-		nodeVelocities[link.Value->source] += new_v * (1 - link.Value->bias);
+		nodeVelocities[link.source] += new_v * (1 - link.bias);
 
 		Index++;
 	}
@@ -448,13 +448,13 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 
 void AKnowledgeGraph::update_link_position()
 {
-	for (auto& link : all_links1)
+	for (auto& link : all_links2)
 	{
-		auto l = link.Value;
+		auto l = link.edge;
 
 		l->ChangeLoc(
-			all_nodes1[l->source]->GetActorLocation(),
-			all_nodes1[l->target]->GetActorLocation()
+			all_nodes1[link.source]->GetActorLocation(),
+			all_nodes1[link.target]->GetActorLocation()
 		);
 	}
 }
@@ -654,32 +654,32 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	bool log = true;
 	//link forces
 	float n = all_nodes1.Num();
-	float m = all_links1.Num();
+	float m = all_links2.Num();
 
 	// std::map<int32, int32> map1;
 
 
 	std::map<int32, int32> Nodeconnection;
 	
-	for (auto& link : all_links1)
+	for (auto& link : all_links2)
 	{
 		
-		Nodeconnection[link.Value->source] += 1;
-		Nodeconnection[link.Value->target] += 1;
+		Nodeconnection[link.source] += 1;
+		Nodeconnection[link.target] += 1;
 		
 	}
 
-	for (auto& link : all_links1)
+	for (auto& link : all_links2)
 	{
-		int s1=Nodeconnection[link.Value->source];
-		int s2=Nodeconnection[link.Value->target];
+		int s1=Nodeconnection[link.source];
+		int s2=Nodeconnection[link.target];
 		
 		float ttttttttttt = s1 + s2;
 		float bias = s1 / ttttttttttt;
 		
-		link.Value->bias = bias;
+		link.bias = bias;
 		
-		link.Value->strength = 1.0 / fmin(s1,
+		link.strength = 1.0 / fmin(s1,
 		                                  s2);
 	}
 
@@ -705,11 +705,8 @@ void AKnowledgeGraph::AddNode1(int32 id, AKnowledgeNode* kn)
 void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 {
 	AKnowledgeEdge* e;
-
-
-	// Use an actor for a link.
-	bool useActorforLink = true;
-	if (useActorforLink)
+	ALLLink link=ALLLink(source, target);
+	if (useactorforlink)
 	{
 		UClass* bpClass;
 		if (1)
@@ -769,12 +766,19 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 			);
 		}
 
+		//
+		// e->strength = 1;
+		//
+		link.strength = 1;
+		//
+		// e->distance = edgeDistance;
+		//
+		link.distance = edgeDistance;
 
-		e->source = source;
-		e->target = target;
-		e->strength = 1;
-		e->distance = edgeDistance;
-		all_links1.Emplace(id, e);
+		// all_links1.Emplace(id, e);
+		link.edge = e;
+
+
 	}
 	else
 	{
@@ -784,8 +788,14 @@ void AKnowledgeGraph::AddEdge(int32 id, int32 source, int32 target)
 
 
 
-		
+		// all_links2.Add(ALLLink(source, target));
+
 		ll("Right now We only have actor option for link. ", true, 2);
 		qq();
 	}
+
+	all_links2.Add(link);
+
+
+
 }

@@ -35,8 +35,6 @@ public:
     UPROPERTY(VisibleAnywhere)
     class USphereComponent* MySphere;
     
-    int32 source;
-    int32 target;
     float bias;
     float strength;
     float distance;
