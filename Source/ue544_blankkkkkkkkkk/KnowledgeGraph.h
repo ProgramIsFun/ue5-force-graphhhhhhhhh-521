@@ -166,7 +166,7 @@ public:
 	TArray<int> LinkIndices;  // Flat array containing all links
 	TArray<float> LinkStrengths;  // Holds the strength of each link
 	TArray<float> LinkBiases;     // Holds the bias of each link
-	
+	TArray<int> Linkinout;  
 
 
 
