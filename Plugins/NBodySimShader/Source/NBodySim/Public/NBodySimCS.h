@@ -18,6 +18,28 @@ struct FNBodySimCSBuffers
 
 	FBufferRHIRef VelocitiesBuffer;
 	FUnorderedAccessViewRHIRef VelocitiesBufferUAV;
+
+
+	///////////
+	FBufferRHIRef LinkOffsetsBuffer;
+	FShaderResourceViewRHIRef LinkOffsetsBufferSRV;
+
+	FBufferRHIRef LinkCountsBuffer;
+	FShaderResourceViewRHIRef LinkCountsBufferSRV;
+
+	FBufferRHIRef LinkIndicesBuffer;
+	FShaderResourceViewRHIRef LinkIndicesBufferSRV;
+
+	FBufferRHIRef LinkStrengthsBuffer;
+	FShaderResourceViewRHIRef LinkStrengthsBufferSRV;
+
+	FBufferRHIRef LinkBiasesBuffer;
+	FShaderResourceViewRHIRef LinkBiasesBufferSRV;
+
+	FBufferRHIRef LinkinoutBuffer;
+	FShaderResourceViewRHIRef LinkinoutBufferSRV;
+	///////////
+	
 	
 	void Initialize(const FNBodySimParameters& SimParameters);
 	void Release();

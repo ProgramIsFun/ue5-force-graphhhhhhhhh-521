@@ -755,25 +755,37 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	//link forces
 	float n = all_nodes2.Num();
 	float m = all_links2.Num();
+
+	ll("n: " + FString::SanitizeFloat(n), log);
+	ll("m: " + FString::SanitizeFloat(m), log);
 	std::map<int32, int32> Nodeconnection;
 
 
+
+
+	
+	
 
 	std::map<int, std::vector<int>> connectout;
 	std::map<int, std::vector<int>> connectin;
 	if (use_shaders)
 	{
+		int m2=m*2;
 		LinkOffsets.SetNumUninitialized(n);
 		LinkCounts.SetNumUninitialized(n);
-		LinkIndices.SetNumUninitialized(m);
-		LinkStrengths.SetNumUninitialized(m);  // Holds the strength of each link
-		LinkBiases.SetNumUninitialized(m);     // Holds the bias of each link
-		Linkinout.SetNumUninitialized(m);
+		LinkIndices.SetNumUninitialized(m2);
+		LinkStrengths.SetNumUninitialized(m2);  // Holds the strength of each link
+		LinkBiases.SetNumUninitialized(m2);     // Holds the bias of each link
+		Linkinout.SetNumUninitialized(m2);
 	}
 
 	for (auto& link : all_links2)
 	{
-		
+		ll("link.source: " +
+				FString::FromInt(link.source)+
+				" link.target: " + FString::FromInt(link.target),
+				log,2);
+			
 		Nodeconnection[link.source] += 1;
 		Nodeconnection[link.target] += 1;
 
@@ -791,6 +803,8 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	{
 		for (auto& link : all_links2)
 		{
+
+			
 			int s1=Nodeconnection[link.source];
 			int s2=Nodeconnection[link.target];
 		
@@ -810,9 +824,13 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 		int32 Index = 0;
 		for (int i = 0; i < n; i++)
 		{
-
+			ll("i: " + FString::FromInt(i), log);
 			int outcount = connectout[i].size();
 			int incount = connectin[i].size();
+
+			ll("outcount: " + FString::FromInt(outcount), log);
+			ll("incount: " + FString::FromInt(incount), log);
+			
 			int totalcount = Nodeconnection[i];
 
 			if (totalcount!=outcount+incount)
@@ -823,35 +841,48 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 
 			
 			LinkOffsets[i] = Index;
-			LinkCounts[i] = Nodeconnection[i];
 
+			ll("LinkOffsets[i]: " + FString::FromInt(LinkOffsets[i]), log);
+			
+			LinkCounts[i] = Nodeconnection[i];
+			ll("LinkCounts[i]: " + FString::FromInt(LinkCounts[i]), log);
 			
 			for (int j = 0; j < outcount; j++)
 			{
-				LinkIndices[LinkOffsets[i] + j] = connectout[i][j];
-				Linkinout[LinkOffsets[i] + j] = 1;
+				
+				int counterpart = connectout[i][j];
 
+				int indexnow=Index + j;
 
-
-
+				LinkIndices[
+					indexnow
+				] = counterpart;
+				Linkinout[
+					indexnow
+				] = 1;
+				
 				int s1=Nodeconnection[i];
 				int s2=Nodeconnection[connectout[i][j]];
 		
 				float ttttttttttt = s1 + s2;
 				float bias = s1 / ttttttttttt;
-				LinkBiases[LinkOffsets[i] + j] = bias;
-				LinkStrengths[LinkOffsets[i] + j] = 1.0 / fmin(s1,
+				LinkBiases[indexnow] = bias;
+				LinkStrengths[indexnow] = 1.0 / fmin(s1,
 				                                              s2);
 				
 			}
 			for (int j = 0; j < incount; j++)
 			{
-				int indexnow=LinkOffsets[i] + outcount + j;
-				LinkIndices[indexnow] = connectin[i][j];
+				int counterpart = connectin[i][j];
+				int indexnow=Index + outcount + j;
+
+				LinkIndices[indexnow] = counterpart;
+
 				Linkinout[indexnow] = 0;
 				
-				int s1=Nodeconnection[j];
-				int s2=Nodeconnection[connectin[i][j]];
+				int s2=Nodeconnection[i];
+				int s1=Nodeconnection[counterpart];
+
 				float ttttttttttt = s1 + s2;
 				float bias = s1 / ttttttttttt;
 				LinkBiases[indexnow] = bias;
