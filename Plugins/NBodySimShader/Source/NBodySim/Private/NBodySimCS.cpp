@@ -39,6 +39,7 @@ public:
 		SHADER_PARAMETER_SRV(StructuredBuffer<int>, Linkinout)
 		SHADER_PARAMETER_SRV(StructuredBuffer<float>, LinkStrengths)
 		SHADER_PARAMETER_SRV(StructuredBuffer<float>, LinkBiases)
+		SHADER_PARAMETER(uint32, NumLinks)
 
 
 
@@ -313,7 +314,7 @@ void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListI
 	PassParameters.LinkStrengths = Buffers.LinkStrengthsBufferSRV;
 	PassParameters.LinkBiases = Buffers.LinkBiasesBufferSRV;
 	PassParameters.Linkinout = Buffers.LinkinoutBufferSRV;
-
+	PassParameters.NumLinks = SimParameters.NumLinks;
 	
 	
 	PassParameters.NumBodies = SimParameters.NumBodies;

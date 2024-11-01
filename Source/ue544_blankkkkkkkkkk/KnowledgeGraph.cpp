@@ -21,18 +21,15 @@ AKnowledgeGraph::AKnowledgeGraph()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-
+	InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
+					TEXT("InstancedStaticMeshComponent"));
+		
 	if (use_shaders)
 	{
 		PrimaryActorTick.bStartWithTickEnabled = true;
 		PrimaryActorTick.TickGroup = TG_DuringPhysics;
 
 
-		if (1)
-		{
-			InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
-				TEXT("InstancedStaticMeshComponent"));
-		}
 	}
 }
 
@@ -163,6 +160,10 @@ void AKnowledgeGraph::BeginPlay()
 void AKnowledgeGraph::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// ll("sizeof(int) is: " + FString::FromInt(sizeof(int)), true, 2);
+	// qq();
+	// return;
 
 	if (!prechecksucceeded)
 	{

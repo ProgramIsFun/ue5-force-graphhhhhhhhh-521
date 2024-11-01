@@ -8,6 +8,18 @@ StructuredBuffer<float> Masses;
 RWStructuredBuffer<float3> Positions;
 RWStructuredBuffer<float3> Velocities;
 
+
+//
+StructuredBuffer<int> LinkOffsets;
+StructuredBuffer<int> LinkCounts;
+StructuredBuffer<int> LinkIndices;
+StructuredBuffer<float> LinkStrengths;
+StructuredBuffer<float> LinkBiases;
+StructuredBuffer<float> Linkinout;
+const uint NumLinks;
+
+
+
 // Settings
 const uint NumBodies;
 const float GravityConstant;
@@ -15,6 +27,12 @@ const float CameraAspectRatio;
 const float ViewportWidth;
 const float DeltaTime;
 const float alpha;
+
+
+
+
+
+
 
 
 /**
@@ -70,32 +88,73 @@ void CalculateVelocitiesCS(uint3 ID : SV_DispatchThreadID)
 	if (ID.x >= NumBodies) return;
 
 
-	if (0)
+	if (1)
 	{
+		
+
+
+
+
 		float3 Acceleration= float3(0, 0, 0);
 
+
+		// Calculate link force
+		int offset = LinkOffsets[ID.x];
+		int count = LinkCounts[ID.x];
+		for (int i = offset;
+			i < offset + count;
+			i++)
+		{
+			int affectingBodyID = LinkIndices[i];
+			int Linkinout1 = Linkinout[i];
+
+
+			float3 new_v;
+			if (Linkinout1 == 1)
+			{
+				new_v = Positions[affectingBodyID] + Velocities[affectingBodyID] - Positions[ID.x] - Velocities[ID.x];
+			}else
+			{
+				new_v = Positions[ID.x] + Velocities[ID.x] - Positions[affectingBodyID] - Velocities[affectingBodyID];
+			}
+			
+			float l = length(new_v);
+			l = (l - 30) /
+				l * alpha * LinkStrengths[i];
+			new_v *= l;
+			if (Linkinout1 == 1)
+			{
+				Acceleration += new_v * (1 - LinkBiases[i]);
+				// nodeVelocities[link.source] += new_v * (1 - link.bias);
+			}
+			else
+			{
+				Acceleration -= new_v * (LinkBiases[i]);
+				// nodeVelocities[link.target] -= new_v * (link.bias);
+			}
+
+		}
+
+
+
+		// Calculate gravitational force
 		for (uint i = 0; i < NumBodies; i++)
 		{
 			// Skip if self.
 			if (i == ID.x) continue;
-
 			float3 GravityForce = CalculateGravitationalForce(ID.x, i);
-
-
-			if (0)
-			{
-				Acceleration += GravityForce / Masses[ID.x];
-			}
-			else
-			{
-				Acceleration += GravityForce;
-			}
+			Acceleration += GravityForce;
+			
 		}
-		// nodeVelocities[node.Key] *= velocityDecay;
-
-		const float velocityDecay = 0.6;
-
+		
 		Velocities[ID.x] += Acceleration * DeltaTime;
+
+
+
+
+
+		
+		const float velocityDecay = 0.6;
 		Velocities[ID.x] *= velocityDecay;
 		Positions[ID.x] += Velocities[ID.x] * DeltaTime;
 	}

@@ -771,6 +771,9 @@ void AKnowledgeGraph::CalculateBiasstrengthOflinks()
 	if (use_shaders)
 	{
 		int m2=m*2;
+		SimParameters.NumLinks = m2;
+
+		
 		LinkOffsets.SetNumUninitialized(n);
 		LinkCounts.SetNumUninitialized(n);
 		LinkIndices.SetNumUninitialized(m2);

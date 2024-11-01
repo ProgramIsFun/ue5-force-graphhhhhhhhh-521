@@ -14,7 +14,7 @@ struct FNBodySimParameters
 {
 public:
 
-
+	uint32 NumLinks;
 	TArray<int> LinkOffsets;  // Holds the offset for each body
 	TArray<int> LinkCounts;   // Holds the count of links for each body
 	TArray<int> LinkIndices;  // Flat array containing all links
@@ -35,6 +35,7 @@ public:
 	float alpha;
 	
 	FNBodySimParameters():
+	NumLinks(0),
 	NumBodies(0),
 	GravityConstant(0),
 	CameraAspectRatio(0),
