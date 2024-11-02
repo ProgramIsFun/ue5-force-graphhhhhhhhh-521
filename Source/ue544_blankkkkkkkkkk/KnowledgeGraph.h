@@ -97,7 +97,7 @@ class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 
 public:
 	AKnowledgeGraph();
-	~AKnowledgeGraph();
+	virtual ~AKnowledgeGraph() override;
 	bool prechecksucceeded=true;
 
 
@@ -188,6 +188,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_instance_static_mesh_fornode = false;
 
+	// The size of the node
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	float instance_static_mesh_size = 0.3f;
+
+	
 	// 2////////////////////
 	
 	// Use a lot of actor Or not

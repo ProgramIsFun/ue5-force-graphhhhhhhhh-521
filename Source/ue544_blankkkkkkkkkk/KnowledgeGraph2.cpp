@@ -666,7 +666,7 @@ void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 			0, 0, 0
 		};
 
-		float MeshScale = FMath::Sqrt(RandomMass) * 2.0;
+		float MeshScale = instance_static_mesh_size;
 		
 		FTransform MeshTransform(
 			FRotator(),
