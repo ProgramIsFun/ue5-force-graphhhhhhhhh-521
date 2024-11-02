@@ -518,7 +518,8 @@ void AKnowledgeGraph::update_position_array_according_to_velocity_array()
 }
 
 void AKnowledgeGraph::update_link_position()
-{	UWorld* World = GetWorld();
+{
+	UWorld* World = GetWorld();
 	if (!World) return;
 
 	for (auto& link : all_links2)
@@ -738,14 +739,58 @@ void AKnowledgeGraph::initializeNodePosition_Individual( int index)
 
 void AKnowledgeGraph::update_Node_world_position_according_to_position_array()
 {
-	int32 Index = 0;
-	for (auto& node : all_nodes2)
+	if (use_shaders)
 	{
+		// Retrieve GPU computed bodies position.
+		TArray<FVector3f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
+
+		if (GPUOutputPositions.Num() != SimParameters.Bodies.Num())
+		{
+			UE_LOG(LogTemp, Warning,
+			       TEXT(
+				       "Size differ for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (%d) Output(%d)"
+			       ), SimParameters.Bodies.Num(), GPUOutputPositions.Num());
+			// qq();
+			return;
+		}else
+		{
+			ll("Size is same for GPU Velocities Ouput buffer and current Bodies instanced mesh buffer. Bodies (" + FString::FromInt(SimParameters.Bodies.Num()) + ") Output(" + FString::FromInt(GPUOutputPositions.Num()) + ")",true,2);
+			ll("First element position is: " + GPUOutputPositions[0].ToString(),true,2);
+		}
+	
+		// QUICK_SCOPE_CYCLE_COUNTER(STAT_SimulationEngine_UpdateBodiesPosition);
+
+		// Update bodies visual with new positions.
+		for (int i = 0; i < SimParameters.Bodies.Num(); i++)
+		{
+			if (use_instance_static_mesh_fornode)
+			{
+				BodyTransforms[i].SetTranslation(FVector(GPUOutputPositions[i]));
+			}
+
+
+			if (use_text_render_components_fornode)
+			{
+				TextComponents11111111111111111111[i]->SetWorldLocation(FVector(GPUOutputPositions[i]));
+			}
+		}
+
+		if (use_instance_static_mesh_fornode)
+		{
+			InstancedStaticMeshComponent->BatchUpdateInstancesTransforms(0, BodyTransforms, false, true);
+		}
+	}
+	else
+	{
+		int32 Index = 0;
+		for (auto& node : all_nodes2)
+		{
 		
-		node.node->SetActorLocation(nodePositions[
-			Index
-		]);
-		Index++;
+			node.node->SetActorLocation(nodePositions[
+				Index
+			]);
+			Index++;
+		}
 	}
 }
 

@@ -126,10 +126,7 @@ void AKnowledgeGraph::BeginPlay()
 	{
 		InstancedStaticMeshComponent->AddInstances(BodyTransforms, false);
 	}
-
 	
-
-
 	if (!use_shaders)
 	{
 		if (0)
@@ -221,7 +218,7 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 			SimParameters.DeltaTime = DeltaTime;
 			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime, 1);
 		}
-		UpdateBodiesPosition();
+		
 	}
 
 	if (!use_shaders)
@@ -236,14 +233,12 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 
 
 		ll("Logging out The position of the first node: " + nodePositions[0].ToString(), log);
-
-
-		update_Node_world_position_according_to_position_array();
-
-
-		ll("update link position", log);
-		update_link_position();
-
-
+		
 	}
+	update_Node_world_position_according_to_position_array();
+
+
+	ll("update link position", log);
+	update_link_position();
+
 }
