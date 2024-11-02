@@ -36,10 +36,9 @@ AKnowledgeGraph::AKnowledgeGraph()
 void AKnowledgeGraph::BeginDestroy()
 {
 	ll("AKnowledgeGraph::BeginDestroy", true, 2);
-	if (1)
-	{
-		FNBodySimModule::Get().EndRendering();
-	}
+	
+	FNBodySimModule::Get().EndRendering();
+	
 
 	Super::BeginDestroy();
 }
