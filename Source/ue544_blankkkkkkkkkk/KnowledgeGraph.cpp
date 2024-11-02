@@ -236,8 +236,10 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 	}
 	update_Node_world_position_according_to_position_array();
 
-
-	ll("update link position", log);
-	update_link_position();
+	if (!use_shaders)
+	{
+		ll("update link position", log);
+		update_link_position();
+	}
 
 }

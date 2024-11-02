@@ -741,6 +741,9 @@ void AKnowledgeGraph::update_Node_world_position_according_to_position_array()
 {
 	if (use_shaders)
 	{
+		if (iterations==1)
+		{return;
+		}
 		// Retrieve GPU computed bodies position.
 		TArray<FVector3f> GPUOutputPositions = FNBodySimModule::Get().GetComputedPositions();
 
