@@ -237,18 +237,6 @@ void FNBodySimCSBuffers::Initialize(const FNBodySimParameters& SimParameters)
 		LinkinoutBuffer = RHICreateStructuredBuffer(sizeof(int), SimParameters.Linkinout.Num() * sizeof(int), BUF_ShaderResource, CreateInfo);
 		LinkinoutBufferSRV = RHICreateShaderResourceView(LinkinoutBuffer);
 	}
-	
-
-	
-	//
-	// TArray<int> LinkOffsets;  // Holds the offset for each body
-	// TArray<int> LinkCounts;   // Holds the count of links for each body
-	// TArray<int> LinkIndices;  // Flat array containing all links
-	// TArray<float> LinkStrengths;  // Holds the strength of each link
-	// TArray<float> LinkBiases;     // Holds the bias of each link
-	// TArray<int> Linkinout;  
-
-	
 }
 
 void FNBodySimCSBuffers::Release()
@@ -262,7 +250,8 @@ void FNBodySimCSBuffers::Release()
 	if (VelocitiesBuffer)		VelocitiesBuffer.SafeRelease();
 	if (VelocitiesBufferUAV)	VelocitiesBufferUAV.SafeRelease();
 
-	
+
+	///////////////////////////////////////////////////////
 	if (LinkOffsetsBuffer)		LinkOffsetsBuffer.SafeRelease();
 	if (LinkOffsetsBufferSRV)	LinkOffsetsBufferSRV.SafeRelease();
 
@@ -280,7 +269,7 @@ void FNBodySimCSBuffers::Release()
 
 	if (LinkinoutBuffer)		LinkinoutBuffer.SafeRelease();
 	if (LinkinoutBufferSRV)		LinkinoutBufferSRV.SafeRelease();
-	
+	///////////////////////////////////////////////////////
 
 	
 	
@@ -308,6 +297,8 @@ void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListI
 	PassParameters.Positions = Buffers.PositionsBufferUAV;
 	PassParameters.Velocities = Buffers.VelocitiesBufferUAV;
 
+
+	///////////////////////////////////////////////////
 	PassParameters.LinkOffsets = Buffers.LinkOffsetsBufferSRV;
 	PassParameters.LinkCounts = Buffers.LinkCountsBufferSRV;
 	PassParameters.LinkIndices = Buffers.LinkIndicesBufferSRV;
@@ -315,7 +306,7 @@ void FNBodySimCSInterface::RunComputeBodyPositions_RenderThread(FRHICommandListI
 	PassParameters.LinkBiases = Buffers.LinkBiasesBufferSRV;
 	PassParameters.Linkinout = Buffers.LinkinoutBufferSRV;
 	PassParameters.NumLinks = SimParameters.NumLinks;
-	
+	///////////////////////////////////////////////////
 	
 	PassParameters.NumBodies = SimParameters.NumBodies;
 	PassParameters.GravityConstant = SimParameters.GravityConstant;
