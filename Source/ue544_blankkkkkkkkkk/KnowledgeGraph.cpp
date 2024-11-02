@@ -24,19 +24,16 @@ AKnowledgeGraph::AKnowledgeGraph()
 	InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
 					TEXT("InstancedStaticMeshComponent"));
 		
-	if (use_shaders)
-	{
-		PrimaryActorTick.bStartWithTickEnabled = true;
-		PrimaryActorTick.TickGroup = TG_DuringPhysics;
+	
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	PrimaryActorTick.TickGroup = TG_DuringPhysics;
 
-
-	}
 }
 
 void AKnowledgeGraph::BeginDestroy()
 {
 	ll("AKnowledgeGraph::BeginDestroy", true, 2);
-	if (use_shaders)
+	if (1)
 	{
 		FNBodySimModule::Get().EndRendering();
 	}

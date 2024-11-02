@@ -246,7 +246,7 @@ public:
 
 	// If want to use constant delta time
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	float use_constant_delta_time = -1;
+	float use_constant_delta_time = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool use_parallel = false;
