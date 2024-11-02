@@ -8,38 +8,23 @@
 // #define ENABLE_LOGGING 1
 #include "utillllllssss.h"
 
-#define print(text) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 10, FColor::White,text)
-
-AKnowledgeGraph::~AKnowledgeGraph()
-{
-	ll("AKnowledgeGraph::~AKnowledgeGraph", true, 2);
-}
-
 
 AKnowledgeGraph::AKnowledgeGraph()
 	: Super()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	PrimaryActorTick.TickGroup = TG_DuringPhysics;
 
+	
+	InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("InstancedStaticMeshComponent"));
 
-	if (use_shaders)
-	{
-		PrimaryActorTick.bStartWithTickEnabled = true;
-		PrimaryActorTick.TickGroup = TG_DuringPhysics;
-
-
-		if (1)
-		{
-			InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
-				TEXT("InstancedStaticMeshComponent"));
-		}
-	}
 }
 
 void AKnowledgeGraph::BeginDestroy()
 {
 	ll("AKnowledgeGraph::BeginDestroy", true, 2);
-	if (use_shaders)
+	if (1)
 	{
 		FNBodySimModule::Get().EndRendering();
 	}

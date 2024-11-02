@@ -112,7 +112,7 @@ void ASimulationEngine::BeginDestroy()
 {
 	if (!debug)
 	{
-		FNBodySimModule::Get().EndRendering();
+		// FNBodySimModule::Get().EndRendering();
 	}
 	else
 	{

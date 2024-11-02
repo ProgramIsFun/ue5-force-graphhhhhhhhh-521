@@ -97,7 +97,7 @@ class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 
 public:
 	AKnowledgeGraph();
-	~AKnowledgeGraph();
+	
 	bool prechecksucceeded=true;
 
 
