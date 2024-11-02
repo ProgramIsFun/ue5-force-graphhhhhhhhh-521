@@ -93,9 +93,13 @@ public:
 UCLASS()
 class UE544_BLANKKKKKKKKKK_API AKnowledgeGraph : public AActor
 {
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
+	bool use_shaders = false;
+
 	GENERATED_BODY()
 
-public:
+
 	AKnowledgeGraph();
 	virtual ~AKnowledgeGraph() override;
 	bool prechecksucceeded=true;
@@ -171,14 +175,12 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	
+
 	// Every node will be Initialize with position 0. 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
 	bool initialize_with_zero_position = false;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Attributes)
-	bool use_shaders = false;
-
-
 
 	//Node setting////////////////////////////////////////////////////////////////////////////////////////////////////
 
