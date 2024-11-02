@@ -222,6 +222,8 @@ void AKnowledgeGraph::Tick(float DeltaTime)
 			FNBodySimModule::Get().UpdateDeltaTime(DeltaTime, 1);
 		}
 		UpdateBodiesPosition();
+		// update_link_position();
+
 	}
 
 	if (!use_shaders)
